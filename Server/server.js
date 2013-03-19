@@ -9,7 +9,7 @@ processes = [];
 
 var port = 5003;
 
-var toolpath = __dirname + "/claferIg/claferIG"
+var toolpath = __dirname + "/claferIG/claferIG"
 
 var server = express();
 server.use(express.cookieParser('asasdhf89adfhj0dfjask'));
