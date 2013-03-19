@@ -19,7 +19,8 @@ Input.method("getInitContent", function(){
 	ret += '<input type="file" class="inputTextField" name="claferFile" size="15">';
 	ret += '<br>Bitwidth: <input type="text" class="inputTextField" name="bitwidth" size="3">';
 	ret += '<input type="hidden" id="windowKey" name="windowKey" value="' + this.host.key + '">';
-	ret += '<input type="submit" class="inputButton" id="submitToIG" value="Submit to IG" style="float: right"></form>';
+	ret += '<input type="submit" class="inputButton" id="Configure" value="Submit to IG" style="float: right"></form>';
+    ret += '<text style="display: none" id="waitText">Processing...</text>'
 	return ret;
 });
 
@@ -33,12 +34,14 @@ Input.method("onInitRendered", function()
 });
 
 Input.method("beginQuery", function(formData, jqForm, options){
+    $('#waitText').show();
     $('#InputForm').hide();
     $('#ControlForm').hide();
     $("#output").text("");
 });
 
 Input.method("showResponse", function(responseText, statusText, xhr, $form){
+    $('#waitText').hide();
     $('#InputForm').show();
     $('#ControlForm').show();
 	host.updateData(responseText);
