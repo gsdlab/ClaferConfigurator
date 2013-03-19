@@ -53,8 +53,8 @@ server.post('/uploads', function(req, res){
 			var util  = require('util');
 			spawn = require('child_process').spawn;
 			var d = new Date();
-			var obj = { windowKey: req.body.windowKey, tool: null, freshData: "", folder: dlDir, lastUsed: d};
-			tool = spawn("claferIG", [upFilePath , "--bitwidth=" + req.body.bitwidth], { stdio: ["pipe", "pipe", process.stderr, "pipe", "pipe"]});
+			var obj = { windowKey: req.body.windowKey, tool: null, freshData: "", folder: dlDir, lastUsed: d, error: ""};
+			tool = spawn("claferIG", [upFilePath , "--bitwidth=" + req.body.bitwidth/*, "--preserve-names"*/]);
 			obj.tool = tool;
 			processes.push(obj);
 			tool.stdout.on("data", function (data){
@@ -74,6 +74,30 @@ server.post('/uploads', function(req, res){
 					}
 				}
 			});
+			tool.stderr.on("data", function (data){
+				for (var i = 0; i<processes.length; i++){
+//					console.log(processes.length)
+//					console.log(i);
+//					console.log("stuck in post loop")
+					if (processes[i].windowKey == req.body.windowKey){
+						processes[i].error += data;
+					}
+				}
+			});
+			tool.stderr.on("close", function(){
+				for (var i = 0; i<processes.length; i++){
+					if (processes[i].windowKey == req.body.windowKey){
+						if (!resEnded){
+							resEnded = true;
+							res.writeHead(400, { "Content-Type": "text/html"});
+							res.end(processes[i].error);
+							cleanupOldFiles(processes[i].folder);
+							processes.splice(i, 1);	
+						}
+					}
+				}
+			});
+
 		});
 	});
 });
