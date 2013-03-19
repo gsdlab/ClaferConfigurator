@@ -54,7 +54,12 @@ server.post('/uploads', function(req, res){
 			spawn = require('child_process').spawn;
 			var d = new Date();
 			var obj = { windowKey: req.body.windowKey, tool: null, freshData: "", folder: dlDir, lastUsed: d, error: ""};
-			tool = spawn("claferIG", [upFilePath , "--bitwidth=" + req.body.bitwidth/*, "--preserve-names"*/]);
+			if (req.body.bitwidth != ""){
+				var args = [upFilePath , "--bitwidth=" + req.body.bitwidth/*, "--preserve-names"*/];
+			} else {
+				var args = [upFilePath/*, "--preserve-names"*/];
+			}
+			tool = spawn("claferIG", args);
 			obj.tool = tool;
 			processes.push(obj);
 			tool.stdout.on("data", function (data){
