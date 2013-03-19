@@ -46,8 +46,10 @@ server.post('/uploads', function(req, res){
 		if (err) throw err;
 		var dlDir = upFilePath;
 		upFilePath += pathTokens[2];
+		console.log("moving file from" + oldPath + " to " + upFilePath);
 		fs.rename(oldPath, upFilePath, function (err){
 			if (err) throw err;
+			console.log("proceeding with " + upFilePath)
 			var util  = require('util');
 			spawn = require('child_process').spawn;
 			var obj = { windowKey: req.body.windowKey, tool: null, freshData: "", folder: dlDir};
