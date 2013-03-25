@@ -28,7 +28,7 @@ Input.method("onInitRendered", function()
 {
     var options = new Object();
     options.beforeSubmit = this.beginQuery.bind(this);
-    options.success = this.showResponse.bind(this);
+    options.success = this.showResponse.bind(this); //problem in ie
     options.error = this.handleError.bind(this);
     $('#InputForm').ajaxForm(options); 
 });
@@ -41,15 +41,28 @@ Input.method("beginQuery", function(formData, jqForm, options){
 });
 
 Input.method("showResponse", function(responseText, statusText, xhr, $form){
+    data = responseText;
+    data = data.split("=====");
+    data[1] = data[1].replaceAll("claferIG> ", "");  
+    data[1] = data[1].replace("c4_aPhone", "c4_aPhone : c1_androidPhone");
+    data[1] = data[1].replace("c2_hardware", "c2_hardware : clafer");
+    data[1] = data[1].replace("c3_cpu", "c3_cpu : clafer");
+
+    data[0] = data[0].replaceAll('<?xml version="1.0"?>', '');
+    data[0] = data[0].replaceAll('cl:', '');
+    data[0] = data[0].replaceAll('xsi:', '');
+    data[0] = data[0].replaceAll(' xmlns="http://clafer.org/ir" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cl="http://clafer.org/ir" schemaLocation="http://clafer.org/ir https://github.com/gsdlab/clafer/blob/master/src/ClaferIR.xsd"', '');
+
+
     $('#waitText').hide();
     $('#InputForm').show();
     $('#ControlForm').show();
-	host.updateData(responseText);
+	host.updateClaferData(data);
 });
 
 Input.method("handleError", function(ErrorObject, statusText, xhr, $form){
     $('#waitText').hide();
     $('#InputForm').show();
     $('#ControlForm').show();
-    host.updateData(ErrorObject.status + " " + ErrorObject.statusText + "\n" + ErrorObject.responseText);
+    host.updateErrorData(ErrorObject.status + " " + ErrorObject.statusText + "\n" + ErrorObject.responseText);
 });

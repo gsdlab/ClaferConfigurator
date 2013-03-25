@@ -63,4 +63,7 @@ Array.prototype.remove = function(from, to) {
   return this.push.apply(this, rest);
 };
 
-
+function isNumeric(input)
+{
+    return (input - 0) == input && input.length > 0;
+}

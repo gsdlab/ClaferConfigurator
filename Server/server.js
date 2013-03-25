@@ -52,63 +52,75 @@ server.post('/uploads', function(req, res){
 			console.log("proceeding with " + upFilePath)
 			var util  = require('util');
 			spawn = require('child_process').spawn;
-			var d = new Date();
-			var obj = { windowKey: req.body.windowKey, tool: null, freshData: "", folder: dlDir, lastUsed: d, error: ""};
-			if (req.body.bitwidth != ""){
-				var args = [upFilePath , "--bitwidth=" + req.body.bitwidth/*, "--preserve-names"*/];
-			} else {
-				var args = [upFilePath/*, "--preserve-names"*/];
-			}
-			tool = spawn("claferIG", args);
-			obj.tool = tool;
-			processes.push(obj);
-			tool.stdout.on("data", function (data){
-				for (var i = 0; i<processes.length; i++){
-//					console.log(processes.length)
-//					console.log(i);
-//					console.log("stuck in post loop")
-					if (processes[i].windowKey == req.body.windowKey){
-						processes[i].freshData += data
-						if (!resEnded){
-							resEnded = true;
-							res.writeHead(200, { "Content-Type": "text/html"});
-							res.end(data);
-							processes[i].freshData = '';
+			var claferXML = "";
+			claferCall = spawn("clafer",[upFilePath, '--mode=xml', "-o"]);
+			claferCall.stdout.on("data", function (data){
+				claferXML += data;
+			});
+			claferCall.on("close", function (code){
+//				console.log("first call complete");
+				var d = new Date();
+				var obj = { windowKey: req.body.windowKey, tool: null, freshData: "", folder: dlDir, lastUsed: d, error: ""};
+				if (req.body.bitwidth != ""){
+					var args = [upFilePath, "--bitwidth=" + req.body.bitwidth, "--adduidsandtypes"];
+				} else {
+					var args = [upFilePath, "--adduidsandtypes"];
+				}
+//				console.log(args);
+				tool = spawn("claferIG", args);
+				obj.tool = tool;
+				processes.push(obj);
+				tool.stdout.on("data", function (data){
+	//				console.log("/*****************\nGetting data\n*************/")
+					for (var i = 0; i<processes.length; i++){
+	//					console.log(processes.length)
+	//					console.log(i);
+	//					console.log("stuck in post loop")
+						if (processes[i].windowKey == req.body.windowKey){
+							if (!resEnded){
+								claferXML = claferXML.replace(/[^<]{1,}/m, '');
+//									console.log(claferXML)
+								res.writeHead(200, { "Content-Type": "text/html"});
+								res.end(claferXML + "=====" + data);
+								resEnded = true;
+							} else{
+								processes[i].freshData += data;
+							}
 							processes[i].tool.stdout.removeAllListeners("data");
 						}
 					}
-				}
-			});
-			tool.stderr.on("data", function (data){
-				for (var i = 0; i<processes.length; i++){
-//					console.log(processes.length)
-//					console.log(i);
-//					console.log("stuck in post loop")
-					if (processes[i].windowKey == req.body.windowKey){
-						processes[i].error += data;
+				});
+				tool.stderr.on("data", function (data){
+					for (var i = 0; i<processes.length; i++){
+	//					console.log(processes.length)
+	//					console.log(i);
+						if (processes[i].windowKey == req.body.windowKey){
+							if (!resEnded){
+								claferXML = claferXML.replace(/[^<]{1,}/m, '');
+								res.end(claferXML + "=====" + data);
+								resEnded = true;
+							} else{
+								processes[i].error += data;
+							}
+						}
 					}
-				}
-			});
-			tool.stderr.on("close", function(){
-				for (var i = 0; i<processes.length; i++){
-					if (processes[i].windowKey == req.body.windowKey){
-						if (!resEnded){
-							resEnded = true;
-							res.writeHead(400, { "Content-Type": "text/html"});
-							res.end(processes[i].error);
+				});
+				tool.on("exit", function(){
+					for (var i = 0; i<processes.length; i++){
+						if (processes[i].windowKey == req.body.windowKey){
+							console.log(processes[i].error)
 							cleanupOldFiles(processes[i].folder);
 							processes.splice(i, 1);	
 						}
 					}
-				}
+				});
 			});
-
 		});
 	});
 });
 
 server.get('/Control', function(req, res){
-//	console.log("got control get")
+	console.log("Request for new instance")
 	var resEnd = false;
 	for (var y = 0; y<this.processes.length; y++){
 		if (processes[y].windowKey == req.query.windowKey){
@@ -138,7 +150,7 @@ server.get('/Control', function(req, res){
 						CurProcess.tool.stdout.removeAllListeners("data");
 					});	
 				});
-				break;
+			break;
 			}
 
 		}
@@ -147,7 +159,6 @@ server.get('/Control', function(req, res){
 
 function closeProcess(Key){
 	for (var y = 0; y<this.processes.length; y++){
-		console.log(processes[y].windowKe + " // " + Key)
 		if (processes[y].windowKey == Key){
 			console.log("closing process");
 			var toDelete = processes[y];

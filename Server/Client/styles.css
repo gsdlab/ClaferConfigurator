@@ -1,0 +1,78 @@
+th{
+	text-align: left;
+}
+
+textarea.child {
+      height:100%;
+}
+  
+div.parent {height:60px;}
+textarea.child {height:100%;}
+
+#preloader_img{
+	margin-right: 16px;
+	width: 24px;
+	height: 24px;
+}
+
+.comparison table td, .comparison table th{
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+	padding:0px 0px 0px 0px;
+}
+
+.comparison table #r0{
+	background: #eee;
+	padding:2px;
+}
+
+.comparison table td{
+	border-bottom: 1px solid #ccc;
+}
+
+img.tick{
+	width:18px;
+	height:18px;
+}
+
+#graph_table{
+  table-layout:fixed;
+  border-spacing:0px;
+}
+
+img.no{
+	width:18px;
+	height:18px;
+}
+
+th{
+    text-align:center;
+}
+
+th.td_abstract{
+    text-align:left;
+    width:50%;
+}
+
+td.numeric
+{
+/*	color: #222;*/
+}
+
+td.tick, td.no
+{
+	text-align:center;
+}
+
+.text_input {
+     height: 12px;
+}
+
+#comparison .EffectMan {
+    border-left: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+}
+
+.searchOmitted {
+	display: none;
+}

@@ -16,10 +16,7 @@ Output.method("getInitContent", function(){
 	return '<text id="output"></text>';
 });
 
-Output.method("updateContent", function(data){
-    data = data.replaceAll("claferIG> ", "\n");
-    data = data.replaceAll("\n", "<br>");
-    data = data.replaceAll(" ", "&nbsp");
-	$("#output").append(data);
+Output.method("onDataLoaded", function(data){
+	$("#output").append(data.instancesXML);
     $("#mdOutput .window-content").scrollTop($("#output").height());
 });

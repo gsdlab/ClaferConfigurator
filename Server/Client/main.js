@@ -8,6 +8,7 @@ $(document).ready(function()
     modules.push("Input");
     modules.push("Control");
     modules.push("Output");
+    modules.push("ComparisonTable");
     
     host = new Host(modules);
 });
@@ -24,6 +25,7 @@ function Host(modules)
 {
 	this.key = Math.floor(Math.random()*1000000000).toString(16);
     this.modules = new Array();
+    this.data = {claferXML:'', instancesXML:''};
     
     for (var i = 0; i < modules.length; i++)
     {
@@ -73,9 +75,47 @@ function Host(modules)
 }
 
 Host.method("updateData", function(data){
-	for (var i = 0; i<this.modules.length; i++){
-		if(this.modules[i].updateContent){
-			$.updateWindowContent(this.modules[i].id, this.modules[i].updateContent(data));
-		}
-	}
+
+
+    for (var i = 0; i < this.modules.length; i++)
+    {
+        if (this.modules[i].onDataLoaded)
+            this.modules[i].onDataLoaded(data);
+    }
+
+    for (var i = 0; i < this.modules.length; i++)
+    {
+        if (this.modules[i].getContent)
+            $.updateWindowContent(this.modules[i].id, this.modules[i].getContent());
+
+        if (this.modules[i].onRendered)
+            this.modules[i].onRendered();
+            
+        if (this.modules[i].resize)
+            this.modules[i].resize();
+                
+    }
+});
+
+Host.method("updateClaferData", function(data){
+    console.log(data);
+    console.log(this.data)
+    this.data.claferXML = data[0];
+    this.data.instancesData = data[1];
+    this.data.instancesXML = new InstanceConverter(this.data.instancesData).convertFromClaferIGOutputToClaferMoo(this.data.instancesData);
+    this.data.instancesXML = new InstanceConverter(this.data.instancesXML).convertFromClaferMooOutputToXML(); 
+    this.data.instancesXML = this.data.instancesXML.replaceAll('<?xml version="1.0"?>', '');
+    console.log(this.data)
+    this.updateData(this.data);
+});
+
+Host.method("updateErrorData", function(data){
+    $.updateWindowContent("mdOutput", data);
+});
+
+Host.method("updateInstanceData", function(data){
+    this.data.instancesData += data;
+    this.data.instancesXML = new InstanceConverter(this.data.instancesData).convertFromClaferIGOutputToClaferMoo(this.data.instancesData);
+    this.data.instancesXML = new InstanceConverter(this.data.instancesXML).convertFromClaferMooOutputToXML(); 
+    this.updateData(this.data);
 });
