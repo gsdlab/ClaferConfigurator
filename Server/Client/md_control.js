@@ -16,15 +16,17 @@ Control.method("getInitContent", function(){
 	ret += '<input type="hidden" id="ControlOp" name="operation" value="next" disabled="disabled">';
     ret += '<input type="hidden" id="windowKey" name="windowKey" value="' + this.host.key + '" disabled="disabled">';
     ret += '<input type="number" class="inputText" id="NumOfNext" placeholder="# to get, default(10)">';
-	ret += '<input type="button" class="inputButton" id="next" value="Next Instance" disabled="disabled">';
+	ret += '<input type="button" class="inputButton" id="next" value="Get Instances" disabled="disabled">';
 	ret += '<input type="button" class="inputButton" id="scope" value="Increase Scope" disabled="disabled"></form>';
     ret += '<text> Current scope = </text><text id="curScope">1</text>';
-    ret += '<div id="ContWaitingDiv" style="display:none"><Progress id="getProgress" style="width:100%"></Progress></div>'
-	return ret;
+    ret += '<div id="ContWaitingDiv" style="display:none"><Progress id="getProgress" style="width:100%"></Progress></div>';
+	
 
     this.data = "";
     this.error = "";
-    this.overwrite = false
+    this.overwrite = false;
+
+    return ret;
 });
 
 Control.method("onInitRendered", function()
@@ -59,10 +61,11 @@ Control.method("beginQuery", function(formData, jqForm, options){
 
 Control.method("showResponse", function(responseText, statusText, xhr, $form){
     if ($("#ControlOp").val() == "scope"){
-        this.host.errorUpdate(responseText);
         $("#ControlForm").show();
         $("#ContWaitingDiv").hide();
         this.overwrite = true;
+        this.host.consoleUpdate(responseText + "<br>");
+        this.error = "";
         return;
     }
 
@@ -71,7 +74,7 @@ Control.method("showResponse", function(responseText, statusText, xhr, $form){
 
     if (responseText.indexOf("No more instances found.") != -1){
         this.instancesToGet = 0;
-        this.error += "No more instances found. Try increasing the scope.\n";
+        this.error += "No more instances found. Try increasing the scope.<br>";
     }
     else {
 //        console.log(responseText);
@@ -88,6 +91,7 @@ Control.method("showResponse", function(responseText, statusText, xhr, $form){
     } else {
         this.data = this.data.replaceAll("claferIG> ", "");  
         this.host.updateInstanceData(this.data, this.overwrite, this.error);
+        this.error = "";
         this.data = "";
         $("#NumOfNext").val('');
         this.overwrite = false

@@ -96,6 +96,7 @@ server.post('/uploads', function(req, res){
 	//					console.log(i);
 						if (processes[i].windowKey == req.body.windowKey){
 							if (!resEnded){
+								res.writeHead(200, { "Content-Type": "text/html"});
 								claferXML = claferXML.replace(/[^<]{1,}/m, '');
 								res.end(claferXML + "=====" + data);
 								resEnded = true;
@@ -110,7 +111,11 @@ server.post('/uploads', function(req, res){
 						if (processes[i].windowKey == req.body.windowKey){
 							console.log(processes[i].error)
 							cleanupOldFiles(processes[i].folder);
-							processes.splice(i, 1);	
+							processes.splice(i, 1);
+							if (!resEnded){
+								res.writeHead(400, { "Content-Type": "text/html"});
+								res.end(processes[i].error)
+							}	
 						}
 					}
 				});

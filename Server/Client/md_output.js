@@ -17,8 +17,8 @@ Output.method("getInitContent", function(){
 });
 
 Output.method("onDataLoaded", function(data){
-    if (data.ConsoleOut)
-        this.content += data.ConsoleOut;
+    if (data.consoleOut)
+        this.content = data.consoleOut;
 });
 
 Output.method("getContent", function()

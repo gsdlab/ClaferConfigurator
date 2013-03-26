@@ -1,6 +1,6 @@
 abstract androidPhone
-    hardware ?
-    	cpu ?
+	hardware
+		cpu ?
 
 aPhone : androidPhone
 

@@ -191,16 +191,16 @@ ComparisonTable.method("onRendered", function(){
         if (!row.find(".numeric").length){
             var feature = $("#r" + i + " .td_abstract").text().replaceAll(/[\s?]{1,}/g, '');
             if (hasChild.indexOf(feature) != -1){
-                $("#r" + i + " .td_abstract").append('<text id="r' + i + 'collapse" status="false">   \u25BC<text>')
+                $("#r" + i + " .td_abstract").append('<text id="r' + i + 'collapse" status="false">   \u25E2<text>')
                 $("#r" + i + "collapse").click(function(){
                     if ($(this).attr("status") === "false"){
                         that.filter.closeFeature($(this).parent().text().replaceAll(/[^A-z]/g, ''));
                         $(this).attr("status", "true")
-                        $(this).text("   \u25B6")
+                        $(this).text("   \u25B7")
                     } else {
                         that.filter.openFeature($(this).parent().text().replaceAll(/[^A-z]/g, ''));
                         $(this).attr("status", "false")
-                        $(this).text("   \u25BC")
+                        $(this).text("   \u25E2")
                     }
                 }).css("cursor", "pointer");
             }
