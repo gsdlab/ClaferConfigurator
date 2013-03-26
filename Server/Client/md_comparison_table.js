@@ -178,7 +178,7 @@ ComparisonTable.method("onRendered", function(){
             }).css("cursor", "pointer");
         } 
         //  Add Greyed out checkboxes to denote effectively mandatory features
-        else if (!row.find(".numeric").length){
+        else if (!row.find(".numeric").length && row.find(".EffectMan").length){
             $("#r" + i + " .td_abstract").prepend('<image id="r' + i + 'box" src="images/checkbox_ticked_greyed.png" class="wanted">');
         }
         i++;
