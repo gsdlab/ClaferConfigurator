@@ -59,6 +59,10 @@ server.post('/uploads', function(req, res){
 			});
 			claferCall.on("close", function (code){
 //				console.log("first call complete");
+				if (code != 0){
+					res.writeHead(400, { "Content-Type": "text/html"});
+					res.end("Clafer failed to process the file")
+				}
 				var d = new Date();
 				var obj = { windowKey: req.body.windowKey, tool: null, freshData: "", folder: dlDir, lastUsed: d, error: ""};
 				if (req.body.bitwidth != ""){

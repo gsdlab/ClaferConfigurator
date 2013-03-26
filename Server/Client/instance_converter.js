@@ -110,6 +110,9 @@ InstanceConverter.method("convertFromClaferIGOutputToClaferMoo", function(oldAbs
 	myregex = /[c][0-9]{1,}[_][^\n <>]{1,}/g;
 	var allFinds = instances.match(myregex);
 	var uniqueFinds = [];
+	if (allFinds === null){
+		return "";
+	}
 	for (var i=0; i<allFinds.length; i++){
 		if ($.inArray(allFinds[i], uniqueFinds) === -1){
 			uniqueFinds.push(allFinds[i]);

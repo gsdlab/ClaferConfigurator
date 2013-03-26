@@ -43,6 +43,16 @@ Input.method("beginQuery", function(formData, jqForm, options){
 Input.method("showResponse", function(responseText, statusText, xhr, $form){
     var data = responseText;
     data = data.split("=====");
+    if (data[1].indexOf('Exception in thread "main"') != -1){
+        data[2] = "An error occured in Processing. Make sure your .cfr does not contain goals and try increasing the bitwidth. <br>";
+        data[1] = '';
+        data[0] = '';
+        host.updateClaferData(data);
+        $('#waitText').hide();
+        $('#InputForm').show();
+        $('#ControlForm').show();
+        return
+    }
     data[1] = data[1].replaceAll("claferIG> ", "");  
 
     data[0] = data[0].replaceAll('<?xml version="1.0"?>', '');
@@ -67,5 +77,5 @@ Input.method("handleError", function(ErrorObject, statusText, xhr, $form){
     $('#InputForm').show();
     $('#ControlForm').show();
     var data = (ErrorObject.status + " " + ErrorObject.statusText + "\n" + ErrorObject.responseText);
-    host.errorUpdate(data);
+    host.consoleUpdate(data);
 });
