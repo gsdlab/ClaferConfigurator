@@ -188,7 +188,7 @@ ClaferProcessor.method("recursiveHasChildrenCheck", function(root){
 	if (root.subclafers.length > 0){
 		list.push(root.displayId);
 		for (var i = 0; i<root.subclafers.length; i++){
-			list = list.concat(this.recursiveHasChildrencheck(root.subclafers[i]));
+			list = list.concat(this.recursiveHasChildrenCheck(root.subclafers[i]));
 		}
 	}
 	return list;
