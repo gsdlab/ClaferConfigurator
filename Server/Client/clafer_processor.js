@@ -146,7 +146,7 @@ ClaferProcessor.method("getAbstractClaferTree", function(xpathToIdSiblings, id)
 });
 
 ClaferProcessor.method("getIfMandatory", function(claferID){
-	var min = this.xmlHelper.queryXML(this.source, "//declaration[@type='IClafer'][uniqueid='" + claferID + "']/card/min[intliteral=1]");
+	var min = this.xmlHelper.queryXML(this.source, "//Declaration[@type='IClafer'][UniqueId='" + claferID + "']/Card/Min[IntLiteral=1]");
 	if (min.length != 0)
 		return "";
 	else 
