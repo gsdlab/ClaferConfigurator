@@ -28,7 +28,7 @@ tableFilter.method("filterContent", function (){
 	 	} else if (filter == "exclude"){
 	 		for (var j=0;j<$(curRow).children().length;j++){
 	 			var curCell = $(curRow).children()[j];
-	 			if ($(curCell).hasClass("yes"))
+	 			if ($(curCell).hasClass("tick"))
 	 				this.hideInstance(j);
 	 		}
 	 	}
@@ -71,7 +71,8 @@ tableFilter.method("closeFeature", function (feature){
 	root = this.findNodeInTree(root, feature)
 
 	this.hideChildren(root);
-	this.closedFeatures.push(feature)
+	if (this.closedFeatures.indexOf(feature) == -1)
+		this.closedFeatures.push(feature)
 	this.host.scrollToSearch($("#search").val());
 });
 

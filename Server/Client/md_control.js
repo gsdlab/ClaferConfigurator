@@ -3,7 +3,7 @@ function Control(host)
     this.id = "mdControl";
     this.title = "Control";
     
-    this.width = 320;
+    this.width = 520;
     this.height = 50;
     this.posx = 280;
     this.posy = 0;
@@ -15,7 +15,7 @@ Control.method("getInitContent", function(){
 	var ret = '<form id="ControlForm" enctype="multipart/form-data" method="get" action="/Control" style="display: block">';
 	ret += '<input type="hidden" id="ControlOp" name="operation" value="next">';
     ret += '<input type="hidden" id="windowKey" name="windowKey" value="' + this.host.key + '">';
-    ret += '<input type="number" class="inputText" id="NumOfNext">';
+    ret += '<input type="number" class="inputText" id="NumOfNext" placeholder="# to get, default(10)">';
 	ret += '<input type="button" class="inputButton" id="next" value="Next Instance">';
 	ret += '<input type="button" class="inputButton" id="scope" value="Increase Scope"></form>';
     ret += '<text> Current scope = </text><text id="curScope">1</text>';
@@ -23,18 +23,20 @@ Control.method("getInitContent", function(){
 	return ret;
 
     this.data = "";
+    this.error = "";
+    this.overwrite = false
 });
 
 Control.method("onInitRendered", function()
 {
-    that = this;
+    var that = this;
     $("#next").click(function(){
-        that.instancesToGet = ($("#NumOfNext").val() - 1);
-        $("#ControlOp").val("next");
-        $("#ControlForm").submit();
-        $("#getProgress").attr("max", $("#NumOfNext").val());
         $("#getProgress").attr("value", 1);
-        $("#ContWaitingDiv").show()
+        $("#ControlOp").val("next");
+        if ($("#NumOfNext").val() == "")
+            $("#NumOfNext").val(10);
+        that.instancesToGet = ($("#NumOfNext").val() - 1);
+        $("#ControlForm").submit();
     });
     $("#scope").click(function(){
         $("#ControlOp").val("scope");
@@ -50,39 +52,50 @@ Control.method("onInitRendered", function()
 });
 
 Control.method("beginQuery", function(formData, jqForm, options){
+    $("#getProgress").attr("max", $("#NumOfNext").val());
+    $("#ContWaitingDiv").show();
     $("#ControlForm").hide();
 });
 
 Control.method("showResponse", function(responseText, statusText, xhr, $form){
+    if ($("#ControlOp").val() == "scope"){
+        this.host.errorUpdate(responseText);
+        $("#ControlForm").show();
+        $("#ContWaitingDiv").hide();
+        this.overwrite = true;
+        return;
+    }
+
     $("#ControlForm").show();
     $("#ContWaitingDiv").hide();
 
     if (responseText.indexOf("No more instances found.") != -1){
         this.instancesToGet = 0;
+        this.error += "No more instances found. Try increasing the scope.\n";
     }
     else {
-        console.log(responseText);
+//        console.log(responseText);
         this.data += responseText;
     }
 
-    
+
 
     if (this.instancesToGet > 0){
+        this.instancesToGet--;
         $("#ContWaitingDiv").show();
         $("#getProgress").attr("value", ($("#getProgress").attr("value") + 1));
         $("#ControlForm").submit();
-        $("#ControlForm").hide();
-        this.instancesToGet--;
     } else {
         this.data = this.data.replaceAll("claferIG> ", "");  
-
-        this.host.updateInstanceData(this.data);
+        this.host.updateInstanceData(this.data, this.overwrite);
         this.data = "";
+        $("#NumOfNext").val('');
+        this.overwrite = false
     }
 
 });
 
 Control.method("handleError", function(responseText, statusText, xhr, $form){
-    this.waiting = true;
     $("#ControlForm").show();
+    $("#ContWaitingDiv").hide()
 });

@@ -3,8 +3,8 @@ function ComparisonTable(host)
     this.id = "mdComparisonTable";
     this.title = "Feature and Quality Matrix";
 
-    this.width = 600;
-    this.height = 200;
+    this.width = 800;
+    this.height = 510;
     this.posx = 0;
     this.posy = 92;
     

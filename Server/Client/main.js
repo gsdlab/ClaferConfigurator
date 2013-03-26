@@ -109,13 +109,18 @@ Host.method("updateClaferData", function(data){
     this.updateData(this.data);
 });
 
-Host.method("updateErrorData", function(data){
-    $.updateWindowContent("mdOutput", data);
-});
-
-Host.method("updateInstanceData", function(data){
+Host.method("updateInstanceData", function(data, overwrite){
+    if (overwrite){
+        this.data.instancesData = "";
+    }
     this.data.instancesData += data;
     this.data.instancesXML = new InstanceConverter(this.data.instancesData).convertFromClaferIGOutputToClaferMoo(this.data.instancesData);
     this.data.instancesXML = new InstanceConverter(this.data.instancesXML).convertFromClaferMooOutputToXML(); 
     this.updateData(this.data);
+});
+
+Host.method("errorUpdate", function(data){
+    console.log(data);
+    this.data.errorData = data;
+    $.updateWindowContent("mdOutput", this.data.errorData);
 });

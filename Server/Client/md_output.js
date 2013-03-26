@@ -3,10 +3,10 @@ function Output(host)
     this.id = "mdOutput";
     this.title = "Output";
     
-    this.width = 600;
-    this.height = 200;
-    this.posx = 0;
-    this.posy = 92;
+    this.width = 224;
+    this.height = 602;
+    this.posx = 800;
+    this.posy = 0;
     
     this.host = host;
     this.content = "";
@@ -17,6 +17,11 @@ Output.method("getInitContent", function(){
 });
 
 Output.method("onDataLoaded", function(data){
-	$("#output").append(data.instancesXML);
-    $("#mdOutput .window-content").scrollTop($("#output").height());
+    if (data.ConsoleOut)
+        this.content += data.ConsoleOut;
+});
+
+Output.method("getContent", function()
+{
+    return this.content;
 });
