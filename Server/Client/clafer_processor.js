@@ -174,3 +174,22 @@ ClaferProcessor.method("recursiveEMcheck", function(root){
 	}
 	return list;
 });
+
+ClaferProcessor.method("getFeaturesWithChildren", function(tree){
+	var list = [];
+	for (var i = 0; i<tree.subclafers.length; i++){
+		list = list.concat(this.recursiveHasChildrenCheck(tree.subclafers[i]));
+	}
+	return list;
+});
+
+ClaferProcessor.method("recursiveHasChildrenCheck", function(root){
+	var list = []
+	if (root.subclafers.length > 0){
+		list.push(root.displayId);
+		for (var i = 0; i<root.subclafers.length; i++){
+			list = list.concat(this.recursiveEMcheck(root.subclafers[i]));
+		}
+	}
+	return list;
+});

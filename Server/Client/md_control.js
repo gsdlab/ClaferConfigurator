@@ -13,11 +13,11 @@ function Control(host)
 
 Control.method("getInitContent", function(){
 	var ret = '<form id="ControlForm" enctype="multipart/form-data" method="get" action="/Control" style="display: block">';
-	ret += '<input type="hidden" id="ControlOp" name="operation" value="next">';
-    ret += '<input type="hidden" id="windowKey" name="windowKey" value="' + this.host.key + '">';
+	ret += '<input type="hidden" id="ControlOp" name="operation" value="next" disabled="disabled">';
+    ret += '<input type="hidden" id="windowKey" name="windowKey" value="' + this.host.key + '" disabled="disabled">';
     ret += '<input type="number" class="inputText" id="NumOfNext" placeholder="# to get, default(10)">';
-	ret += '<input type="button" class="inputButton" id="next" value="Next Instance">';
-	ret += '<input type="button" class="inputButton" id="scope" value="Increase Scope"></form>';
+	ret += '<input type="button" class="inputButton" id="next" value="Next Instance" disabled="disabled">';
+	ret += '<input type="button" class="inputButton" id="scope" value="Increase Scope" disabled="disabled"></form>';
     ret += '<text> Current scope = </text><text id="curScope">1</text>';
     ret += '<div id="ContWaitingDiv" style="display:none"><Progress id="getProgress" style="width:100%"></Progress></div>'
 	return ret;
@@ -87,7 +87,7 @@ Control.method("showResponse", function(responseText, statusText, xhr, $form){
         $("#ControlForm").submit();
     } else {
         this.data = this.data.replaceAll("claferIG> ", "");  
-        this.host.updateInstanceData(this.data, this.overwrite);
+        this.host.updateInstanceData(this.data, this.overwrite, this.error);
         this.data = "";
         $("#NumOfNext").val('');
         this.overwrite = false

@@ -57,6 +57,7 @@ Input.method("showResponse", function(responseText, statusText, xhr, $form){
 
 	host.updateClaferData(data);
 
+    $("#ControlForm").find(':input:disabled').prop('disabled', false)
     $("#NumOfNext").val(9)
     $('#ControlForm #next').click();
 });

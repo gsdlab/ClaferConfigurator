@@ -181,23 +181,29 @@ ComparisonTable.method("onRendered", function(){
         row = $("#r" + i);
     }
 //  Add collapse buttons for features with children
+    var instanceSuperClafer = this.instanceProcessor.getInstanceSuperClafer();
+    var abstractClaferTree = this.processor.getAbstractClaferTree("/Module/Declaration/UniqueId", instanceSuperClafer);
+    var hasChild = this.processor.getFeaturesWithChildren(abstractClaferTree)
     i = 1;
     row = $("#r" + i);
     var that = this;
     while (row.length != 0){
         if (!row.find(".numeric").length){
-            $("#r" + i + " .td_abstract").prepend('<text id="r' + i + 'collapse" status="false">\u25BC<text>')
-            $("#r" + i + "collapse").click(function(){
-                if ($(this).attr("status") === "false"){
-                    that.filter.closeFeature($(this).parent().text().replaceAll(/[^A-z]/g, ''));
-                    $(this).attr("status", "true")
-                    $(this).text("\u25B6")
-                } else {
-                    that.filter.openFeature($(this).parent().text().replaceAll(/[^A-z]/g, ''));
-                    $(this).attr("status", "false")
-                    $(this).text("\u25BC")
-                }
-            }).css("cursor", "pointer");
+            var feature = $("#r" + i + " .td_abstract").text().replaceAll(/[\s?]{1,}/g, '');
+            if (hasChild.indexOf(feature) != -1){
+                $("#r" + i + " .td_abstract").append('<text id="r' + i + 'collapse" status="false">   \u25BC<text>')
+                $("#r" + i + "collapse").click(function(){
+                    if ($(this).attr("status") === "false"){
+                        that.filter.closeFeature($(this).parent().text().replaceAll(/[^A-z]/g, ''));
+                        $(this).attr("status", "true")
+                        $(this).text("   \u25B6")
+                    } else {
+                        that.filter.openFeature($(this).parent().text().replaceAll(/[^A-z]/g, ''));
+                        $(this).attr("status", "false")
+                        $(this).text("   \u25BC")
+                    }
+                }).css("cursor", "pointer");
+            }
         }
 //  Add Greyed out checkboxes to denote effectively mandatory features
         else if (!row.find(".numeric").length){
