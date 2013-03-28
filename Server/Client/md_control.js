@@ -48,7 +48,6 @@ Control.method("onInitRendered", function()
         $("#ControlOp").val("scope");
         that.increaseScopeBy = ($("#SetScope").val() - parseInt($("#curScope").text()) - 1);
         if (that.increaseScopeBy >= 0){ //zero indicates that the form must only be submitted once
-            $("#curScope").text(parseInt($("#curScope").text()) + 1);
             $("#ControlForm").submit();
             $("#getProgress").attr("max", that.increaseScopeBy);
             $("#getProgress").attr("value", 1);

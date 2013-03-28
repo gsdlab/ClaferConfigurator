@@ -34,8 +34,8 @@ Input.method("onInitRendered", function()
     options.error = this.handleError.bind(this);
     $('#InputForm').ajaxForm(options); 
     var unsatOpt = new Object();
-    unsatOpt.beforeSubmit = function(formData, jqForm, options){};
-    unsatOpt.error = function(ErrorObject, statusText, xhr, $form){};
+//    unsatOpt.beforeSubmit = function(formData, jqForm, options){};
+//    unsatOpt.error = function(ErrorObject, statusText, xhr, $form){};
     unsatOpt.success = this.unsatReturn.bind(this); //problem in ie
     $("#getUnsat").ajaxForm(unsatOpt);
 
