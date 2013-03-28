@@ -89,9 +89,10 @@ Control.method("showResponse", function(responseText, statusText, xhr, $form){
     $("#ControlForm").show();
     $("#ContWaitingDiv").hide();
 
-    if (responseText.indexOf("No more instances found.") != -1){
+    var error = this.checkForCommonErrors(responseText);
+    if (error != ""){
         this.instancesToGet = 0;
-        this.error += "No more instances found. Try increasing the scope.<br>";
+        this.error += error
     }
     else {
 //        console.log(responseText);
@@ -119,4 +120,21 @@ Control.method("showResponse", function(responseText, statusText, xhr, $form){
 Control.method("handleError", function(responseText, statusText, xhr, $form){
     $("#ControlForm").show();
     $("#ContWaitingDiv").hide()
+});
+
+Control.method("checkForCommonErrors", function(instanceOutput){
+    //Unsat
+    if (instanceOutput.indexOf("The following set of constraints cannot be satisfied in the current scope.") != -1){
+        var ret = instanceOutput.replaceAll("\n", "<br>").replaceAll(" ", "&nbsp")
+        return ret;
+    }
+    //No more instances
+    else if (instanceOutput.indexOf("No more instances found.") != -1){
+        var ret = instanceOutput.replaceAll("\n", "<br>").replaceAll(" ", "&nbsp")
+        return ret;
+    }
+    //No common errors
+    else {
+        return "";
+    }
 });

@@ -90,8 +90,10 @@ Input.method("checkForCommonErrors", function(instanceOutput){
         return ret;
     }
     //Unsat model
-    else if (instanceOutput.indexOf("The following set of constraints cannot be satisfied in the current scope.") != -1){
+    else if (instanceOutput.indexOf("No more instances found.") != -1){
         var ret = instanceOutput.replaceAll("\n", "<br>").replaceAll(" ", "&nbsp")
+        if (instanceOutput.indexOf("The following set of constraints cannot be satisfied in the current scope.") == -1) //sometimes the unsat counter example is returned on the next instance.
+            $('#ControlForm #next').click(); 
         return ret;
     }
     //No common errors
