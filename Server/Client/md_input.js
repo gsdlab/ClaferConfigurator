@@ -21,6 +21,8 @@ Input.method("getInitContent", function(){
 	ret += '<input type="hidden" id="windowKey" name="windowKey" value="' + this.host.key + '">';
 	ret += '<input type="submit" class="inputButton" id="Configure" value="Submit to IG" style="float: right"></form>';
     ret += '<text style="display: none" id="waitText">Processing...</text>'
+    ret += '<form id="getUnsat" enctype="multipart/form-data" method="get" action="/unsatisfiable" style="display: none">';
+    ret += '<input type="hidden" id="windowKey" name="windowKey" value="' + this.host.key + '"></form>';
 	return ret;
 });
 
@@ -31,13 +33,19 @@ Input.method("onInitRendered", function()
     options.success = this.showResponse.bind(this); //problem in ie
     options.error = this.handleError.bind(this);
     $('#InputForm').ajaxForm(options); 
+    var unsatOpt = new Object();
+    unsatOpt.beforeSubmit = function(formData, jqForm, options){};
+    unsatOpt.error = function(ErrorObject, statusText, xhr, $form){};
+    unsatOpt.success = this.unsatReturn.bind(this); //problem in ie
+    $("#getUnsat").ajaxForm(unsatOpt);
+
 });
 
 Input.method("beginQuery", function(formData, jqForm, options){
     $('#waitText').show();
     $('#InputForm').hide();
     $('#ControlForm').hide();
-    $('#ControlForm #cuScope').text(1);
+    $('#ControlForm #curScope').text(1);
     $("#output").text("");
 });
 
@@ -80,7 +88,7 @@ Input.method("handleError", function(ErrorObject, statusText, xhr, $form){
     $('#InputForm').show();
     $('#ControlForm').show();
     var data = (ErrorObject.status + " " + ErrorObject.statusText + "\n" + ErrorObject.responseText);
-    host.consoleUpdate(data);
+    this.host.consoleUpdate(data);
 });
 
 Input.method("checkForCommonErrors", function(instanceOutput){
@@ -91,13 +99,16 @@ Input.method("checkForCommonErrors", function(instanceOutput){
     }
     //Unsat model
     else if (instanceOutput.indexOf("No more instances found.") != -1){
-        var ret = instanceOutput.replaceAll("\n", "<br>").replaceAll(" ", "&nbsp")
-        if (instanceOutput.indexOf("The following set of constraints cannot be satisfied in the current scope.") == -1) //sometimes the unsat counter example is returned on the next instance.
-            $('#ControlForm #next').click(); 
-        return ret;
+        var ret = instanceOutput.replaceAll("\n", "<br>").replaceAll(" ", "&nbsp");
+        $("#getUnsat").submit();
+        return ret
     }
     //No common errors
     else {
         return "";
     }
+});
+
+Input.method("unsatReturn", function(responseText, statusText, xhr, $form){
+    this.host.consoleUpdate(responseText.replaceAll("\n", "<br>").replaceAll(" ", "&nbsp"))
 });

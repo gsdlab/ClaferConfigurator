@@ -90,7 +90,6 @@ server.post('/uploads', function(req, res){
 							} else{
 								processes[i].freshData += data;
 							}
-							processes[i].tool.stdout.removeAllListeners("data");
 						}
 					}
 				});
@@ -133,6 +132,7 @@ server.get('/Control', function(req, res){
 	var resEnd = false;
 	for (var y = 0; y<this.processes.length; y++){
 		if (processes[y].windowKey == req.query.windowKey){
+			processes[y].tool.stdout.removeAllListeners("data");
 			var d = new Date();
 			processes[y].lastUsed = d;
 			var CurProcess = processes[y];
@@ -166,10 +166,21 @@ server.get('/Control', function(req, res){
 	}
 });
 
-server.post('/constraint', function(req, res){
+server.post('/Constraint', function(req, res){
 	for (var i = 0; i<processes.length; i++){
 		if (processes[i].windowKey == req.body.windowKey){
 			fs.readFileSync(processes[i].file)
+		}
+	}
+});
+
+server.get("/unsatisfiable", function(req, res){
+	console.log("asked for unsat");
+	for (var i = 0; i<processes.length; i++){
+		if (processes[i].windowKey == req.query.windowKey){
+			console.log("sending unsat");
+			res.writeHead(200, { "Content-Type": "text/html"});
+			res.end(processes[i].freshData)
 		}
 	}
 });
@@ -239,6 +250,12 @@ function ProcessCleaner(){
 	}, 600000);
 }
 
+function ProcessLog(){
+	var log = setInterval(function(){
+		console.log(processes);
+	}, 10000);
+}
+
 /*
  * Catch all. error reporting for unknown routes
  */
@@ -249,6 +266,7 @@ server.use(function(req, res, next){
 server.listen(port);
 console.log('ClaferConfigurator listening on port ' + port);
 ProcessCleaner();
+//ProcessLog();
 
 var getkeys = function(obj){
 		var keys = [];
