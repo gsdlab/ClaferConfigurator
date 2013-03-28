@@ -87,7 +87,6 @@ Input.method("checkForCommonErrors", function(instanceOutput){
     //ClaferIG couldn't parse the file or the bitwidth was too low
     if (instanceOutput.indexOf('Exception in thread "main"') != -1){
         var ret = "An error occured in Processing. Make sure your .cfr does not contain goals and try increasing the bitwidth. <br>";
-        host.updateClaferData(data);
         return ret;
     }
     //Unsat model
