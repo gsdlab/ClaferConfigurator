@@ -64,7 +64,7 @@ server.post('/uploads', function(req, res){
 					res.end("Clafer failed to process the file")
 				}
 				var d = new Date();
-				var obj = { windowKey: req.body.windowKey, tool: null, freshData: "", folder: dlDir, lastUsed: d, error: ""};
+				var obj = { windowKey: req.body.windowKey, tool: null, freshData: "", folder: dlDir, file: upFilePath, lastUsed: d, error: ""};
 				if (req.body.bitwidth != ""){
 					var args = [upFilePath, "--bitwidth=" + req.body.bitwidth, "--adduidsandtypes"];
 				} else {
@@ -165,6 +165,15 @@ server.get('/Control', function(req, res){
 		}
 	}
 });
+
+server.post('/constraint', function(req, res){
+	for (var i = 0; i<processes.length; i++){
+		if (processes[i].windowKey == req.body.windowKey){
+			fs.readFileSync(processes[i].file)
+		}
+	}
+});
+
 
 function closeProcess(Key){
 	for (var y = 0; y<this.processes.length; y++){

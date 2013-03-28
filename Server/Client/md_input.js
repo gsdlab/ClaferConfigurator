@@ -4,7 +4,7 @@ function Input(host)
     this.title = "Input";
     
     this.width = 280;
-    this.height = 50;
+    this.height = 70;
     this.posx = 0;
     this.posy = 0;
     
@@ -37,22 +37,24 @@ Input.method("beginQuery", function(formData, jqForm, options){
     $('#waitText').show();
     $('#InputForm').hide();
     $('#ControlForm').hide();
+    $('#ControlForm #cuScope').text(1);
     $("#output").text("");
 });
 
 Input.method("showResponse", function(responseText, statusText, xhr, $form){
     var data = responseText;
     data = data.split("=====");
-    if (data[1].indexOf('Exception in thread "main"') != -1){
-        data[2] = "An error occured in Processing. Make sure your .cfr does not contain goals and try increasing the bitwidth. <br>";
-        data[1] = '';
-        data[0] = '';
-        host.updateClaferData(data);
+    var errorData = this.checkForCommonErrors(data[1])
+    if(errorData != ""){
         $('#waitText').hide();
         $('#InputForm').show();
         $('#ControlForm').show();
-        return
+        this.host.consoleUpdate(errorData)
+        return;
     }
+
+
+
     data[1] = data[1].replaceAll("claferIG> ", "");  
 
     data[0] = data[0].replaceAll('<?xml version="1.0"?>', '');
@@ -67,8 +69,9 @@ Input.method("showResponse", function(responseText, statusText, xhr, $form){
 
 	host.updateClaferData(data);
 
-    $("#ControlForm").find(':input:disabled').prop('disabled', false)
-    $("#NumOfNext").val(9)
+    $("#ControlForm").find(':input:disabled').prop('disabled', false);
+    $("#curScope").val(1);
+    $("#NumOfNext").val(9);
     $('#ControlForm #next').click();
 });
 
@@ -78,4 +81,22 @@ Input.method("handleError", function(ErrorObject, statusText, xhr, $form){
     $('#ControlForm').show();
     var data = (ErrorObject.status + " " + ErrorObject.statusText + "\n" + ErrorObject.responseText);
     host.consoleUpdate(data);
+});
+
+Input.method("checkForCommonErrors", function(instanceOutput){
+    //ClaferIG couldn't parse the file or the bitwidth was too low
+    if (instanceOutput.indexOf('Exception in thread "main"') != -1){
+        var ret = "An error occured in Processing. Make sure your .cfr does not contain goals and try increasing the bitwidth. <br>";
+        host.updateClaferData(data);
+        return ret;
+    }
+    //Unsat model
+    else if (instanceOutput.indexOf("The following set of constraints cannot be satisfied in the current scope.") != -1){
+        var ret = instanceOutput.replaceAll("\n", "<br>").replaceAll(" ", "&nbsp")
+        return ret;
+    }
+    //No common errors
+    else {
+        return "";
+    }
 });

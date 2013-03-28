@@ -4,7 +4,7 @@ function Control(host)
     this.title = "Control";
     
     this.width = 520;
-    this.height = 50;
+    this.height = 70;
     this.posx = 280;
     this.posy = 0;
     
@@ -16,7 +16,8 @@ Control.method("getInitContent", function(){
 	ret += '<input type="hidden" id="ControlOp" name="operation" value="next" disabled="disabled">';
     ret += '<input type="hidden" id="windowKey" name="windowKey" value="' + this.host.key + '" disabled="disabled">';
     ret += '<input type="number" class="inputText" id="NumOfNext" placeholder="# to get, default(10)">';
-	ret += '<input type="button" class="inputButton" id="next" value="Get Instances" disabled="disabled">';
+	ret += '<input type="button" class="inputButton" id="next" value="Get Instances" disabled="disabled"><br>';
+    ret += '<input type="number" class="inputText" id="SetScope" placeholder="Increase Scope To">';
 	ret += '<input type="button" class="inputButton" id="scope" value="Increase Scope" disabled="disabled"></form>';
     ret += '<text> Current scope = </text><text id="curScope">1</text>';
     ret += '<div id="ContWaitingDiv" style="display:none"><Progress id="getProgress" style="width:100%"></Progress></div>';
@@ -37,13 +38,23 @@ Control.method("onInitRendered", function()
         $("#ControlOp").val("next");
         if ($("#NumOfNext").val() == "")
             $("#NumOfNext").val(10);
-        that.instancesToGet = ($("#NumOfNext").val() - 1);
-        $("#ControlForm").submit();
+        if ($("#NumOfNext").val() > 0){
+            $("#getProgress").attr("max", $("#NumOfNext").val());
+            that.instancesToGet = ($("#NumOfNext").val() - 1);
+            $("#ControlForm").submit();
+        }
     });
     $("#scope").click(function(){
         $("#ControlOp").val("scope");
-        $("#curScope").text(parseInt($("#curScope").text()) + 1);
-        $("#ControlForm").submit();
+        that.increaseScopeBy = ($("#SetScope").val() - parseInt($("#curScope").text()) - 1);
+        if (that.increaseScopeBy >= 0){ //zero indicates that the form must only be submitted once
+            $("#curScope").text(parseInt($("#curScope").text()) + 1);
+            $("#ControlForm").submit();
+            $("#getProgress").attr("max", that.increaseScopeBy);
+            $("#getProgress").attr("value", 1);
+        } else {
+            that.host.consoleUpdate("Cannot reduce scope." + "<br>");
+        }
     });
 
     var options = new Object();
@@ -54,18 +65,24 @@ Control.method("onInitRendered", function()
 });
 
 Control.method("beginQuery", function(formData, jqForm, options){
-    $("#getProgress").attr("max", $("#NumOfNext").val());
+    
     $("#ContWaitingDiv").show();
     $("#ControlForm").hide();
 });
 
 Control.method("showResponse", function(responseText, statusText, xhr, $form){
     if ($("#ControlOp").val() == "scope"){
+        $("#curScope").text(parseInt($("#curScope").text()) + 1);
         $("#ControlForm").show();
         $("#ContWaitingDiv").hide();
         this.overwrite = true;
         this.host.consoleUpdate(responseText + "<br>");
         this.error = "";
+        if (this.increaseScopeBy){
+            $("#getProgress").attr("value", ($("#getProgress").attr("value") + 1));
+            this.increaseScopeBy--;
+            $("#ControlForm").submit();
+        }
         return;
     }
 

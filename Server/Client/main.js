@@ -101,16 +101,13 @@ Host.method("updateData", function(data){
 });
 
 Host.method("updateClaferData", function(data){
-    if (data[2] != null){
-        this.data.consoleOut = data[2];
-    } else{
-        this.data.consoleOut = "";
-        this.data.claferXML = data[0];
-        this.data.instancesData = data[1];
-        this.data.instancesXML = new InstanceConverter(this.data.instancesData).convertFromClaferIGOutputToClaferMoo(this.data.instancesData);
-        this.data.instancesXML = new InstanceConverter(this.data.instancesXML).convertFromClaferMooOutputToXML(); 
-        this.data.instancesXML = this.data.instancesXML.replaceAll('<?xml version="1.0"?>', '');
-    }
+    this.data.consoleOut = "";
+    this.data.claferXML = data[0];
+    this.data.instancesData = data[1];
+    this.data.instancesXML = new InstanceConverter(this.data.instancesData).convertFromClaferIGOutputToClaferMoo(this.data.instancesData);
+    this.data.instancesXML = new InstanceConverter(this.data.instancesXML).convertFromClaferMooOutputToXML(); 
+    this.data.instancesXML = this.data.instancesXML.replaceAll('<?xml version="1.0"?>', '');
+
     console.log(this.data)
     this.updateData(this.data);
 });

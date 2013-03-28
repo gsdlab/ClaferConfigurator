@@ -4,9 +4,9 @@ function ComparisonTable(host)
     this.title = "Feature and Quality Matrix";
 
     this.width = 800;
-    this.height = 510;
+    this.height = 492;
     this.posx = 0;
-    this.posy = 92;
+    this.posy = 110;
     
     this.host = host;
 
@@ -195,16 +195,16 @@ ComparisonTable.method("onRendered", function(){
         if (!row.find(".numeric").length){
             var feature = $("#r" + i + " .td_abstract").text().replaceAll(/[\s?]{1,}/g, '');
             if (hasChild.indexOf(feature) != -1){
-                $("#r" + i + " .td_abstract").append('<text id="r' + i + 'collapse" status="false">   \u25E2<text>')
+                $("#r" + i + " .td_abstract").append('<text id="r' + i + 'collapse" status="false">   \u21B4<text>')
                 $("#r" + i + "collapse").click(function(){
                     if ($(this).attr("status") === "false"){
                         that.filter.closeFeature($(this).parent().text().replaceAll(/[^A-z]/g, ''));
                         $(this).attr("status", "true")
-                        $(this).text("   \u25B7")
+                        $(this).text("   \u2192")
                     } else {
                         that.filter.openFeature($(this).parent().text().replaceAll(/[^A-z]/g, ''));
                         $(this).attr("status", "false")
-                        $(this).text("   \u25E2")
+                        $(this).text("   \u21B4")
                     }
                 }).css("cursor", "pointer");
             }
@@ -458,17 +458,6 @@ ComparisonTable.method("toggleDistinct", function()
 //  since the table height has potentially changed we call this to realign the headers. 
     this.scrollToSearch($("#search").val());
     return true;
-});
-
-
-//makes instance red on graph, for actual selection function see onSelected(pid) in selector.js
-ComparisonTable.method("makePointsSelected", function (pid){;
-    $("#mdComparisonTable #th0_" + pid.substring(1)).find("text").css("fill", "Red");
-});
-
-//makes instance red on graph, for actual deselection function see onDeselected(pid) in selector.js
-ComparisonTable.method("makePointsDeselected", function (pid){
-    $("#mdComparisonTable #th0_" + pid.substring(1)).find("text").css("fill", "Black");
 });
 
 ComparisonTable.method("scrollToSearch", function (input){
