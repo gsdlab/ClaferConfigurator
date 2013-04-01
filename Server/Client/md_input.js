@@ -19,7 +19,7 @@ Input.method("getInitContent", function(){
 	ret += '<input type="file" class="inputTextField" name="claferFile" size="15">';
 	ret += '<br>Bitwidth: <input type="text" class="inputTextField" name="bitwidth" size="3" placeholder="4">';
 	ret += '<input type="hidden" id="windowKey" name="windowKey" value="' + this.host.key + '">';
-	ret += '<input type="submit" class="inputButton" id="Configure" value="Submit to IG" style="float: right"></form>';
+	ret += '<input type="submit" class="inputButton" id="Configure" value="Configure" style="float: right"></form>';
     ret += '<text style="display: none" id="waitText">Processing...</text>'
     ret += '<form id="getUnsat" enctype="multipart/form-data" method="get" action="/unsatisfiable" style="display: none">';
     ret += '<input type="hidden" id="windowKey" name="windowKey" value="' + this.host.key + '"></form>';
@@ -86,6 +86,8 @@ Input.method("showResponse", function(responseText, statusText, xhr, $form){
     }
 
     $('#ControlForm #next').click();
+
+    $("#NumOfNext").val(parseInt($("#NumOfNext").val()) + 1);
 });
 
 Input.method("handleError", function(ErrorObject, statusText, xhr, $form){

@@ -15,7 +15,7 @@ Control.method("getInitContent", function(){
 	var ret = '<form id="ControlForm" enctype="multipart/form-data" method="get" action="/Control" style="display: block">';
 	ret += '<input type="hidden" id="ControlOp" name="operation" value="next" disabled="disabled">';
     ret += '<input type="hidden" id="windowKey" name="windowKey" value="' + this.host.key + '" disabled="disabled">';
-    ret += '<input type="number" class="inputText" id="NumOfNext" placeholder="# to get, default(10)">';
+    ret += '<input type="number" class="inputText" id="NumOfNext" placeholder="10">';
 	ret += '<input type="button" class="inputButton" id="next" value="Get Instances" disabled="disabled"><br>';
     ret += '<input type="number" class="inputText" id="SetScope" placeholder="Increase Scope To">';
 	ret += '<input type="button" class="inputButton" id="scope" value="Increase Scope" disabled="disabled"></form>';
@@ -110,7 +110,6 @@ Control.method("showResponse", function(responseText, statusText, xhr, $form){
         this.host.updateInstanceData(this.data, this.overwrite, this.error);
         this.error = "";
         this.data = "";
-        $("#NumOfNext").val('');
         this.overwrite = false
     }
 
