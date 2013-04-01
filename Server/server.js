@@ -49,7 +49,7 @@ server.post('/uploads', function(req, res){
 		console.log("moving file from" + oldPath + " to " + upFilePath);
 		fs.rename(oldPath, upFilePath, function (err){
 			if (err) throw err;
-			console.log("proceeding with " + upFilePath)
+			console.log("proceeding with " + upFilePath);
 			var util  = require('util');
 			spawn = require('child_process').spawn;
 			var claferXML = "";
@@ -61,7 +61,7 @@ server.post('/uploads', function(req, res){
 //				console.log("first call complete");
 				if (code != 0){
 					res.writeHead(400, { "Content-Type": "text/html"});
-					res.end("Clafer failed to process the file")
+					res.end("Clafer failed to process the file");
 				}
 				var d = new Date();
 				var obj = { windowKey: req.body.windowKey, tool: null, freshData: "", folder: dlDir, file: upFilePath, lastUsed: d, error: ""};
@@ -180,7 +180,8 @@ server.get("/unsatisfiable", function(req, res){
 		if (processes[i].windowKey == req.query.windowKey){
 			console.log("sending unsat");
 			res.writeHead(200, { "Content-Type": "text/html"});
-			res.end(processes[i].freshData)
+			console.log(processes[i].error + processes[i].freshData)
+			res.end(processes[i].error + "=====\n" + processes[i].freshData)
 		}
 	}
 });

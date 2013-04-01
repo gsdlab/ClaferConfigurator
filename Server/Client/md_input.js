@@ -47,29 +47,36 @@ Input.method("beginQuery", function(formData, jqForm, options){
     $('#ControlForm').hide();
     $('#ControlForm #curScope').text(1);
     $("#output").text("");
+    $("#mdOutput").content = '<text id="output"></text>';
+    this.unsatText = "";
 });
 
 Input.method("showResponse", function(responseText, statusText, xhr, $form){
     var data = responseText;
     data = data.split("=====");
-    var errorData = this.checkForCommonErrors(data[1])
-    if(errorData != ""){
-        $('#waitText').hide();
-        $('#InputForm').show();
-        $('#ControlForm').show();
-        this.host.consoleUpdate(errorData)
-        return;
-    }
-
-
-
-    data[1] = data[1].replaceAll("claferIG> ", "");  
 
     data[0] = data[0].replaceAll('<?xml version="1.0"?>', '');
     data[0] = data[0].replaceAll('cl:', '');
     data[0] = data[0].replaceAll('xsi:', '');
     data[0] = data[0].replaceAll(' xmlns="http://clafer.org/ir" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cl="http://clafer.org/ir" schemaLocation="http://clafer.org/ir https://github.com/gsdlab/clafer/blob/master/src/ClaferIR.xsd"', '');
 
+    var unsat = false;
+    var errorData = this.checkForCommonErrors(data[1]);
+    if(errorData.indexOf("No more instances found.") != -1){ //unsat must display near miss on table, requires slightly different handling
+        $('#waitText').hide();
+        $('#InputForm').show();
+        $('#ControlForm').show();
+        this.host.updateClaferOnly(data[0]);
+        return;
+    } else if(errorData != ""){
+        $('#waitText').hide();
+        $('#InputForm').show();
+        $('#ControlForm').show();
+        this.host.consoleUpdate(errorData);
+        return;
+    }
+
+    data[1] = data[1].replaceAll("claferIG> ", "");  
 
     $('#waitText').hide();
     $('#InputForm').show();
@@ -78,16 +85,16 @@ Input.method("showResponse", function(responseText, statusText, xhr, $form){
 	host.updateClaferData(data);
 
     $("#ControlForm").find(':input:disabled').prop('disabled', false);
-    $("#curScope").val(1);
-    if  ($("#NumOfNext").val() > 0){
-        $("#NumOfNext").val($("#NumOfNext").val() - 1);
-    } else {
-        $("#NumOfNext").val(9);  
-    }
-
+    if (!unsat){
+        $("#curScope").val(1);
+        if  ($("#NumOfNext").val() > 0){
+            $("#NumOfNext").val($("#NumOfNext").val() - 1);
+        } else {
+            $("#NumOfNext").val(9);  
+        }
     $('#ControlForm #next').click();
-
     $("#NumOfNext").val(parseInt($("#NumOfNext").val()) + 1);
+    }
 });
 
 Input.method("handleError", function(ErrorObject, statusText, xhr, $form){
@@ -106,9 +113,9 @@ Input.method("checkForCommonErrors", function(instanceOutput){
     }
     //Unsat model
     else if (instanceOutput.indexOf("No more instances found.") != -1){
-        var ret = instanceOutput.replaceAll("\n", "<br>").replaceAll(" ", "&nbsp");
         $("#getUnsat").submit();
-        return ret
+        ret = instanceOutput + this.unsatText;
+        return ret;
     }
     //No common errors
     else {
@@ -117,5 +124,7 @@ Input.method("checkForCommonErrors", function(instanceOutput){
 });
 
 Input.method("unsatReturn", function(responseText, statusText, xhr, $form){
-    this.host.consoleUpdate(responseText.replaceAll("\n", "<br>").replaceAll(" ", "&nbsp"))
+    var nearMiss = responseText.split("=====\n")[1];
+    nearMiss = nearMiss.replaceAll("claferIG> ", ""); 
+    this.host.updateInstanceData(nearMiss, true, responseText.replaceAll("\n", "<br>").replaceAll(" ", "&nbsp"));
 });
