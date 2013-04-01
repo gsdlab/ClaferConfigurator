@@ -79,7 +79,7 @@ Input.method("showResponse", function(responseText, statusText, xhr, $form){
 
     $("#ControlForm").find(':input:disabled').prop('disabled', false);
     $("#curScope").val(1);
-    if  ($("#NumOfNext").val() != null){
+    if  ($("#NumOfNext").val() > 0){
         $("#NumOfNext").val($("#NumOfNext").val() - 1);
     } else {
         $("#NumOfNext").val(9);  
