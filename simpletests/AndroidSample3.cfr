@@ -1,10 +1,8 @@
 abstract MobilePhone
-    xor Connectivity
-        Bluetooth     
-        USB      
-        Wifi    
+    or Connectivity
+        Bluetooth ? 
+        USB ?
+        Wifi ?   
     PasswordProtection ?
     FingerprintProtection ?
 MyPhone : MobilePhone
-[Bluetooth]
-[USB]

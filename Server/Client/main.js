@@ -96,7 +96,12 @@ Host.method("updateData", function(data){
                     
         }
     } else {
-        $.updateWindowContent("mdOutput", data.consoleOut);
+        for (var i = 0; i < this.modules.length; i++){
+            if (this.modules[i].id == "mdOutput"){
+                this.modules[i].onDataLoaded(data);
+                $.updateWindowContent(this.modules[i].id, this.modules[i].getContent());
+            }
+        }
     }
 });
 

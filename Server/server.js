@@ -109,7 +109,7 @@ server.post('/uploads', function(req, res){
 						}
 					}
 				});
-				tool.on("exit", function(){
+				tool.on("close", function(){
 					for (var i = 0; i<processes.length; i++){
 						if (processes[i].windowKey == req.body.windowKey){
 							console.log(processes[i].error)
@@ -191,7 +191,7 @@ function closeProcess(Key){
 		if (processes[y].windowKey == Key){
 			console.log("closing process");
 			var toDelete = processes[y];
-			toDelete.tool.removeAllListeners("exit");
+			toDelete.tool.removeAllListeners("close");
 			toDelete.tool.stdin.write("q\n");
 			cleanupOldFiles(toDelete.folder);
 			processes.splice(y, 1);
