@@ -110,7 +110,7 @@ ClaferProcessor.method("getAbstractClaferSubTree", function(root)
 			if (nextSubtree != null)
 				result.subclafers[subLength++] = nextSubtree; 
 		} else if (current.tagName == "Supers"){
-			var nextSubtree = this.getAbstractClaferTree(this.currentXpathToIdSiblings, current.lastElementChild.lastElementChild.children[1].firstChild.data);
+			var nextSubtree = this.getAbstractClaferTree(this.currentXpathToIdSiblings, current.lastElementChild.lastElementChild.childNodes[2].firstChild.data);
 			if (nextSubtree != null)
 				for (var i = 0; i<nextSubtree.subclafers.length; i++)
 					result.subclafers[subLength++] = nextSubtree.subclafers[i];		 
@@ -145,7 +145,7 @@ ClaferProcessor.method("getAbstractClaferTree", function(xpathToIdSiblings, id)
 	}
 	catch(e)
 	{
-		alert("Could not get a super clafer specified by the xpath: '" + xpathToIdSiblings + "' " + id);
+		console.log("Could not get a super clafer specified by the xpath: '" + xpathToIdSiblings + "' " + id);
 		return "";
 	}
 		
