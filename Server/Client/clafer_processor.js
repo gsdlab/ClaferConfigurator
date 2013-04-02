@@ -105,11 +105,15 @@ ClaferProcessor.method("getAbstractClaferSubTree", function(root)
 			result.claferId = current.firstChild.nodeValue;
 		else if (current.tagName == "Id")
 			result.displayId = current.firstChild.nodeValue;
-		else if (current.tagName == "Declaration")
-		{
+		else if (current.tagName == "Declaration"){
 			var nextSubtree = this.getAbstractClaferSubTree(current);
 			if (nextSubtree != null)
 				result.subclafers[subLength++] = nextSubtree; 
+		} else if (current.tagName == "Supers"){
+			var nextSubtree = this.getAbstractClaferTree(this.currentXpathToIdSiblings, current.lastElementChild.lastElementChild.children[1].firstChild.data);
+			if (nextSubtree != null)
+				for (var i = 0; i<nextSubtree.subclafers.length; i++)
+					result.subclafers[subLength++] = nextSubtree.subclafers[i];		 
 		}
 	}
 	
@@ -123,6 +127,7 @@ ClaferProcessor.method("getAbstractClaferTree", function(xpathToIdSiblings, id)
 {
 	try
 	{
+		this.currentXpathToIdSiblings = xpathToIdSiblings;
 		var clafers = this.xmlHelper.queryXML(this.source, xpathToIdSiblings); // IE8 cannot handle the entire path (with checking text value)
 		
 		for (var i = 0; i < clafers.length; i++)
@@ -135,7 +140,8 @@ ClaferProcessor.method("getAbstractClaferTree", function(xpathToIdSiblings, id)
 			}
 		}
 		
-		alert("Not found a super clafer specified by the xpath: '" + xpathToIdSiblings + "' " + id);
+		console.log("Not found a super clafer specified by the xpath: '" + xpathToIdSiblings + "' " + id);
+		return null;
 	}
 	catch(e)
 	{

@@ -124,7 +124,8 @@ Input.method("checkForCommonErrors", function(instanceOutput){
 });
 
 Input.method("unsatReturn", function(responseText, statusText, xhr, $form){
+    var error = responseText.split("=====\n")[0];
     var nearMiss = responseText.split("=====\n")[1];
     nearMiss = nearMiss.replaceAll("claferIG> ", ""); 
-    this.host.updateInstanceData(nearMiss, true, responseText.replaceAll("\n", "<br>").replaceAll(" ", "&nbsp"));
+    this.host.updateInstanceData(nearMiss, true, error);
 });
