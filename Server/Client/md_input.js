@@ -47,7 +47,7 @@ Input.method("beginQuery", function(formData, jqForm, options){
     $('#ControlForm').hide();
     $('#ControlForm #curScope').text(1);
     $("#output").text("");
-    $("#mdOutput").content = '<text id="output"></text>';
+    host.ClearOutput();
     this.unsatText = "";
 });
 

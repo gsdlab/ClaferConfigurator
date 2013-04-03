@@ -124,7 +124,7 @@ Host.method("updateInstanceData", function(data, overwrite, consoleOut){
     this.data.instancesData += data;
     this.data.instancesXML = new InstanceConverter(this.data.instancesData).convertFromClaferIGOutputToClaferMoo(this.data.instancesData);
     this.data.instancesXML = new InstanceConverter(this.data.instancesXML).convertFromClaferMooOutputToXML(); 
-    this.data.consoleOut += consoleOut;
+    this.data.consoleOut = consoleOut;
 
     console.log(this.data)
     this.updateData(this.data);
@@ -140,4 +140,13 @@ Host.method("consoleUpdate", function(data){
     console.log(data);
     this.data.consoleOut = data;
     this.updateData(this.data);
+});
+
+Host.method("ClearOutput", function(data){
+    for (var i = 0; i < this.modules.length; i++){
+        if (this.modules[i].id == "mdOutput"){
+            this.modules[i].ClearContent();
+            $.updateWindowContent(this.modules[i].id, this.modules[i].getContent());
+        }
+    } 
 });

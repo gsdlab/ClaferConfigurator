@@ -141,8 +141,9 @@ server.get('/Control', function(req, res){
 					CurProcess.tool.stdout.on("data", function (data){
 						if (!resEnd){	
 							res.writeHead(200, { "Content-Type": "text/html"});
-							res.end(data);
-							resEnded = true;
+							res.end(data + "\n=====\n" + processes[y].error);
+							processes[y].error = "";
+							resEnd = true;
 						}
 						CurProcess.tool.stdout.removeAllListeners("data");
 					});	

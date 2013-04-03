@@ -77,6 +77,7 @@ Control.method("beginQuery", function(formData, jqForm, options){
 });
 
 Control.method("showResponse", function(responseText, statusText, xhr, $form){
+    var data = responseText.split("\n=====\n");
     if ($("#ControlOp").val() == "scope"){
         $("#curScope").text(parseInt($("#curScope").text()) + this.increaseScopeBy);
         $("#ControlForm").show();
@@ -90,14 +91,14 @@ Control.method("showResponse", function(responseText, statusText, xhr, $form){
     $("#ControlForm").show();
     $("#ContWaitingDiv").hide();
 
-    var error = this.checkForCommonErrors(responseText);
+    var error = this.checkForCommonErrors(data[1]);
     if (error != ""){
         this.instancesToGet = 0;
         this.error += error
     }
     else {
 //        console.log(responseText);
-        this.data += responseText;
+        this.data += data[0];
     }
 
 

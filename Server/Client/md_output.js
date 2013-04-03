@@ -29,3 +29,7 @@ Output.method("getContent", function()
 {
     return '<text id="output">' + this.content + '</text>';
 });
+
+Output.method("ClearContent", function(){
+    this.content = "";
+});

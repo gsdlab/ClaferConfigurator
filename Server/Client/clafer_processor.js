@@ -140,7 +140,7 @@ ClaferProcessor.method("getAbstractClaferTree", function(xpathToIdSiblings, id)
 			}
 		}
 		
-		if (id != "clafer")
+		if (id != "clafer") //overflows the console without this
 			console.log("Not found a super clafer specified by the xpath: '" + xpathToIdSiblings + "' " + id);
 		return null;
 	}
