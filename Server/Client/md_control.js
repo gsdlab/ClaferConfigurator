@@ -15,6 +15,8 @@ Control.method("getInitContent", function(){
 	var ret = '<form id="ControlForm" enctype="multipart/form-data" method="get" action="/Control" style="display: block">';
 	ret += '<input type="hidden" id="ControlOp" name="operation" value="next" disabled="disabled">';
     ret += '<input type="hidden" id="windowKey" name="windowKey" value="' + this.host.key + '" disabled="disabled">';
+    ret += '<input type="hidden" id="iScopeBy" name="increaseScopeBy" value="1" disabled="disabled">';
+    ret += '<input type="hidden" id="superClafer" name="superClafer" value="" disabled="disabled">';
     ret += '<input type="number" class="inputText" id="NumOfNext" placeholder="10">';
 	ret += '<input type="button" class="inputButton" id="next" value="Get Instances" disabled="disabled"><br>';
     ret += '<input type="number" class="inputText" id="SetScope" placeholder="Increase Scope To">';
@@ -46,7 +48,8 @@ Control.method("onInitRendered", function()
     });
     $("#scope").click(function(){
         $("#ControlOp").val("scope");
-        that.increaseScopeBy = ($("#SetScope").val() - parseInt($("#curScope").text()) - 1);
+        that.increaseScopeBy = ($("#SetScope").val() - parseInt($("#curScope").text()));
+        $("#iScopeBy").val(that.increaseScopeBy)
         if (that.increaseScopeBy >= 0){ //zero indicates that the form must only be submitted once
             $("#ControlForm").submit();
             $("#getProgress").attr("max", that.increaseScopeBy);
@@ -63,6 +66,10 @@ Control.method("onInitRendered", function()
     $('#ControlForm').ajaxForm(options); 
 });
 
+Control.method("onDataLoaded", function(data){
+    $("#superClafer").val((new InstanceProcessor(data.instancesXML)).getInstanceName().replace(/c[1-9]{1,}_/g, ""));
+});
+
 Control.method("beginQuery", function(formData, jqForm, options){
     
     $("#ContWaitingDiv").show();
@@ -71,17 +78,12 @@ Control.method("beginQuery", function(formData, jqForm, options){
 
 Control.method("showResponse", function(responseText, statusText, xhr, $form){
     if ($("#ControlOp").val() == "scope"){
-        $("#curScope").text(parseInt($("#curScope").text()) + 1);
+        $("#curScope").text(parseInt($("#curScope").text()) + this.increaseScopeBy);
         $("#ControlForm").show();
         $("#ContWaitingDiv").hide();
         this.overwrite = true;
         this.host.consoleUpdate(responseText + "<br>");
         this.error = "";
-        if (this.increaseScopeBy){
-            $("#getProgress").attr("value", ($("#getProgress").attr("value") + 1));
-            this.increaseScopeBy--;
-            $("#ControlForm").submit();
-        }
         return;
     }
 

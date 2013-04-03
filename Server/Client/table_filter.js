@@ -102,3 +102,13 @@ tableFilter.method("openFeature", function (feature){
 	this.closedFeatures.splice(index, 1);
 	this.filterContent();
 });
+
+tableFilter.method("resetFilters", function (){
+	this.showAll();
+ 	for (var i=1;i<this.rows.length;i++){
+ 		var curRow = this.rows[i];
+ 		$(curRow).attr("FilterStatus", "none");
+ 		if ($("#r" + i + "box").attr("src").indexOf("images/checkbox_ticked_greyed.png") == -1)
+ 			$("#r" + i + "box").attr("src", "images/checkbox_empty.bmp");
+ 	}
+});

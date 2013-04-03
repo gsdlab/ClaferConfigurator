@@ -140,12 +140,14 @@ ClaferProcessor.method("getAbstractClaferTree", function(xpathToIdSiblings, id)
 			}
 		}
 		
-		console.log("Not found a super clafer specified by the xpath: '" + xpathToIdSiblings + "' " + id);
+		if (id != "clafer")
+			console.log("Not found a super clafer specified by the xpath: '" + xpathToIdSiblings + "' " + id);
 		return null;
 	}
 	catch(e)
 	{
-		console.log("Could not get a super clafer specified by the xpath: '" + xpathToIdSiblings + "' " + id);
+		if (id != "clafer")
+			console.log("Could not get a super clafer specified by the xpath: '" + xpathToIdSiblings + "' " + id);
 		return "";
 	}
 		

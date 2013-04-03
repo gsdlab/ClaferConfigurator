@@ -159,19 +159,16 @@ ComparisonTable.method("onRendered", function(){
             $("#r" + i).attr("FilterStatus", "none");
             $("#r" + i + " .td_abstract").prepend('<image id="r' + i + 'box" src="images/checkbox_empty.bmp" class="maybe">');
             $("#r" + i + "box").click(function(){
-                if (this.className == "maybe"){
+                if (this.src.indexOf("images/checkbox_empty.bmp") != -1){
                     this.src = "images/checkbox_ticked.bmp";
-                    this.className = "wanted";
                     $(this).parent().parent().attr("FilterStatus", "require");
                     that.filter.filterContent();
-                } else if (this.className == "wanted"){
+                } else if (this.src.indexOf("images/checkbox_ticked.bmp") != -1){
                     this.src = "images/checkbox_x.bmp";
-                    this.className = "unwanted";
                     $(this).parent().parent().attr("FilterStatus", "exclude");
                     that.filter.filterContent();
                 } else {
                     this.src = "images/checkbox_empty.bmp";
-                    this.className = "maybe";
                     $(this).parent().parent().attr("FilterStatus", "none");
                     that.filter.filterContent();
                 }

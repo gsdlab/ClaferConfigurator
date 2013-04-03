@@ -149,12 +149,13 @@ server.get('/Control', function(req, res){
 				});
 				break;
 			} else if (req.query.operation == "scope"){
-				CurProcess.tool.stdin.write("i\n", function(){
+				console.log("i " + req.query.superClafer + " " + req.query.increaseScopeBy + "\n");
+				CurProcess.tool.stdin.write("i " + req.query.superClafer + " " + req.query.increaseScopeBy + "\n", function(){
 					CurProcess.tool.stdout.on("data", function (data){
 						if (!resEnd){	
 							res.writeHead(200, { "Content-Type": "text/html"});
 							res.end(data);
-							resEnded = true;
+							resEnd = true;
 						}
 						CurProcess.tool.stdout.removeAllListeners("data");
 					});	
