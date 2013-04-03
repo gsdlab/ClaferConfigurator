@@ -9,6 +9,7 @@ $(document).ready(function()
     modules.push("Control");
     modules.push("Output");
     modules.push("ComparisonTable");
+    modules.push("ConstraintManipulator");
     
     host = new Host(modules);
 });

@@ -1,15 +1,23 @@
 function ConstraintManipulator(){
+    this.id = "mdConstraints";
+    this.title = "ConstraintManipulator";
+    
+    this.width = 224;
+    this.height = 290;
+    this.posx = 800;
+    this.posy = 312;
+    
+    this.host = host;
+
 	this.constraints = {};
 }
 
 ConstraintManipulator.method("addConstraint", function(feature, require){
 	this.constraints[feature] = require;
-	return this.constraints;
 });
 
 ConstraintManipulator.method("removeConstraint", function(feature){
 	delete this.constraints[feature];
-	return this.constraints;
 });
 
 ConstraintManipulator.method("getConstraints", function(){

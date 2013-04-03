@@ -62,7 +62,7 @@ Input.method("showResponse", function(responseText, statusText, xhr, $form){
 
     var unsat = false;
     var errorData = this.checkForCommonErrors(data[1]);
-    if(errorData.indexOf("No more instances found.") != -1){ //unsat must display near miss on table, requires slightly different handling
+    if(errorData.indexOf("No more instances found.") != -1 || errorData == "N"){ //unsat must display near miss on table, requires slightly different handling
         $('#waitText').hide();
         $('#InputForm').show();
         $('#ControlForm').show();
@@ -112,10 +112,9 @@ Input.method("checkForCommonErrors", function(instanceOutput){
         return ret;
     }
     //Unsat model
-    else if (instanceOutput.indexOf("No more instances found.") != -1){
+    else if (instanceOutput.indexOf("No more instances found.") != -1 || instanceOutput == "N"){
         $("#getUnsat").submit();
-        ret = instanceOutput + this.unsatText;
-        return ret;
+        return instanceOutput;
     }
     //No common errors
     else {

@@ -201,3 +201,18 @@ ClaferProcessor.method("recursiveHasChildrenCheck", function(root){
 	}
 	return list;
 });
+
+ClaferProcessor.method("getConstraints", function(){
+	var list = []
+	var Bools = this.xmlHelper.queryXML(this.source, "/Module/Declaration[@type='IConstraint']//Exp[@type='IDeclarationParentExp']/Quantifier/@type");
+	var Features = this.xmlHelper.queryXML(this.source, "/Module/Declaration[@type='IConstraint']//BodyParentExp/Exp/Argument/Exp/Id");
+	for (var i = 0; i<Bools.length; i++){
+		var constraint = "[";
+		if (Bools[i].nodeValue == "INo"){
+			constraint += "!";
+		}
+		constraint += Features[i].firstChild.nodeValue.replace(/c[0-9]{1,}_/g, "") + "]";
+		list.push(constraint);
+	}
+	return list;
+});
