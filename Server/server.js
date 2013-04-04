@@ -171,7 +171,22 @@ server.get('/Control', function(req, res){
 server.post('/Constraint', function(req, res){
 	for (var i = 0; i<processes.length; i++){
 		if (processes[i].windowKey == req.body.windowKey){
-			fs.readFileSync(processes[i].file)
+			var file = (fs.readFileSync(processes[i].file)).toString();
+			console.log(file);
+			file = file.split(req.body.instName);
+
+			var newConstraints = req.body.constraints;
+
+			var newFile = "";
+			if(file[0]!=null)
+				newFile += file[0];
+			newFile += req.body.instName;
+			newFile += newConstraints;
+			if(file[1]!=null)
+				newFile += file[1];
+
+			res.writeHead(200, { "Content-Type": "text/html", "Content-Disposition": "attachment; filename=NewClaferModel.cfr"});
+			res.end(newFile);
 		}
 	}
 });

@@ -160,14 +160,17 @@ ComparisonTable.method("onRendered", function(){
             $("#r" + i + " .td_abstract").prepend('<image id="r' + i + 'box" src="images/checkbox_empty.bmp" class="maybe">');
             $("#r" + i + "box").click(function(){
                 if (this.src.indexOf("images/checkbox_empty.bmp") != -1){
+                    that.changeConstraint($(this).parent().text().replaceAll(/[^A-z]/g, ''), 1)
                     this.src = "images/checkbox_ticked.bmp";
                     $(this).parent().parent().attr("FilterStatus", "require");
                     that.filter.filterContent();
                 } else if (this.src.indexOf("images/checkbox_ticked.bmp") != -1){
+                    that.changeConstraint($(this).parent().text().replaceAll(/[^A-z]/g, ''), -1)
                     this.src = "images/checkbox_x.bmp";
                     $(this).parent().parent().attr("FilterStatus", "exclude");
                     that.filter.filterContent();
                 } else {
+                    that.changeConstraint($(this).parent().text().replaceAll(/[^A-z]/g, ''), 0)
                     this.src = "images/checkbox_empty.bmp";
                     $(this).parent().parent().attr("FilterStatus", "none");
                     that.filter.filterContent();
@@ -535,4 +538,8 @@ ComparisonTable.method("rowSort", function(rowText){
 ComparisonTable.method("getInitContent", function()
 {
 	return '';	   
+});
+
+ComparisonTable.method("changeConstraint", function (feature, require){
+    this.host.changeConstraint(feature, require);
 });

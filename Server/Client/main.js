@@ -12,15 +12,17 @@ $(document).ready(function()
     modules.push("ConstraintManipulator");
     
     host = new Host(modules);
-});
 
-$(window).unload( function(){
-    $.ajax({
-        type: "POST",
-        url: "/close",
-        data: { windowKey: host.key }
+    $(window).unload( function(){
+        $.ajax({
+            type: "POST",
+            url: "/close",
+            data: { windowKey: host.key }
+        });
     });
 });
+
+
 
 function Host(modules)
 {
@@ -150,4 +152,29 @@ Host.method("ClearOutput", function(data){
             $.updateWindowContent(this.modules[i].id, this.modules[i].getContent());
         }
     } 
+});
+
+Host.method("ClearOutput", function(data){
+    for (var i = 0; i < this.modules.length; i++){
+        if (this.modules[i].id == "mdOutput"){
+            this.modules[i].ClearContent();
+            $.updateWindowContent(this.modules[i].id, this.modules[i].getContent());
+        }
+    } 
+});
+
+Host.method("changeConstraint", function(feature, require){
+    for (var i = 0; i < this.modules.length; i++){
+        if (this.modules[i].id == "mdConstraints"){
+            if (require == 1){
+                this.modules[i].addConstraint(feature, true);
+            } else if (require == 0){
+                this.modules[i].removeConstraint(feature);
+            } else if (require == -1){
+                this.modules[i].addConstraint(feature, false);
+            } else {
+                console.log("an error occured while adding a constraint")
+            }
+        }
+    }
 });

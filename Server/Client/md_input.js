@@ -47,7 +47,7 @@ Input.method("beginQuery", function(formData, jqForm, options){
     $('#ControlForm').hide();
     $('#ControlForm #curScope').text(1);
     $("#output").text("");
-    host.ClearOutput();
+    this.host.ClearOutput();
     this.unsatText = "";
 });
 
@@ -82,7 +82,7 @@ Input.method("showResponse", function(responseText, statusText, xhr, $form){
     $('#InputForm').show();
     $('#ControlForm').show();
 
-	host.updateClaferData(data);
+	this.host.updateClaferData(data);
 
     $("#ControlForm").find(':input:disabled').prop('disabled', false);
     if (!unsat){
