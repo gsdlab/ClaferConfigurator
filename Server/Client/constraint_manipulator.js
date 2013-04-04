@@ -28,7 +28,7 @@ ConstraintManipulator.method("onInitRendered", function(){
     var that = this;
     $("#Save").click(function(){
     	$("#constraintCont").val(that.getClaferConstraints(false));
-    	$("#instanceName").val(that.instanceProcessor.getInstanceName().replace(/c[0-9]_/, "") + " : " + that.instanceProcessor.getInstanceSuperClafer().replace(/c[0-9]_/, ""));
+    	$("#instanceName").val(that.instanceProcessor.getInstanceName().replace(/c[0-9]_/g, "") + " : " + that.instanceProcessor.getInstanceSuperClafer().replace(/c[0-9]_/g ""));
     });
 });
 
