@@ -79,6 +79,8 @@ Input.method("showResponse", function(responseText, statusText, xhr, $form){
     }
 
     data[1] = data[1].replaceAll("claferIG> ", "");  
+    data[2] = data[2].replace(/[ \r]/g, "").replace(/:[A-z0-9]{1,}/g, "");
+    data[2] = data[2].split("\n");
 
     $('#waitText').hide();
     $('#InputForm').show();

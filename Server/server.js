@@ -25,8 +25,11 @@ server.post('/close', function(req, res){
 });
 
 server.post('/uploads', function(req, res){
+	//close any pervious processes
 	closeProcess(req.body.windowKey)
+
 	var resEnded = false;
+	//check to see if clafer file was subbmited
 	if (req.files.claferFile === undefined){
 		res.send("no clafer file submitted");
 	} else {
@@ -49,6 +52,16 @@ server.post('/uploads', function(req, res){
 		console.log("moving file from" + oldPath + " to " + upFilePath);
 		fs.rename(oldPath, upFilePath, function (err){
 			if (err) throw err;
+			//extract quality attributes
+			var content = fs.readFileSync(upFilePath, { encoding: "utf8" });
+			content = content.split("\n");
+			var qualities = "";
+			for (i=0; i<content.length; i++){
+				if (content[i].indexOf("//# QUALITY_ATTRIBUTE") != -1)
+					qualities += content[i].replace(/[ ]{1,}/, "").replace("//# QUALITY_ATTRIBUTE", "") + "\n";
+			}
+
+			//proccess file
 			console.log("proceeding with " + upFilePath);
 			var util  = require('util');
 			spawn = require('child_process').spawn;
@@ -85,7 +98,7 @@ server.post('/uploads', function(req, res){
 								claferXML = claferXML.replace(/[^<]{1,}/m, '');
 //									console.log(claferXML)
 								res.writeHead(200, { "Content-Type": "text/html"});
-								res.end(claferXML + "=====" + data);
+								res.end(claferXML + "=====" + data + "=====" + qualities);
 								resEnded = true;
 							} else{
 								processes[i].freshData += data;

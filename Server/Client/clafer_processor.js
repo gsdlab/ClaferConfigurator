@@ -1,6 +1,7 @@
-function ClaferProcessor (sourceXML) {
+function ClaferProcessor (sourceXML, qualities) {
     this.source = (new XMLHelper()).stringToXML(sourceXML);
     this.xmlHelper = new XMLHelper();
+    this.qualities = qualities
 }
 
 //returns claferid without the cXX_ extension
@@ -116,8 +117,15 @@ ClaferProcessor.method("getAbstractClaferSubTree", function(root)
 					result.subclafers[subLength++] = nextSubtree.subclafers[i];		 
 		}
 	}
+
+	var notQuality = true;
+	for (j=0; j<this.qualities.length; j++){
+		if (result.claferId != null)
+			if (result.claferId.replace(/c[0-9]{1,}_/, "") == this.qualities[j])
+				notQuality = false;
+	}
 	
-	if (result.claferId != null)
+	if (result.claferId != null && notQuality)
 		return result;
 	
 	return null;
@@ -207,11 +215,11 @@ ClaferProcessor.method("getConstraints", function(){
 	var Bools = this.xmlHelper.queryXML(this.source, "/Module/Declaration[@type='IConstraint']//Exp[@type='IDeclarationParentExp']/Quantifier/@type");
 	var Features = this.xmlHelper.queryXML(this.source, "/Module/Declaration[@type='IConstraint']//BodyParentExp/Exp/Argument/Exp/Id");
 	for (var i = 0; i<Bools.length; i++){
-		var constraint = "[";
+		var constraint = "[ ";
 		if (Bools[i].nodeValue == "INo"){
 			constraint += "no ";
 		}
-		constraint += Features[i].firstChild.nodeValue.replace(/c[0-9]{1,}_/g, "") + "]";
+		constraint += Features[i].firstChild.nodeValue.replace(/c[0-9]{1,}_/g, "") + " ]";
 		list.push(constraint);
 	}
 	return list;
