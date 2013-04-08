@@ -25,6 +25,7 @@ ConstraintManipulator.method("getInitContent", function(){
 });
 
 ConstraintManipulator.method("onInitRendered", function(){ 
+	$("#SaveConstraints").hide(); // save constraints form removed until further notice
     var that = this;
     $("#Save").click(function(){
     	$("#constraintCont").val(that.getClaferConstraints(false));
@@ -73,7 +74,7 @@ ConstraintManipulator.method("getClaferConstraints", function(includeOriginalCon
 	for (i=0; i<constraints.length; i++){
 		ret += "\n[";
 		if (!this.constraints[constraints[i]]){
-			ret += "!";
+			ret += "no ";
 		}
 		ret += constraints[i];
 		ret += "]";

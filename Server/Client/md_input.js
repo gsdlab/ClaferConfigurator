@@ -38,7 +38,9 @@ Input.method("onInitRendered", function()
 //    unsatOpt.error = function(ErrorObject, statusText, xhr, $form){};
     unsatOpt.success = this.unsatReturn.bind(this); //problem in ie
     $("#getUnsat").ajaxForm(unsatOpt);
-
+//    $("#InputForm").submit(function(){ //Need to pull quality attributes out of file before submitting
+//        var input = getElementById()
+//    })
 });
 
 Input.method("beginQuery", function(formData, jqForm, options){

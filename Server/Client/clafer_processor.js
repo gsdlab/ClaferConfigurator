@@ -209,7 +209,7 @@ ClaferProcessor.method("getConstraints", function(){
 	for (var i = 0; i<Bools.length; i++){
 		var constraint = "[";
 		if (Bools[i].nodeValue == "INo"){
-			constraint += "!";
+			constraint += "no ";
 		}
 		constraint += Features[i].firstChild.nodeValue.replace(/c[0-9]{1,}_/g, "") + "]";
 		list.push(constraint);
