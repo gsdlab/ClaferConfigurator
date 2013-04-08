@@ -53,7 +53,7 @@ server.post('/uploads', function(req, res){
 		fs.rename(oldPath, upFilePath, function (err){
 			if (err) throw err;
 			//extract quality attributes
-			var content = fs.readFileSync(upFilePath, { encoding: "utf8" });
+			var content = (fs.readFileSync(upFilePath)).toString();
 			content = content.split("\n");
 			var qualities = "";
 			for (i=0; i<content.length; i++){
