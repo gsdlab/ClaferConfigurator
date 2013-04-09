@@ -185,8 +185,8 @@ ComparisonTable.method("onRendered", function(){
         row = $("#r" + i);
     }
 //  Add collapse buttons for features with children
-    var instanceSuperClafer = this.instanceProcessor.getInstanceSuperClafer();
-    var abstractClaferTree = this.processor.getAbstractClaferTree("/Module/Declaration/UniqueId", instanceSuperClafer);
+    var instanceClaferName = this.instanceProcessor.getInstanceName();
+    var abstractClaferTree = this.processor.getAbstractClaferTree("/Module/Declaration/UniqueId", instanceClaferName);
     var hasChild = this.processor.getFeaturesWithChildren(abstractClaferTree)
     i = 1;
     row = $("#r" + i);
@@ -299,9 +299,9 @@ ComparisonTable.method("traverse", function(clafer, level)
 ComparisonTable.method("getDataTable", function()
 {
 	var instanceCount = this.instanceProcessor.getInstanceCount();
-	var instanceSuperClafer = this.instanceProcessor.getInstanceSuperClafer();
+	var instanceClaferName = this.instanceProcessor.getInstanceName();
 //	alert(instanceSuperClafer);
-	var abstractClaferTree = this.processor.getAbstractClaferTree("/Module/Declaration/UniqueId", instanceSuperClafer);
+	var abstractClaferTree = this.processor.getAbstractClaferTree("/Module/Declaration/UniqueId", instanceClaferName);
     var EMfeatures = this.processor.getEffectivelyMandatoryFeatures(abstractClaferTree)
 //    console.log(abstractClaferTree)	;
 //	alert(abstractClaferTree.subclafers[0].subclafers.length);

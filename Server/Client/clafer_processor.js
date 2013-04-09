@@ -212,7 +212,7 @@ ClaferProcessor.method("recursiveHasChildrenCheck", function(root){
 
 ClaferProcessor.method("getConstraints", function(){
 	var list = []
-	var Bools = this.xmlHelper.queryXML(this.source, "/Module/Declaration[@type='IConstraint']//Exp[@type='IDeclarationParentExp']/Quantifier/@type");
+	var Bools = this.xmlHelper.queryXML(this.source, "//Declaration[@type='IConstraint']//Exp[@type='IDeclarationParentExp']/Quantifier/@type");
 	var Features = this.xmlHelper.queryXML(this.source, "/Module/Declaration[@type='IConstraint']//BodyParentExp/Exp/Argument/Exp/Id");
 	for (var i = 0; i<Bools.length; i++){
 		var constraint = "[ ";

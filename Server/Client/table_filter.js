@@ -65,8 +65,8 @@ tableFilter.method("hideRowByName", function (name){
 });
 
 tableFilter.method("closeFeature", function (feature){
-	var instanceSuperClafer = this.instanceProcessor.getInstanceSuperClafer();
-	var root = this.processor.getAbstractClaferTree("/Module/Declaration/UniqueId", instanceSuperClafer);
+	var instanceClaferName = this.instanceProcessor.getInstanceName();
+	var root = this.processor.getAbstractClaferTree("/Module/Declaration/UniqueId", instanceClaferName);
 	
 	root = this.findNodeInTree(root, feature)
 
