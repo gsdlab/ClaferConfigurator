@@ -133,7 +133,7 @@ Host.method("updateInstanceData", function(data, overwrite, consoleOut){
 
         console.log(this.data)
         this.updateData(this.data);
-    } else {
+    } else if (overwrite){
         alert("Table requires at least one instance.");
     }
 
