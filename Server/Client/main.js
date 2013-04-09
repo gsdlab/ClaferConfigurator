@@ -122,16 +122,20 @@ Host.method("updateClaferData", function(data){
 });
 
 Host.method("updateInstanceData", function(data, overwrite, consoleOut){
-    if (overwrite){
-        this.data.instancesData = "";
-    }
-    this.data.instancesData += data;
-    this.data.instancesXML = new InstanceConverter(this.data.instancesData).convertFromClaferIGOutputToClaferMoo(this.data.instancesData);
-    this.data.instancesXML = new InstanceConverter(this.data.instancesXML).convertFromClaferMooOutputToXML(); 
-    this.data.consoleOut = consoleOut;
+    if (data != "" && data != null){
+        if (overwrite){
+            this.data.instancesData = "";
+        }
+        this.data.instancesData += data;
+        this.data.instancesXML = new InstanceConverter(this.data.instancesData).convertFromClaferIGOutputToClaferMoo(this.data.instancesData);
+        this.data.instancesXML = new InstanceConverter(this.data.instancesXML).convertFromClaferMooOutputToXML(); 
+        this.data.consoleOut = consoleOut;
 
-    console.log(this.data)
-    this.updateData(this.data);
+        console.log(this.data)
+        this.updateData(this.data);
+    } else {
+        alert("Table requires at least one instance.");
+    }
 
 });
 
@@ -178,4 +182,14 @@ Host.method("changeConstraint", function(feature, require){
             }
         }
     }
+});
+
+Host.method("removeInstance", function(instanceNum, instanceName){
+    var data = this.data.instancesData.split(instanceName);
+    data.splice(instanceNum, 1);
+    var newData = ""
+    for (var i=1; i<data.length; i++){
+        newData += instanceName + data[i];
+    }
+    this.updateInstanceData(newData, true, "");
 });

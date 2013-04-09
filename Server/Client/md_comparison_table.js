@@ -70,6 +70,28 @@ ComparisonTable.method("onRendered", function(){
         }
     }).css("cursor", "pointer");
 
+//  Add remove buttons to instances
+    var instances = $("#comparison #r0").find(".td_instance");
+    for (i=0; i<$(instances).length; i++){
+        $(instances[i]).prepend('<image id="rem' + $(instances[i]).text() + '" src="images/remove.png" alt="remove">')
+        var buttonId = "#rem" + $(instances[i]).text();
+        $(buttonId).attr("name", $(instances[i]).text());
+        $(buttonId).click(function(){
+            that.removeInstance($(this).attr("name"));
+        });
+        $(buttonId).css("float", "left");
+        $(buttonId).css("vertical-align", "middle");
+        $(buttonId).css("cursor", "pointer");
+        
+        $(buttonId).hover(
+        function () {
+            $(this).attr("src", "images/removeMouseOver.png");
+        }, 
+        function () {
+            $(this).attr("src", "images/remove.png");
+        });      
+    }
+
 //************************* Most of the following is to get proper formatting on the table  *******************
 
 // Move headers into new div
@@ -534,6 +556,10 @@ ComparisonTable.method("rowSort", function(rowText){
         row = $("#comparison #r" + i);
     }
 });
+
+ComparisonTable.method("removeInstance", function(instanceNum){
+    host.removeInstance(parseInt(instanceNum), this.instanceProcessor.getInstanceName());
+})
 
 ComparisonTable.method("getInitContent", function()
 {
