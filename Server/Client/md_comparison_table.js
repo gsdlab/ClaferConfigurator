@@ -18,6 +18,8 @@ function ComparisonTable(host)
 
 //    this.dataTable.matrix = null;
 //    this.dataTable.
+    
+    this.SavedFilters = [];
 
 }
 
@@ -62,7 +64,7 @@ ComparisonTable.method("onRendered", function(){
     $('#filter_reset').html("Reset");
     $('#filter_reset').click(function(event){
         event.stopPropagation(); //to keep table from sorting by instance number
-        that.filter.resetFilters();
+        that.filter.cleanFilters();
             //if currently set to distinct mode, refresh distinct rows
         if (this.toggled){
             this.toggleDistinct(); //one to turn off distinct
@@ -278,6 +280,9 @@ ComparisonTable.method("onRendered", function(){
     $('#search').click(function(event){
         event.stopPropagation(); //to keep table from sorting by instance number
     });
+
+//reset all the filters
+    this.filter.resetFilters(this.SavedFilters);
 
     //fire the scroll handler to align table after half a second (fixes chrome bug)
     setTimeout(function(){$('#mdComparisonTable .window-content').scroll()},500);
@@ -568,4 +573,9 @@ ComparisonTable.method("getInitContent", function()
 
 ComparisonTable.method("changeConstraint", function (feature, require){
     this.host.changeConstraint(feature, require);
+});
+
+ComparisonTable.method("clearFilters", function (){
+    this.SavedFilters = [];
+    this.filt
 });

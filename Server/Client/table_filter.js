@@ -13,6 +13,7 @@ tableFilter.method("onRendered", function(){
 
 tableFilter.method("filterContent", function (){
 	this.showAll();
+	this.saveFilters();
 	//filter by features
  	for (var i=0;i<this.rows.length;i++){
  		var curRow = this.rows[i];
@@ -103,7 +104,40 @@ tableFilter.method("openFeature", function (feature){
 	this.filterContent();
 });
 
-tableFilter.method("resetFilters", function (){
+tableFilter.method("resetFilters", function (filters){
+	if(filters != []){
+		for (var i=1;i<this.rows.length;i++){
+			var curRow = this.rows[i];
+			$(curRow).attr("FilterStatus", filters[i]);
+			if ($("#r" + i + "box").attr("src").indexOf("images/checkbox_ticked_greyed.png") == -1){
+				if (filters[i] == "none")
+					$("#r" + i + "box").attr("src", "images/checkbox_empty.bmp");
+				else if (filters[i] == "require")
+					$("#r" + i + "box").attr("src", "images/checkbox_ticked.bmp");
+				else if (filters[i] == "exclude")
+					$("#r" + i + "box").attr("src", "images/checkbox_x.bmp");
+			}
+		}
+ 	}
+});
+
+tableFilter.method("saveFilters", function(){
+	var filters = ["none"];
+	for (var i=1;i<this.rows.length;i++){
+ 		var curRow = this.rows[i];
+ 		var filter = $(curRow).attr("FilterStatus")
+ 		if (filter == "none"){
+ 			filters.push("none");
+ 		} else if (filter == "require"){
+			filters.push("require");
+	 	} else if (filter == "exclude"){
+			filters.push("exclude");
+	 	}
+ 	}
+ 	this.host.SavedFilters = filters;
+});
+
+tableFilter.method("cleanFilters", function (){
 	this.showAll();
  	for (var i=1;i<this.rows.length;i++){
  		var curRow = this.rows[i];

@@ -50,6 +50,7 @@ Input.method("beginQuery", function(formData, jqForm, options){
     $('#ControlForm #curScope').text(1);
     $("#output").text("");
     this.host.ClearOutput();
+    this.host.clearFilters();
     this.unsatText = "";
 });
 

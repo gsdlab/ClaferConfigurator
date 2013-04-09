@@ -193,3 +193,11 @@ Host.method("removeInstance", function(instanceNum, instanceName){
     }
     this.updateInstanceData(newData, true, "");
 });
+
+Host.method("clearFilters", function(){
+    for (var i = 0; i < this.modules.length; i++){
+        if (this.modules[i].id == "mdComparisonTable"){
+            this.modules[i].clearFilters();
+        }
+    }
+});
