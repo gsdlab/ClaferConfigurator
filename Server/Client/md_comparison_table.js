@@ -20,6 +20,7 @@ function ComparisonTable(host)
 //    this.dataTable.
     
     this.SavedFilters = [];
+    this.permahidden = [];
 
 }
 
@@ -282,7 +283,7 @@ ComparisonTable.method("onRendered", function(){
     });
 
 //reset all the filters
-    this.filter.resetFilters(this.SavedFilters);
+    this.filter.resetFilters(this.SavedFilters, this.permahidden);
 
     //fire the scroll handler to align table after half a second (fixes chrome bug)
     setTimeout(function(){$('#mdComparisonTable .window-content').scroll()},500);
@@ -563,7 +564,7 @@ ComparisonTable.method("rowSort", function(rowText){
 });
 
 ComparisonTable.method("removeInstance", function(instanceNum){
-    host.removeInstance(parseInt(instanceNum), this.instanceProcessor.getInstanceName());
+    this.filter.removeInstance(instanceNum);
 })
 
 ComparisonTable.method("getInitContent", function()
@@ -577,5 +578,5 @@ ComparisonTable.method("changeConstraint", function (feature, require){
 
 ComparisonTable.method("clearFilters", function (){
     this.SavedFilters = [];
-    this.filt
+    this.permahidden = [];
 });

@@ -184,16 +184,6 @@ Host.method("changeConstraint", function(feature, require){
     }
 });
 
-Host.method("removeInstance", function(instanceNum, instanceName){
-    var data = this.data.instancesData.split(instanceName);
-    data.splice(instanceNum, 1);
-    var newData = ""
-    for (var i=1; i<data.length; i++){
-        newData += instanceName + data[i];
-    }
-    this.updateInstanceData(newData, true, "");
-});
-
 Host.method("clearFilters", function(){
     for (var i = 0; i < this.modules.length; i++){
         if (this.modules[i].id == "mdComparisonTable"){

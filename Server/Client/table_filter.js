@@ -4,6 +4,7 @@ function tableFilter(tableid, claferXML, instancesXML, host, qualities){
 	this.hidden = [];
 	this.processor = new ClaferProcessor(claferXML, qualities);
 	this.instanceProcessor = new InstanceProcessor(instancesXML);
+	this.permahidden = [];
 	this.closedFeatures = [];
 }
 
@@ -39,6 +40,14 @@ tableFilter.method("filterContent", function (){
  	for(i=0; i<this.closedFeatures.length; i++){
  		this.closeFeature(this.closedFeatures[i]);
  	}
+
+ 	//permanently hidden instances (removed)
+ 	if(this.permahidden != []){
+	 	for(i=0;i<this.permahidden.length;i++){
+	 		$(this.permahidden[i]).hide();
+	 	}
+ 	}
+
  	this.host.scrollToSearch($("#search").val());
 });
 
@@ -104,7 +113,7 @@ tableFilter.method("openFeature", function (feature){
 	this.filterContent();
 });
 
-tableFilter.method("resetFilters", function (filters){
+tableFilter.method("resetFilters", function (filters, permahidden){
 	if(filters != []){
 		for (var i=1;i<this.rows.length;i++){
 			var curRow = this.rows[i];
@@ -121,6 +130,7 @@ tableFilter.method("resetFilters", function (filters){
 			}
 		}
  	}
+ 	this.permahidden = permahidden;
  	//fires to realign headers
  	this.host.scrollToSearch("");
 });
@@ -149,4 +159,16 @@ tableFilter.method("cleanFilters", function (){
  		if ($("#r" + i + "box").attr("src").indexOf("images/checkbox_ticked_greyed.png") == -1)
  			$("#r" + i + "box").attr("src", "images/checkbox_empty.bmp");
  	}
+});
+
+tableFilter.method("removeInstance", function(instanceNum){
+	$("#th0_" + instanceNum).hide();
+	this.permahidden.push("#th0_" + instanceNum);
+
+	for (var i=0;i<this.rows.length;i++){
+		$("#td" + i + "_" + instanceNum).hide();
+		this.permahidden.push("#td" + i + "_" + instanceNum);
+	}
+	this.host.permahidden = this.permahidden;
+
 });
