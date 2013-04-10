@@ -67,7 +67,7 @@ Control.method("onInitRendered", function()
 });
 
 Control.method("onDataLoaded", function(data){
-    $("#superClafer").val((new InstanceProcessor(data.instancesXML)).getInstanceName().replace(/c[1-9]{1,}_/g, ""));
+    $("#superClafer").val((new InstanceProcessor(data.instancesXML)).getInstanceName().replace(/c[0-9]{1,}_/g, ""));
 });
 
 Control.method("beginQuery", function(formData, jqForm, options){
