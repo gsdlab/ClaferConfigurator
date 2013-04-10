@@ -122,21 +122,16 @@ Host.method("updateClaferData", function(data){
 });
 
 Host.method("updateInstanceData", function(data, overwrite, consoleOut){
-    if (data != "" && data != null){
-        if (overwrite){
-            this.data.instancesData = "";
-        }
-        this.data.instancesData += data;
-        this.data.instancesXML = new InstanceConverter(this.data.instancesData).convertFromClaferIGOutputToClaferMoo(this.data.instancesData);
-        this.data.instancesXML = new InstanceConverter(this.data.instancesXML).convertFromClaferMooOutputToXML(); 
-        this.data.consoleOut = consoleOut;
-
-        console.log(this.data)
-        this.updateData(this.data);
-    } else if (overwrite){
-        alert("Table requires at least one instance.");
+    if (overwrite){
+        this.data.instancesData = "";
     }
+    this.data.instancesData += data;
+    this.data.instancesXML = new InstanceConverter(this.data.instancesData).convertFromClaferIGOutputToClaferMoo(this.data.instancesData);
+    this.data.instancesXML = new InstanceConverter(this.data.instancesXML).convertFromClaferMooOutputToXML(); 
+    this.data.consoleOut = consoleOut;
 
+    console.log(this.data)
+    this.updateData(this.data);
 });
 
 Host.method("updateClaferOnly", function(data){

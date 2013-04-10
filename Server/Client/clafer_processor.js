@@ -1,7 +1,9 @@
 function ClaferProcessor (sourceXML, qualities) {
     this.source = (new XMLHelper()).stringToXML(sourceXML);
     this.xmlHelper = new XMLHelper();
-    this.qualities = qualities
+    this.qualities = qualities;
+    if (this.qualities == null)
+    	this.qualities = [];
 }
 
 //returns claferid without the cXX_ extension
