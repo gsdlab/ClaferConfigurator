@@ -65,7 +65,7 @@ Input.method("showResponse", function(responseText, statusText, xhr, $form){
 
     var unsat = false;
     var errorData = this.checkForCommonErrors(data[1]);
-    if(errorData.indexOf("No more instances found.") != -1 || errorData == "N"){ //unsat must display near miss on table, requires slightly different handling
+    if(errorData.indexOf("No more instances found") != -1 || errorData == "N"){ //unsat must display near miss on table, requires slightly different handling
         $('#waitText').hide();
         $('#InputForm').show();
         $('#ControlForm').show();
@@ -80,8 +80,10 @@ Input.method("showResponse", function(responseText, statusText, xhr, $form){
     }
 
     data[1] = data[1].replaceAll("claferIG> ", "");  
-    data[2] = data[2].replace(/[ \r]/g, "").replace(/:[A-z0-9]{1,}/g, "");
-    data[2] = data[2].split("\n");
+    if(data[2] != null){
+        data[2] = data[2].replace(/[ \r]/g, "").replace(/:[A-z0-9]{1,}/g, "");
+        data[2] = data[2].split("\n");
+    }
 
     $('#waitText').hide();
     $('#InputForm').show();
