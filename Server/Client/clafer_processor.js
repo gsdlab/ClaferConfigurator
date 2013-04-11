@@ -113,7 +113,7 @@ ClaferProcessor.method("getAbstractClaferSubTree", function(root)
 			if (nextSubtree != null)
 				result.subclafers[subLength++] = nextSubtree; 
 		} else if (current.tagName == "Supers"){
-			var nextSubtree = this.getAbstractClaferTree(this.currentXpathToIdSiblings, current.lastElementChild.lastElementChild.childNodes[2].firstChild.data);
+			var nextSubtree = this.getAbstractClaferTree(this.currentXpathToIdSiblings, $(current).find("Id").text());
 			if (nextSubtree != null)
 				for (var i = 0; i<nextSubtree.subclafers.length; i++)
 					result.subclafers[subLength++] = nextSubtree.subclafers[i];		 
@@ -174,12 +174,16 @@ ClaferProcessor.method("getIfMandatory", function(claferID){
 
 
 ClaferProcessor.method("getEffectivelyMandatoryFeatures", function(tree){
-	var list = [];
-	for (var i = 0; i<tree.subclafers.length; i++){
-		list = list.concat(this.recursiveEMcheck(tree.subclafers[i]));
+	if(tree.subclafers != null){
+		var list = [];
+		for (var i = 0; i<tree.subclafers.length; i++){
+			list = list.concat(this.recursiveEMcheck(tree.subclafers[i]));
+		}
+	//	console.log(list);
+		return list;
+	} else {
+		return [];
 	}
-//	console.log(list);
-	return list;
 });
 
 ClaferProcessor.method("recursiveEMcheck", function(root){
@@ -195,10 +199,13 @@ ClaferProcessor.method("recursiveEMcheck", function(root){
 
 ClaferProcessor.method("getFeaturesWithChildren", function(tree){
 	var list = [];
-	for (var i = 0; i<tree.subclafers.length; i++){
-		list = list.concat(this.recursiveHasChildrenCheck(tree.subclafers[i]));
-	}
-	return list;
+	if(tree.subclafers!=null){
+		for (var i = 0; i<tree.subclafers.length; i++){
+			list = list.concat(this.recursiveHasChildrenCheck(tree.subclafers[i]));
+		}
+		return list;
+	} else 
+		return [];
 });
 
 ClaferProcessor.method("recursiveHasChildrenCheck", function(root){

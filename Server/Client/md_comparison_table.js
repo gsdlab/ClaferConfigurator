@@ -317,9 +317,11 @@ ComparisonTable.method("collector", function(clafer, spaceCount)
 ComparisonTable.method("traverse", function(clafer, level)
 {
 	this.collector (clafer, level);
-	for (var i = 0; i < clafer.subclafers.length; i++)
-	{
-		this.traverse(clafer.subclafers[i], level + 1);
+	if (clafer.subclafers != null){
+		for (var i = 0; i < clafer.subclafers.length; i++)
+		{
+			this.traverse(clafer.subclafers[i], level + 1);
+		}
 	}
 });
 
