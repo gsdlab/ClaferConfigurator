@@ -1,7 +1,9 @@
 ClaferConfigurator
 ==================
 
-An interactive, web-based, configurator for Clafer models.
+v0.3.2.11-4-2013
+
+An interactive, web-based, configurator for attributed feature models with inheritance subset of Clafer.
 
 ### Background
 
@@ -10,9 +12,7 @@ An interactive, web-based, configurator for Clafer models.
 ### Functions
 
 1. Provides a web based GUI for interaction with claferIG.
-
 2. Allows to compare and analyze product configurations.
-
 3. Facilitates configuration of clafer models.
 
 ### Nature
@@ -22,20 +22,32 @@ The client-side is implemented using Javascript/HTML and handles all the basic f
 
 ### Live demo
 
-[http://gsd.uwaterloo.ca/5002](http://gsd.uwaterloo.ca/5003)
+[http://gsd.uwaterloo.ca/5003](http://gsd.uwaterloo.ca/5003)
 
-Installation
-------------
+Getting Clafer Tools
+--------------------
+
+Binary distributions of Clafer, ClaferIG, and ClaferWiki for Windows, Mac, and Linux, can be downloaded from [Clafer Tools - Binary Distributions](http://gsd.uwaterloo.ca/node/516). 
+Clafer Wiki requires Haskell Platform and MinGW to run on Windows. 
+
+In case these binaries do not work on your particular machine configuration, the tools can be easily built from source code, as described below.
+
+The following tools are not part of the binary distribution and they have to be downloaded separately:
+
+* [ClaferMOO](https://github.com/gsdlab/ClaferMooStandalone) is a set of scripts in Python (cross-platform). 
+* [ClaferMooVisualizer](https://github.com/gsdlab/ClaferMooVisualizer) is a client/server web application written JavaScript.
+* ClaferConfigurator is a client/server web application written JavaScript.
 
 ### Dependencies for running
 
-* [Clafer](https://github.com/gsdlab/clafer.git) - can also be downloaded [claferIG downloads](https://github.com/gsdlab/claferig/downloads) page as a binary
-
-* [ClaferIG](https://github.com/gsdlab/claferMooStandalone)
-
-* [Java](http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html)
-
-* [Node.JS Framework](http://nodejs.org/download/), the stable version "0.10.0". Exactly this version should be installed, since the tool has not been tested with other versions.
+* [Java Platform (JDK)](http://www.oracle.com/technetwork/java/javase/downloads/index.html) v6+, 32bit
+* [Python](http://www.python.org/download/) v2.7.*
+  * Needed by ClaferMOO
+* [Clafer](https://github.com/gsdlab/clafer) v0.3.2
+  * can be from the binary distribution
+* [ClaferIG](https://github.com/gsdlab/claferIG) v0.3.2
+  * can be from the binary distribution
+* [Node.JS Framework](http://nodejs.org/download/) v0.10.4
 
 ### Installation
 
@@ -54,7 +66,27 @@ Installation
 
 2. Make sure `clafer`, `claferIG` `node`, and `java` are in `PATH` environment variables, so they can be executed without any path prefixes.
 
-3. Make sure *uploads* folder is accessible for writing, since temporary files will be stored there.
+Running the following commands should produce the following results or later version:
+
+`clafer -V` 
+
+> `Clafer v0.3.2.11-4-2013`
+
+`python -V`
+
+> `Python 2.7.3`
+
+`java -version`
+
+> `java version 1.7.0_17`
+> `Java(TM) SE Runtime Environment (build 1.7.0_17-b02)`
+> `Java HotSpot(TM) 64-Bit Server VM (build 23.7-b01, mixed mode)`
+
+`node -v`
+
+>v0.10.4
+
+3. Make sure `uploads` folder is accessible for writing, since temporary files will be stored there.
 
 ### Running
 
@@ -62,6 +94,16 @@ To run the server execute
 	
 `node server.js`
  
-from `<target directory>/ClaferMooVisualizer/Server/`
+from `<target directory>/ClaferConfigurator/Server/`
 
-Then you can go to any browser and type `http://localhost:[port]/` and open ClaferIG compatible model.
+Then you can go to any browser and type `http://localhost:[port]/` and open ClaferIG compatible model (limited to attributed feature models with inheritance subset of Clafer).
+
+Need help?
+==========
+* See [Project's website](http://gsd.uwaterloo.ca/clafer) for news, technical reports and more
+  * Check out a [Clafer tutorial](http://gsd.uwaterloo.ca/node/310)
+  * Try live instance of [ClaferWiki](http://gsd.uwaterloo.ca:5001)
+  * Try [Online translator](http://gsd.uwaterloo.ca/clafer/translator)
+* Take a look at incomplete [Clafer wiki](https://github.com/gsdlab/clafer/wiki)
+* Browse example models in the [test suite](https://github.com/gsdlab/clafer/tree/master/test/positive) and [MOO examples](https://github.com/gsdlab/clafer/tree/master/spl_configurator/dataset)
+* Post questions, report bugs, suggest improvements [GSD Lab Bug Tracker](http://gsd.uwaterloo.ca:8888/questions/). Tag your entries with `claferconfigurator` (so that we know what they are related to) and with `michal` (so that Michał gets a notification).
