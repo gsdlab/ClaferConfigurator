@@ -1,7 +1,7 @@
 ClaferConfigurator
 ==================
 
-v0.3.2.11-4-2013
+v0.3.3.14.4.2013
 
 An interactive, web-based, configurator for attributed feature models with inheritance subset of Clafer.
 
