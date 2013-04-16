@@ -13,6 +13,8 @@ function Output(host)
 }
 
 Output.method("getInitContent", function(){
+    helpButton = this.host.getHelpButton(this.title);
+    $("#" + this.id + " .window-titleBar").append(helpButton);
 	return '<text id="output"></text>';
 });
 

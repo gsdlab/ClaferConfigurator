@@ -29,6 +29,7 @@ function Host(modules)
 	this.key = Math.floor(Math.random()*1000000000).toString(16);
     this.modules = new Array();
     this.data = {claferXML:'', instancesXML:''};
+    this.helpGetter = new helpGetter(this);
     
     for (var i = 0; i < modules.length; i++)
     {
@@ -74,6 +75,9 @@ function Host(modules)
         if (this.modules[i].onInitRendered)
             this.modules[i].onInitRendered();        
     }
+
+    $("body").prepend(this.helpGetter.getInitial());
+    this.helpGetter.setListeners();
    
 }
 
@@ -185,4 +189,12 @@ Host.method("clearFilters", function(){
             this.modules[i].clearFilters();
         }
     }
+});
+
+Host.method("getHelp", function(moduleName){
+    this.helpGetter.getHelp(moduleName);
+});
+
+Host.method("getHelpButton", function(moduleName){
+    return this.helpGetter.getHelpButton(moduleName);
 });
