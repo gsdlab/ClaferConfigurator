@@ -165,15 +165,6 @@ Host.method("ClearOutput", function(data){
     } 
 });
 
-Host.method("ClearOutput", function(data){
-    for (var i = 0; i < this.modules.length; i++){
-        if (this.modules[i].id == "mdOutput"){
-            this.modules[i].ClearContent();
-            $.updateWindowContent(this.modules[i].id, this.modules[i].getContent());
-        }
-    } 
-});
-
 Host.method("changeConstraint", function(feature, require){
     for (var i = 0; i < this.modules.length; i++){
         if (this.modules[i].id == "mdConstraints"){
