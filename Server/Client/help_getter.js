@@ -15,11 +15,16 @@ helpGetter.method("setListeners", function(){
 	$(".fadeOverlay").click(function(){
 		$("#help").hide(500);
 		$(".fadeOverlay").hide(500);
+		if($("#helpContainer").contents().find("#cookieChoice").length > 0){
+			if ($("#helpContainer").contents().find("#cookieChoice").is(':checked')){
+				setCookie("startHelp", "no", 5);
+			}
+		}
 	});
 });
 
 helpGetter.method("getHelp", function (moduleName){
-	$("#helpForm").attr("action", "/help_pages/" + moduleName + "_help.html")
+	$("#helpForm").attr("action", "/help_pages/" + (moduleName.replace(/ /g, "")).toLowerCase() + "_help.html")
     $("#helpForm").submit();
     $("#help").show(500);
     $(".fadeOverlay").show(500);

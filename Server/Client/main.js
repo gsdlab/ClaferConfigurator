@@ -76,9 +76,16 @@ function Host(modules)
             this.modules[i].onInitRendered();        
     }
 
-    $("body").prepend(this.helpGetter.getInitial());
-    this.helpGetter.setListeners();
-   
+    var displayHelp=getCookie("startHelp")
+    if(displayHelp==null){
+        $("body").prepend(this.helpGetter.getInitial());
+        this.helpGetter.setListeners();
+    }else{
+        $("body").prepend(this.helpGetter.getInitial());
+        this.helpGetter.setListeners();
+        $("#help").hide();
+        $(".fadeOverlay").hide();
+    }
 }
 
 Host.method("updateData", function(data){
