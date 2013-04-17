@@ -14,8 +14,7 @@ function ConstraintManipulator(host){
 
 
 ConstraintManipulator.method("getInitContent", function(){
-	ret += '<text id="constraintDisplay" style="white-space: pre;"></text>';
-	return ret;
+	return '<text id="constraintDisplay" style="white-space: pre;"></text>';
 });
 
 ConstraintManipulator.method("onInitRendered", function(){ 
