@@ -76,15 +76,8 @@ ConstraintManipulator.method("getConstraints", function(){
 	return array;
 })
 
-ConstraintManipulator.method("getClaferConstraints", function(includeOriginalConstraints){
+ConstraintManipulator.method("getClaferConstraints", function(){
 	var ret = "";
-
-	if(includeOriginalConstraints){ //pull from original model
-		var list = this.Processor.getConstraints();  
-		for (var i=0; i<list.length; i++){
-			ret += "\n" + list[i];
-		}
-	}
 
 	var constraints = this.getConstraints();
 	for (i=0; i<constraints.length; i++){
@@ -100,6 +93,6 @@ ConstraintManipulator.method("getClaferConstraints", function(includeOriginalCon
 });
 
 ConstraintManipulator.method("updateContent", function(){
-	var content = this.getClaferConstraints(true);
+	var content = this.getClaferConstraints();
 	$("#constraintDisplay").text(content);
 });
