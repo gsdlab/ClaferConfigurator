@@ -12,9 +12,6 @@ function Control(host)
 }
 
 Control.method("getInitContent", function(){
-    helpButton = this.host.getHelpButton(this.title);
-    $("#" + this.id + " .window-titleBar").append(helpButton);
-    
 	var ret = '<form id="ControlForm" enctype="multipart/form-data" method="get" action="/Control" style="display: block">';
 	ret += '<input type="hidden" id="ControlOp" name="operation" value="next" disabled="disabled">';
     ret += '<input type="hidden" id="windowKey" name="windowKey" value="' + this.host.key + '" disabled="disabled">';

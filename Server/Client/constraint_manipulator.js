@@ -14,9 +14,6 @@ function ConstraintManipulator(host){
 
 
 ConstraintManipulator.method("getInitContent", function(){
-	helpButton = this.host.getHelpButton(this.title);
-    $("#" + this.id + " .window-titleBar").append(helpButton);
-
 	var ret = '<form id="SaveConstraints" enctype="multipart/form-data" method="post" action="/Constraint" style="display: block">';
 	ret += '<input type="hidden" id="windowKey" name="windowKey" value="' + this.host.key + '">';
 	ret += '<input type="hidden" id="constraintCont" name="constraints" value="' + this.host.key + '">';
@@ -28,12 +25,7 @@ ConstraintManipulator.method("getInitContent", function(){
 });
 
 ConstraintManipulator.method("onInitRendered", function(){ 
-	$("#SaveConstraints").hide(); // save constraints form removed until further notice
-    var that = this;
-    $("#Save").click(function(){
-    	$("#constraintCont").val(that.getClaferConstraints(false));
-    	$("#instanceName").val(that.instanceProcessor.getInstanceName().replace(/c[0-9]{1,}_/g, "") + " : " + that.instanceProcessor.getInstanceSuperClafer().replace(/c[0-9]{1,}_/g, ""));
-    });
+	var that=this;
 
     $("#constraintDisplay").click(function(){
     	if (document.selection) {

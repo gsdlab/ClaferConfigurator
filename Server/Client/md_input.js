@@ -14,8 +14,6 @@ function Input(host)
 }
 
 Input.method("getInitContent", function(){
-    helpButton = this.host.getHelpButton(this.title);
-    $("#" + this.id + " .window-titleBar").append(helpButton);
 	var ret = '<form id="InputForm" enctype="multipart/form-data" method="post" action="/uploads" style="display: block">';
 	ret += '<input type="file" class="inputTextField" name="claferFile" size="15">';
 	ret += '<br>Bitwidth: <input type="text" class="inputTextField" name="bitwidth" size="3" placeholder="4">';

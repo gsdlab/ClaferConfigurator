@@ -73,7 +73,10 @@ function Host(modules)
             $.updateWindowContent(this.modules[i].id, this.modules[i].getInitContent());
 
         if (this.modules[i].onInitRendered)
-            this.modules[i].onInitRendered();        
+            this.modules[i].onInitRendered();     
+
+        var helpButton = this.getHelpButton(this.modules[i].title);
+        $("#" + this.modules[i].id + " .window-titleBar").append(helpButton);   
     }
 
     var displayHelp=getCookie("startHelp")
