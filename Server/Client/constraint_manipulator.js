@@ -14,14 +14,8 @@ function ConstraintManipulator(host){
 
 
 ConstraintManipulator.method("getInitContent", function(){
-	var ret = '<form id="SaveConstraints" enctype="multipart/form-data" method="post" action="/Constraint" style="display: block">';
-	ret += '<input type="hidden" id="windowKey" name="windowKey" value="' + this.host.key + '">';
-	ret += '<input type="hidden" id="constraintCont" name="constraints" value="' + this.host.key + '">';
-	ret += '<input type="hidden" id="instanceName" name="instName" value="' + this.host.key + '">';
-	ret += '<input type="submit" class="inputButton" id="Save" value="Save New Constraints"></form>';
 	ret += '<text id="constraintDisplay" style="white-space: pre;"></text>';
 	return ret;
-
 });
 
 ConstraintManipulator.method("onInitRendered", function(){ 

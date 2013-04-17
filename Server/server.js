@@ -4,10 +4,11 @@ var sys = require("sys");
 var fs = require("fs");
 var path = require('path');
 var express = require('express');
+var config = require('./config.json');
 
 processes = [];
 
-var port = 5003;
+var port = config.port;
 
 var toolpath = __dirname + "/claferIG/claferIG"
 
@@ -251,11 +252,11 @@ function ProcessCleaner(){
 	var Cleaner = setInterval(function(){
 		for (var i = 0; i<processes.length; i++){
 			var d = new Date();
-			if((d-processes[i].lastUsed)>600000){
+			if((d-processes[i].lastUsed)>config.processTimeout){
 				closeProcess(processes[i].windowKey);
 			}
 		}
-	}, 600000);
+	}, config.processTimeout);
 }
 
 function ProcessLog(){
