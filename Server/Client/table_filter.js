@@ -66,7 +66,7 @@ tableFilter.method("showAll", function (){
 tableFilter.method("hideRowByName", function (name){
 	for (var i=0;i<this.rows.length;i++){
 		var curRow = this.rows[i];
-		hideThis = $($(curRow).find(':contains("' + name + '")')).parent();
+		var hideThis = $($(curRow).find(':contains("' + name + '")')).parent();
 		if (hideThis.length != 0){
 			$(hideThis).hide();
 			this.hidden.push(hideThis);

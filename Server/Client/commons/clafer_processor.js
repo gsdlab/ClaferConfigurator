@@ -1,3 +1,11 @@
+/***************************************************************************
+Major difference between this and visualizer version is that this traverses
+more in the function getAbstractClaferSubTree() at line 127. There are also
+a couple of additional checks and precautions scattered around.
+
+***************************************************************************/
+
+
 function ClaferProcessor (sourceXML, qualities) {
     this.source = (new XMLHelper()).stringToXML(sourceXML);
     this.xmlHelper = new XMLHelper();
@@ -215,21 +223,6 @@ ClaferProcessor.method("recursiveHasChildrenCheck", function(root){
 		for (var i = 0; i<root.subclafers.length; i++){
 			list = list.concat(this.recursiveHasChildrenCheck(root.subclafers[i]));
 		}
-	}
-	return list;
-});
-
-ClaferProcessor.method("getConstraints", function(){
-	var list = []
-	var Bools = this.xmlHelper.queryXML(this.source, "/Module/Declaration[@type='IConstraint']//Exp[@type='IDeclarationParentExp']/Quantifier/@type");
-	var Features = this.xmlHelper.queryXML(this.source, "/Module/Declaration[@type='IConstraint']//BodyParentExp/Exp/Argument/Exp/Id");
-	for (var i = 0; i<Bools.length; i++){
-		var constraint = "[ ";
-		if (Bools[i].nodeValue == "INo"){
-			constraint += "no ";
-		}
-		constraint += Features[i].firstChild.nodeValue.replace(/c[0-9]{1,}_/g, "") + " ]";
-		list.push(constraint);
 	}
 	return list;
 });

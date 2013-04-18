@@ -63,9 +63,20 @@ Array.prototype.remove = function(from, to) {
   return this.push.apply(this, rest);
 };
 
+JS.require('JS.Set', function() {
+});
+
 function isNumeric(input)
 {
     return (input - 0) == input && input.length > 0;
+}
+
+function getPID(input){
+    return "V" + input;
+}
+
+function parsePID(PID){
+    return PID.replace("V", "");
 }
 
 //cookie functions from http://www.w3schools.com/js/js_cookies.asp
