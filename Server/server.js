@@ -102,9 +102,9 @@ server.post('/uploads', function(req, res){
 				var d = new Date();
 				var obj = { windowKey: req.body.windowKey, tool: null, freshData: "", folder: dlDir, file: upFilePath, lastUsed: d, error: ""};
 				if (req.body.bitwidth != ""){
-					var args = [upFilePath, "--bitwidth=" + req.body.bitwidth, "--useuids --addtypes"];
+					var args = [upFilePath, "--bitwidth=" + req.body.bitwidth, "--useuids", "--addtypes"];
 				} else {
-					var args = [upFilePath, "--useuids --addtypes"];
+					var args = [upFilePath, "--useuids", "--addtypes"];
 				}
 //				console.log(args);
 				tool = spawn("claferIG", args);
