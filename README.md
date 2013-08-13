@@ -22,7 +22,9 @@ The client-side is implemented using Javascript/HTML and handles all the basic f
 
 ### Live demo
 
-[http://gsd.uwaterloo.ca/5003](http://gsd.uwaterloo.ca/5003)
+This is an experimental installation of the tool. We'll try best to keep it up; however, it does occasionally crash. When that happens, please email [Michal Antkiewicz](mailto:mantkiew@gsd.uwaterloo.ca).
+
+[http://gsd.uwaterloo.ca:5003](http://gsd.uwaterloo.ca:5003)
 
 Getting Clafer Tools
 --------------------
