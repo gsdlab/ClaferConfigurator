@@ -35,7 +35,7 @@ var port = config.port;
 var toolpath = __dirname + "/claferIG/claferIG"
 
 var server = express();
-server.use(express.cookieParser('asasdhf89adfhj0dfjask'));
+server.use(express.cookieParser('82398sdflkjasoi920932'));
 server.use(express.static(__dirname + '/Client'));
 server.use(express.bodyParser({ keepExtensions: true, uploadDir: __dirname + '/uploads' }));
 
@@ -102,9 +102,9 @@ server.post('/uploads', function(req, res){
 				var d = new Date();
 				var obj = { windowKey: req.body.windowKey, tool: null, freshData: "", folder: dlDir, file: upFilePath, lastUsed: d, error: ""};
 				if (req.body.bitwidth != ""){
-					var args = [upFilePath, "--bitwidth=" + req.body.bitwidth, "--adduidsandtypes"];
+					var args = [upFilePath, "--bitwidth=" + req.body.bitwidth, "--useuids --addtypes"];
 				} else {
-					var args = [upFilePath, "--adduidsandtypes"];
+					var args = [upFilePath, "--useuids --addtypes"];
 				}
 //				console.log(args);
 				tool = spawn("claferIG", args);

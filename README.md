@@ -1,9 +1,12 @@
 ClaferConfigurator
 ==================
 
-v0.3.3.14.4.2013
+v0.3.3.14.8.2013
 
 An interactive, web-based, configurator for attributed feature models with inheritance subset of Clafer.
+The configurator provides a novel approach to feature configuration, whereby the configurer works with multiple correct configurations at the same time instead of working with a single configuration, making configuration steps, and resolving configuration conflicts. 
+When working with a single configuration, the configurer is often not aware of the impact of their configuration actions, and when conflicts arise, they have great difficulty resolving the conflicts.
+In contrast, in ClaferConfigurator, the configurers always see only correct configurations and can explore them using filtering, ordering, highlighting of the differences, and creating more configurations on demand.
 
 ### Background
 
@@ -17,12 +20,13 @@ An interactive, web-based, configurator for attributed feature models with inher
 
 ### Nature
 
-The ClaferConfigurator is a web-based application. Its server side (implemented with Node.JS) only runs Clafer and ClaferIG and passes back its output.
-The client-side is implemented using Javascript/HTML and handles all the basic functionality.
+The ClaferConfigurator is a web-based application. Its server side (implemented with Node.js) only runs Clafer and ClaferIG and passes back their outputs.
+The client-side is implemented using Javascript/HTML and provides configuration functionality.
 
 ### Live demo
 
-This is an experimental installation of the tool. We'll try best to keep it up; however, it does occasionally crash. When that happens, please email [Michal Antkiewicz](mailto:mantkiew@gsd.uwaterloo.ca).
+This is an experimental installation of the tool. We try our best to keep it up; however, it does occasionally crash. 
+When that happens, please email [Michal Antkiewicz](mailto:mantkiew@gsd.uwaterloo.ca).
 
 [http://gsd.uwaterloo.ca:5003](http://gsd.uwaterloo.ca:5003)
 
@@ -45,11 +49,11 @@ The following tools are not part of the binary distribution and they have to be 
 * [Java Platform (JDK)](http://www.oracle.com/technetwork/java/javase/downloads/index.html) v6+, 32bit
 * [Python](http://www.python.org/download/) v2.7.*
   * Needed by ClaferMOO
-* [Clafer](https://github.com/gsdlab/clafer) v0.3.2
+* [Clafer](https://github.com/gsdlab/clafer) v0.3.3
   * can be from the binary distribution
-* [ClaferIG](https://github.com/gsdlab/claferIG) v0.3.2
+* [ClaferIG](https://github.com/gsdlab/claferIG) v0.3.3
   * can be from the binary distribution
-* [Node.JS Framework](http://nodejs.org/download/) v0.10.4
+* [Node.JS Framework](http://nodejs.org/download/) v0.10.15
 
 ### Installation
 
@@ -63,8 +67,7 @@ The following tools are not part of the binary distribution and they have to be 
 
 ### Settings
 
-1. Make sure the port `5003` is free, or change the variable value in `server.js`:
-`var port = 5003;` to any free one. This will be moved to the configuration settings file later.
+1. Make sure the port `5003` is free, or change the value of the parameter `port` in `Server/config.json` to any free one. 
 
 2. Make sure `clafer`, `claferIG` `node`, and `java` are in `PATH` environment variables, so they can be executed without any path prefixes.
 
@@ -72,21 +75,19 @@ Running the following commands should produce the following results or later ver
 
 `clafer -V` 
 
-> `Clafer v0.3.2.11-4-2013`
+> `Clafer v0.3.3.14-8-2013`
 
 `python -V`
 
-> `Python 2.7.3`
+> `Python 2.7.5`
 
 `java -version`
 
-> `java version 1.7.0_17`
-> `Java(TM) SE Runtime Environment (build 1.7.0_17-b02)`
-> `Java HotSpot(TM) 64-Bit Server VM (build 23.7-b01, mixed mode)`
+> `java version 1.7.0_25`
 
 `node -v`
 
->v0.10.4
+>v0.10.15
 
 3. Make sure `uploads` folder is accessible for writing, since temporary files will be stored there.
 
