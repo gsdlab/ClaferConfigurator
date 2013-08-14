@@ -89,7 +89,7 @@ server.post('/uploads', function(req, res){
 			var util  = require('util');
 			spawn = require('child_process').spawn;
 			var claferXML = "";
-			claferCall = spawn("clafer",[upFilePath, '--mode=xml', "-o"]);
+			claferCall = spawn("clafer",[upFilePath, '--mode=xml', "-o", "--skip-goals"]);   // add "--check-afm" when fixed
 			claferCall.stdout.on("data", function (data){
 				claferXML += data;
 			});
@@ -97,67 +97,69 @@ server.post('/uploads', function(req, res){
 //				console.log("first call complete");
 				if (code != 0){
 					res.writeHead(400, { "Content-Type": "text/html"});
-					res.end("Clafer failed to process the file");
+					res.end("Error compiling the model. Make sure your model is a correct 'attributed feature model with inheritance'.");
 				}
-				var d = new Date();
-				var obj = { windowKey: req.body.windowKey, tool: null, freshData: "", folder: dlDir, file: upFilePath, lastUsed: d, error: ""};
-				if (req.body.bitwidth != ""){
-					var args = [upFilePath, "--bitwidth=" + req.body.bitwidth, "--useuids", "--addtypes"];
-				} else {
-					var args = [upFilePath, "--useuids", "--addtypes"];
-				}
-//				console.log(args);
-				tool = spawn("claferIG", args);
-				obj.tool = tool;
-				processes.push(obj);
-				tool.stdout.on("data", function (data){
-	//				console.log("/*****************\nGetting data\n*************/")
-					for (var i = 0; i<processes.length; i++){
-	//					console.log(processes.length)
-	//					console.log(i);
-	//					console.log("stuck in post loop")
-						if (processes[i].windowKey == req.body.windowKey){
-							if (!resEnded){
-								claferXML = claferXML.replace(/[^<]{1,}/m, '');
-//									console.log(claferXML)
-								res.writeHead(200, { "Content-Type": "text/html"});
-								res.end(claferXML + "=====" + data + "=====" + qualities);
-								resEnded = true;
-							} else{
-								processes[i].freshData += data;
+				else {
+					var d = new Date();
+					var obj = { windowKey: req.body.windowKey, tool: null, freshData: "", folder: dlDir, file: upFilePath, lastUsed: d, error: ""};
+					if (req.body.bitwidth != ""){
+						var args = [upFilePath, "--bitwidth=" + req.body.bitwidth, "--useuids", "--addtypes"];
+					} else {
+						var args = [upFilePath, "--useuids", "--addtypes"];
+					}
+	//				console.log(args);
+					tool = spawn("claferIG", args);
+					obj.tool = tool;
+					processes.push(obj);
+					tool.stdout.on("data", function (data){
+		//				console.log("/*****************\nGetting data\n*************/")
+						for (var i = 0; i<processes.length; i++){
+		//					console.log(processes.length)
+		//					console.log(i);
+		//					console.log("stuck in post loop")
+							if (processes[i].windowKey == req.body.windowKey){
+								if (!resEnded){
+									claferXML = claferXML.replace(/[^<]{1,}/m, '');
+	//									console.log(claferXML)
+									res.writeHead(200, { "Content-Type": "text/html"});
+									res.end(claferXML + "=====" + data + "=====" + qualities);
+									resEnded = true;
+								} else{
+									processes[i].freshData += data;
+								}
 							}
 						}
-					}
-				});
-				tool.stderr.on("data", function (data){
-					for (var i = 0; i<processes.length; i++){
-	//					console.log(processes.length)
-	//					console.log(i);
-						if (processes[i].windowKey == req.body.windowKey){
-							if (!resEnded){
-								res.writeHead(200, { "Content-Type": "text/html"});
-								claferXML = claferXML.replace(/[^<]{1,}/m, '');
-								res.end(claferXML + "=====" + data);
-								resEnded = true;
-							} else{
-								processes[i].error += data;
+					});
+					tool.stderr.on("data", function (data){
+						for (var i = 0; i<processes.length; i++){
+		//					console.log(processes.length)
+		//					console.log(i);
+							if (processes[i].windowKey == req.body.windowKey){
+								if (!resEnded){
+									res.writeHead(200, { "Content-Type": "text/html"});
+									claferXML = claferXML.replace(/[^<]{1,}/m, '');
+									res.end(claferXML + "=====" + data);
+									resEnded = true;
+								} else{
+									processes[i].error += data;
+								}
 							}
 						}
-					}
-				});
-				tool.on("close", function(){
-					for (var i = 0; i<processes.length; i++){
-						if (processes[i].windowKey == req.body.windowKey){
-							console.log(processes[i].error)
-							cleanupOldFiles(processes[i].folder);
-							processes.splice(i, 1);
-							if (!resEnded){
-								res.writeHead(400, { "Content-Type": "text/html"});
-								res.end(processes[i].error)
-							}	
+					});
+					tool.on("close", function(){
+						for (var i = 0; i<processes.length; i++){
+							if (processes[i].windowKey == req.body.windowKey){
+								console.log(processes[i].error)
+								cleanupOldFiles(processes[i].folder);
+								processes.splice(i, 1);
+								if (!resEnded){
+									res.writeHead(400, { "Content-Type": "text/html"});
+									res.end(processes[i].error)
+								}	
+							}
 						}
-					}
-				});
+					});
+				}
 			});
 		});
 	});
