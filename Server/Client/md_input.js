@@ -36,7 +36,6 @@ function Input(host)
 }
 
 Input.method("getInitContent", function(){
-	console.log(this.host.key);
 	var ret = '<form id="InputForm" enctype="multipart/form-data" method="post" action="/uploads" style="display: block">';
 	ret += '<input type="file" class="inputTextField" name="claferFile" size="15">';
 	ret += '<br>Bitwidth: <input type="text" class="inputTextField" name="bitwidth" size="3" placeholder="4">';

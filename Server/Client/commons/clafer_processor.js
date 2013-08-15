@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2012 Alexander Murashkin, Neil Redman <http://gsd.uwaterloo.ca>
+Copyright (C) 2012-2013 Alexander Murashkin, Neil Redman <http://gsd.uwaterloo.ca>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -19,6 +19,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
+/***************************************************************************
+Major difference between this and visualizer version is that this traverses
+more in the function getAbstractClaferSubTree() at line 127. There are also
+a couple of additional checks and precautions scattered around.
+
+***************************************************************************/
 
 function ClaferProcessor (sourceXML, qualities) {
     this.source = (new XMLHelper()).stringToXML(sourceXML);
@@ -237,21 +244,6 @@ ClaferProcessor.method("recursiveHasChildrenCheck", function(root){
 		for (var i = 0; i<root.subclafers.length; i++){
 			list = list.concat(this.recursiveHasChildrenCheck(root.subclafers[i]));
 		}
-	}
-	return list;
-});
-
-ClaferProcessor.method("getConstraints", function(){
-	var list = []
-	var Bools = this.xmlHelper.queryXML(this.source, "/Module/Declaration[@type='IConstraint']//Exp[@type='IDeclarationParentExp']/Quantifier/@type");
-	var Features = this.xmlHelper.queryXML(this.source, "/Module/Declaration[@type='IConstraint']//BodyParentExp/Exp/Argument/Exp/Id");
-	for (var i = 0; i<Bools.length; i++){
-		var constraint = "[ ";
-		if (Bools[i].nodeValue == "INo"){
-			constraint += "no ";
-		}
-		constraint += Features[i].firstChild.nodeValue.replace(/c[0-9]{1,}_/g, "") + " ]";
-		list.push(constraint);
 	}
 	return list;
 });

@@ -50,6 +50,7 @@ function Host(modules)
 	this.key = Math.floor(Math.random()*1000000000).toString(16);
     this.modules = new Array();
     this.data = {claferXML:'', instancesXML:''};
+    this.helpGetter = new helpGetter(this);
     
     for (var i = 0; i < modules.length; i++)
     {
@@ -93,9 +94,22 @@ function Host(modules)
             $.updateWindowContent(this.modules[i].id, this.modules[i].getInitContent());
 
         if (this.modules[i].onInitRendered)
-            this.modules[i].onInitRendered();        
+            this.modules[i].onInitRendered();     
+
+        var helpButton = this.getHelpButton(this.modules[i].title);
+        $("#" + this.modules[i].id + " .window-titleBar").append(helpButton);   
     }
-   
+
+    var displayHelp=getCookie("startHelp")
+    if(displayHelp==null){
+        $("body").prepend(this.helpGetter.getInitial());
+        this.helpGetter.setListeners();
+    }else{
+        $("body").prepend(this.helpGetter.getInitial());
+        this.helpGetter.setListeners();
+        $("#help").hide();
+        $(".fadeOverlay").hide();
+    }
 }
 
 Host.method("updateData", function(data){
@@ -175,15 +189,6 @@ Host.method("ClearOutput", function(data){
     } 
 });
 
-Host.method("ClearOutput", function(data){
-    for (var i = 0; i < this.modules.length; i++){
-        if (this.modules[i].id == "mdOutput"){
-            this.modules[i].ClearContent();
-            $.updateWindowContent(this.modules[i].id, this.modules[i].getContent());
-        }
-    } 
-});
-
 Host.method("changeConstraint", function(feature, require){
     for (var i = 0; i < this.modules.length; i++){
         if (this.modules[i].id == "mdConstraints"){
@@ -206,4 +211,12 @@ Host.method("clearFilters", function(){
             this.modules[i].clearFilters();
         }
     }
+});
+
+Host.method("getHelp", function(moduleName){
+    this.helpGetter.getHelp(moduleName);
+});
+
+Host.method("getHelpButton", function(moduleName){
+    return this.helpGetter.getHelpButton(moduleName);
 });
