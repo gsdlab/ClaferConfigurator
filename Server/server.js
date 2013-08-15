@@ -89,7 +89,7 @@ server.post('/uploads', function(req, res){
 			var util  = require('util');
 			spawn = require('child_process').spawn;
 			var claferXML = "";
-			claferCall = spawn("clafer",[upFilePath, '--mode=xml', "-o", "--skip-goals"]);   // add "--check-afm" when fixed
+			claferCall = spawn("clafer",[upFilePath, '--mode=xml', "-o", "--skip-goals", "--check-afm"]);
 			claferCall.stdout.on("data", function (data){
 				claferXML += data;
 			});
