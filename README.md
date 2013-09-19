@@ -1,7 +1,7 @@
 ClaferConfigurator
 ==================
 
-v0.3.3.14.8.2013
+v0.3.4.20-9-2013
 
 An interactive, web-based, configurator for attributed feature models with inheritance subset of Clafer.
 The configurator provides a novel approach to feature configuration, whereby the configurer works with multiple correct configurations at the same time instead of working with a single configuration, making configuration steps, and resolving configuration conflicts. 
@@ -49,11 +49,11 @@ The following tools are not part of the binary distribution and they have to be 
 * [Java Platform (JDK)](http://www.oracle.com/technetwork/java/javase/downloads/index.html) v6+, 32bit
 * [Python](http://www.python.org/download/) v2.7.*
   * Needed by ClaferMOO
-* [Clafer](https://github.com/gsdlab/clafer) v0.3.3
+* [Clafer](https://github.com/gsdlab/clafer) v0.3.4
   * can be from the binary distribution
-* [ClaferIG](https://github.com/gsdlab/claferIG) v0.3.3
+* [ClaferIG](https://github.com/gsdlab/claferIG) v0.3.4
   * can be from the binary distribution
-* [Node.JS Framework](http://nodejs.org/download/) v0.10.15
+* [Node.JS Framework](http://nodejs.org/download/) v0.10.18
 
 ### Installation
 
@@ -75,7 +75,7 @@ Running the following commands should produce the following results or later ver
 
 `clafer -V` 
 
-> `Clafer v0.3.3.14-8-2013`
+> `Clafer v0.3.4.20-9-2013`
 
 `python -V`
 
@@ -87,7 +87,7 @@ Running the following commands should produce the following results or later ver
 
 `node -v`
 
->v0.10.15
+>v0.10.18
 
 3. Make sure `uploads` folder is accessible for writing, since temporary files will be stored there.
 
