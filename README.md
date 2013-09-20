@@ -8,6 +8,12 @@ The configurator provides a novel approach to feature configuration, whereby the
 When working with a single configuration, the configurer is often not aware of the impact of their configuration actions, and when conflicts arise, they have great difficulty resolving the conflicts.
 In contrast, in ClaferConfigurator, the configurers always see only correct configurations and can explore them using filtering, ordering, highlighting of the differences, and creating more configurations on demand.
 
+### Live demo
+
+[Try me!](http://t3-necsis.cs.uwaterloo.ca:8093/)
+
+If the demo is down or you encounter a bug, please email [Michal Antkiewicz](mailto:mantkiew@gsd.uwaterloo.ca).
+
 ### Background
 
 [Clafer](http://clafer.org) is a general-purpose lightweight structural modeling language developed at [GSD Lab](http://gsd.uwaterloo.ca/), [University of Waterloo](http://uwaterloo.ca). Clafer can be used for *product-line modeling* and *multi-objective optimization*, whereby a the model of a product line can be used to find optimal products given a set of optimization goals. 
@@ -23,32 +29,32 @@ In contrast, in ClaferConfigurator, the configurers always see only correct conf
 The ClaferConfigurator is a web-based application. Its server side (implemented with Node.js) only runs Clafer and ClaferIG and passes back their outputs.
 The client-side is implemented using Javascript/HTML and provides configuration functionality.
 
-### Live demo
+Contributors
+------------
 
-This is an experimental installation of the tool. We try our best to keep it up; however, it does occasionally crash. 
-When that happens, please email [Michal Antkiewicz](mailto:mantkiew@gsd.uwaterloo.ca).
-
-[http://gsd.uwaterloo.ca:5003](http://gsd.uwaterloo.ca:5003)
+* Neil Vincent Redman, co-op student Jan-Apr 2013. Main developer.
+* [Michał Antkiewicz](http://gsd.uwaterloo.ca/mantkiew), Research Engineer. Requirements, development, architecture, testing, technology transfer.
+* [Alexandr Murashkin](http://gsd.uwaterloo.ca/amurashk), MSc. Candidate. Developer.
 
 Getting Clafer Tools
 --------------------
 
-Binary distributions of Clafer, ClaferIG, and ClaferWiki for Windows, Mac, and Linux, can be downloaded from [Clafer Tools - Binary Distributions](http://gsd.uwaterloo.ca/node/516). 
+Binary distributions of release 0.3.4 of 
+Clafer, 
+ClaferIG, 
+ClaferWiki, 
+ClaferMoo, 
+ClaferMooVisualizer, 
+and ClaferConfigurator 
+for Windows, Mac, and Linux, 
+can be downloaded from [Clafer Tools - Binary Distributions](http://gsd.uwaterloo.ca/node/516). 
 Clafer Wiki requires Haskell Platform and MinGW to run on Windows. 
 
 In case these binaries do not work on your particular machine configuration, the tools can be easily built from source code, as described below.
 
-The following tools are not part of the binary distribution and they have to be downloaded separately:
-
-* [ClaferMOO](https://github.com/gsdlab/ClaferMooStandalone) is a set of scripts in Python (cross-platform). 
-* [ClaferMooVisualizer](https://github.com/gsdlab/ClaferMooVisualizer) is a client/server web application written JavaScript.
-* ClaferConfigurator is a client/server web application written JavaScript.
-
 ### Dependencies for running
 
 * [Java Platform (JDK)](http://www.oracle.com/technetwork/java/javase/downloads/index.html) v6+, 32bit
-* [Python](http://www.python.org/download/) v2.7.*
-  * Needed by ClaferMOO
 * [Clafer](https://github.com/gsdlab/clafer) v0.3.4
   * can be from the binary distribution
 * [ClaferIG](https://github.com/gsdlab/claferIG) v0.3.4
@@ -65,9 +71,17 @@ The following tools are not part of the binary distribution and they have to be 
 	
  `npm install`
 
+### Important: Branches must correspond
+
+Clafer, ClaferIG, ClaferWiki, ClaferMoo,  ClaferMooVisualizer, and ClaferConfigurator are following the *simultaneous release model*. 
+The branch `master` contains releases, whereas the branch `develop` contains code under development. 
+When building the tools, the branches should match:
+Releases `clafer/master` and `claferIG/master` are guaranteed to work well together.
+Development versions `clafer/develop` and `claferIG/develop` should work well together but this might not always be the case.
+
 ### Settings
 
-1. Make sure the port `5003` is free, or change the value of the parameter `port` in `Server/config.json` to any free one. 
+1. Make sure the port `8093` is free, or change the value of the parameter `port` in `Server/config.json` to any free one. 
 
 2. Make sure `clafer`, `claferIG` `node`, and `java` are in `PATH` environment variables, so they can be executed without any path prefixes.
 
@@ -105,7 +119,7 @@ Need help?
 ==========
 * See [Project's website](http://gsd.uwaterloo.ca/clafer) for news, technical reports and more
   * Check out a [Clafer tutorial](http://gsd.uwaterloo.ca/node/310)
-  * Try live instance of [ClaferWiki](http://gsd.uwaterloo.ca:5001)
+  * Try live instance of [ClaferWiki](http://t3-necsis.cs.uwaterloo.ca:8091)
   * Try [Online translator](http://gsd.uwaterloo.ca/clafer/translator)
 * Take a look at incomplete [Clafer wiki](https://github.com/gsdlab/clafer/wiki)
 * Browse example models in the [test suite](https://github.com/gsdlab/clafer/tree/master/test/positive) and [MOO examples](https://github.com/gsdlab/clafer/tree/master/spl_configurator/dataset)
