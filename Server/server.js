@@ -296,10 +296,70 @@ server.use(function(req, res, next){
   res.send(404, "Sorry can't find that!");
 });
 
-server.listen(port);
-console.log('ClaferConfigurator listening on port ' + port);
-ProcessCleaner();
-//ProcessLog();
+var dependency_count = 3; // the number of tools to be checked before the Visualizer starts
+console.log('=========================================');
+console.log('| Clafer Configurator v0.3.4.20-9-2013  |');
+console.log('=========================================');
+var spawn = require('child_process').spawn;
+console.log('Checking dependencies...');
+
+var clafer_compiler  = spawn("clafer", ["-V"]);
+var clafer_compiler_version = "";
+clafer_compiler.on('error', function (err){
+    console.log('ERROR: Cannot find Clafer Compiler (clafer). Please check whether it is installed and accessible.');
+});
+clafer_compiler.stdout.on('data', function (data){	
+    clafer_compiler_version += data;
+});
+clafer_compiler.on('exit', function (code){	
+    console.log(clafer_compiler_version.trim());
+    if (code == 0) dependency_ok();
+});
+
+var clafer_ig  = spawn("claferIG", ["-V"]);
+var clafer_ig_version = "";
+clafer_ig.on('error', function (err){
+    console.log('ERROR: Cannot find Clafer Instance Generator (claferIG). Please check whether it is installed and accessible.');
+});
+clafer_ig.stdout.on('data', function (data){	
+    clafer_ig_version += data;
+});
+clafer_ig.on('exit', function (code){	
+    console.log(clafer_ig_version.trim());
+    if (code == 0) dependency_ok();
+});
+
+var java  = spawn("java", ["-version"]);
+var java_version = "";
+java.on('error', function (err){
+    console.log('ERROR: Cannot find Java (java). Please check whether it is installed and accessible.');
+});
+java.stdout.on('data', function (data){	
+    java_version += data;
+});
+java.stderr.on('data', function (data){	
+    java_version += data;
+});
+java.on('exit', function (code){	
+    console.log(java_version.trim());
+    if (code == 0) dependency_ok();
+});
+
+var node_version = process.version + ", " + JSON.stringify(process.versions);
+console.log("Node.JS: " + node_version);
+
+function dependency_ok()
+{
+    dependency_count--;
+    if (dependency_count == 0)
+    {
+        server.listen(port);
+        ProcessCleaner();
+        console.log('Dependencies found successfully. Please review their versions manually');        
+        console.log('======================================');
+        console.log('Ready. Listening on port ' + port);        
+    }
+}
 
 var getkeys = function(obj){
 		var keys = [];

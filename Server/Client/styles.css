@@ -79,11 +79,12 @@ td.tick, td.no
 
 .help{
     z-index: 10000;
-    background: #000000;
     position: absolute;
-    width: 800px;
-    height: 550px;
-    color: #FFFFFF;
+    background: white;
+    width: 700px;
+    height: 450px;
+    color: #000000;
+    border: 1px solid #777;
 }
 
 .fadeOverlay{
