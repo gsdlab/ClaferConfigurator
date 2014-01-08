@@ -1,0 +1,8 @@
+abstract MobilePhone
+    or Connectivity
+        Bluetooth ? 
+        USB ?
+        Wifi ?   
+    PasswordProtection ?
+    FingerprintProtection ?
+MyPhone : MobilePhone

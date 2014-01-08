@@ -1,0 +1,9 @@
+{
+    "examples": [
+        {"url": "", "label": "Or Choose Example..."}, 
+        {"url": "AndroidSample1.cfr", "label": "Sample Mobile Phone Example 1"}, 
+        {"url": "AndroidSample2.cfr", "label": "Sample Mobile Phone Example 2"},    
+        {"url": "AndroidSample3.cfr", "label": "Sample Mobile Phone Example 3"}    
+    ]
+        
+}

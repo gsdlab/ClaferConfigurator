@@ -1,0 +1,10 @@
+{
+    "scripts": [
+        "modules/md_constraints.js",
+        "configuration.js"
+    ],
+
+    "styles": [
+        "styles.css"        
+    ]    
+}
