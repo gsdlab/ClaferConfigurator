@@ -119,18 +119,21 @@ Worker.method("onGenerationComplete", function(){
 //    alert(this.data.instancesData);    
     console.log(this.data);
     var matrixModule = this.host.findModule("mdFeatureQualityMatrix");
+    var constraintModule = this.host.findModule("mdConstraints");
+
     matrixModule.onDataLoaded(this.data);
+    constraintModule.onDataLoaded(this.data);
     $.updateWindowContent(matrixModule.id, matrixModule.getContent());
     matrixModule.onRendered();
 
 });
 
-Worker.method("initializeGeneration", function(){
+Worker.method("initializeGeneration", function(decrement){
     if ($("#instanceGenerationState").val() == "none")
     {
         $("#instanceGenerationState").val("running");
         this.instancesToGet = $("#instancesToGet").val();        
-        this.instancesCounter = 0; 
+        this.instancesCounter = decrement; // the first instance is already present 
         this.host.print("Trying to generate " + this.instancesToGet + " instances...\n");        
     }
 });

@@ -167,7 +167,7 @@ function getConfiguration()
             "onStarted": function (module)
             {
                 module.host.print("ClaferIDE> Running the chosen instance generator...\n");            
-                module.host.storage.worker.initializeGeneration(); 
+                module.host.storage.worker.initializeGeneration(1); 
             },
             "onStopped": function (module)
             {
@@ -210,7 +210,7 @@ function getConfiguration()
             {
                 if (id.indexOf("next_instance") != -1) // it's a next instance button
                 {
-                    module.host.storage.worker.initializeGeneration();   
+                    module.host.storage.worker.initializeGeneration(0);   
                 }
             }    
 
@@ -232,6 +232,8 @@ function getConfiguration()
 
             "onReset": function(module)
             {
+                var constraintModule = module.host.findModule("mdConstraints");
+                constraintModule.reset();
             },
             "onFeatureExpanded": function(module, feature)
             {
@@ -241,6 +243,17 @@ function getConfiguration()
             },          
             "onFeatureCheckedStateChange": function(module, feature, require)
             {
+                var constraintModule = module.host.findModule("mdConstraints");
+
+                if (require == 1){
+                    constraintModule.addConstraint(feature, true);
+                } else if (require == 0){
+                    constraintModule.removeConstraint(feature);
+                } else if (require == -1){
+                    constraintModule.addConstraint(feature, false);
+                } else {
+                    alert("an error occured while adding a constraint");
+                }
             },
             "onInstanceRemove" : function(module, num)
             {

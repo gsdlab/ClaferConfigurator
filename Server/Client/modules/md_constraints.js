@@ -62,8 +62,7 @@ ConstraintManipulator.method("onDataLoaded", function(data){
 	this.Processor = new ClaferProcessor(data.claferXML);
 	this.instanceProcessor = new InstanceProcessor(data.instancesXML);
 
-	this.constraints = {};
-	this.updateContent();
+	this.reset();
 });
 
 
@@ -105,3 +104,10 @@ ConstraintManipulator.method("updateContent", function(){
 	var content = this.getClaferConstraints();
 	$("#constraintDisplay").text(content);
 });
+
+ConstraintManipulator.method("reset", function(){
+	this.constraints = {};
+	this.updateContent();
+});
+
+
