@@ -63,6 +63,8 @@ function getConfiguration()
                 }
 
                 module.host.findModule("mdControl").disableAll();
+    
+                module.host.storage.worker = new Worker(module.host); // creating a class for working with instances             
 
                 return true;
             },
@@ -82,6 +84,30 @@ function getConfiguration()
                 {
                     module.editor.getSession().setValue(responseObject.model);
                 }
+
+                if (responseObject.compiled_formats)
+                {
+                    for (var i = 0; i < responseObject.compiled_formats.length; i++)
+                    {
+                        if (responseObject.compiled_formats[i].id == "xml")
+                        {
+                            var xml = responseObject.compiled_formats[i].result;
+
+                            xml = xml.replaceAll('<?xml version="1.0"?>', '');
+                            xml = xml.replaceAll('cl:', '');
+                            xml = xml.replaceAll('xsi:', '');
+                            xml = xml.replaceAll(' xmlns="http://clafer.org/ir" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cl="http://clafer.org/ir" schemaLocation="http://clafer.org/ir https://github.com/gsdlab/clafer/blob/master/src/ClaferIR.xsd"', '');
+
+                            module.host.storage.worker.data.modelXML = xml;
+                            break;
+                        }                        
+                    }
+                }                
+
+                if (responseObject.qualities)
+                {
+                    module.host.storage.worker.data.modelQualities = qualities;    
+                }                
 
                 module.host.print("Compiler> " + responseObject.message + "\n");
                 module.host.print(responseObject.compiler_message + "\n");    
@@ -138,7 +164,8 @@ function getConfiguration()
             },
             "onStarted": function (module)
             {
-                module.host.print("ClaferIDE> Running the chosen instance generator...\n");             
+                module.host.print("ClaferIDE> Running the chosen instance generator...\n");            
+                module.host.storage.worker.initializeGeneration(); 
             },
             "onStopped": function (module)
             {
@@ -161,14 +188,30 @@ function getConfiguration()
                 module.host.print("ClaferIDE> Setting the bitwidth...\n");
             },          
             "onPoll" : function(module, responseObject){
-                if (responseObject.message != "")
-                {
-                    module.host.print(responseObject.message);
-                }
+                module.host.storage.worker.processIGOutput(responseObject);
             },
             "onCompleted": function (module, responseObject){
                 module.host.print("ClaferIDE> The instance generator is exited.\n");
-            }           
+            },
+            "onBackendChange": function (module, newBackendId)
+            {
+                module.host.storage.backendId = newBackendId;
+                $("#instancesToGet").remove();
+                $("#" + newBackendId + "_buttons").prepend('<input class="scopeInput" type="text" value="10" name="instancesToGet" id="instancesToGet"/>');
+                
+                if (module.host.storage.worker)
+                {
+                    module.host.storage.worker.selectedBackendId = newBackendId;
+                }
+            },
+            "onControlButtonClick": function(module, id)
+            {
+                if (id.indexOf("next_instance") != -1) // it's a next instance button
+                {
+                    module.host.storage.worker.initializeGeneration();   
+                }
+            }    
+
         }});
 
     modules.push({"name": "FeatureQualityMatrix", "configuration": 
@@ -220,6 +263,7 @@ function getConfiguration()
 	    },
     	"onLoaded": function(host)
 	    {
+            $('#ControlForm').prepend('<input type="hidden" name="instanceGenerationState" id="instanceGenerationState" value="none"/>');
  	    	$("#myform").submit();
 	    }	    
 	};

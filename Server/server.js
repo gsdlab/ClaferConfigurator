@@ -572,9 +572,22 @@ server.post('/upload', commandMiddleware, function(req, res, next)
             }
 
             var specifiedArgs = core.filterArgs(req.body.args);
-            var genericArgs = [ss, uploadedFilePath + ".cfr"];
+            var genericArgs = [ss, uploadedFilePath + ".cfr", "--skip-goals", "--check-afm"];
 
             var process = core.getProcess(req.body.windowKey);
+
+            /* getting quality attributes */ 
+
+            var content = file_contents.split("\n");
+
+            var qualities = "";
+            for (i=0; i<content.length; i++){
+                if (content[i].indexOf("//# QUALITY_ATTRIBUTE") != -1)
+                    qualities += content[i].replace(/[ ]{1,}/, "").replace("//# QUALITY_ATTRIBUTE", "") + "\n";
+            }            
+
+            process.qualities = qualities;
+            /////
 
             if (loadExampleInEditor)
                 process.model = file_contents;
@@ -635,6 +648,11 @@ server.post('/poll', pollingMiddleware, function(req, res, next)
                 jsonObj.scopes = "";
                 jsonObj.model = process.model;
                 jsonObj.compiler_message = process.compiler_message;
+
+                /* sending qualities */
+                jsonObj.qualities = process.qualities;
+                process.qualities = "";
+
                 res.end(JSON.stringify(jsonObj));
 
                 process.mode = "ig";
@@ -642,6 +660,7 @@ server.post('/poll', pollingMiddleware, function(req, res, next)
             }
             else
             {
+
                 var currentResult = "";
 
                 if (process.freshData != "")
@@ -658,7 +677,7 @@ server.post('/poll', pollingMiddleware, function(req, res, next)
 
                 res.writeHead(200, { "Content-Type": "application/json"});
 
-                var jsonObj = new Object();
+                var jsonObj = new Object();              
                 jsonObj.message = currentResult;
                 jsonObj.scopes = "";
                 jsonObj.completed = true;
@@ -681,6 +700,7 @@ server.post('/poll', pollingMiddleware, function(req, res, next)
                 jsonObj.message = "Working";
                 jsonObj.args = process.compiler_args;
                 process.compiler_args = "";
+                res.writeHead(200, { "Content-Type": "application/json"});
                 res.end(JSON.stringify(jsonObj));
             }
             else
@@ -706,26 +726,28 @@ server.post('/poll', pollingMiddleware, function(req, res, next)
                     });
                 }
 
-                var currentResult = "";
+                var currentData = "";
+                var currentError = "";
 
                 if (process.freshData != "")
                 {
-                    currentResult += process.freshData;
+                    currentData += process.freshData;
                     process.freshData = "";
                 }
 
                 if (process.freshError != "")
                 {
-                    currentResult += process.freshError;
+                    currentError += process.freshError;
                     process.freshError = "";
                 }                    
 
                 res.writeHead(200, { "Content-Type": "application/json"});
 
                 var jsonObj = new Object();
-                jsonObj.message = currentResult;
-                jsonObj.scopes = process.scopes;
+                jsonObj.data = currentData;
+                jsonObj.error = currentError;
 
+                jsonObj.scopes = process.scopes;
                 process.scopes = "";
 
                 jsonObj.completed = false;
