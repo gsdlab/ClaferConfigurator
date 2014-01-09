@@ -62,14 +62,14 @@ Worker.method("updateInstanceData", function()
     this.data.instancesXML = new InstanceConverter(this.data.instancesData).convertFromClaferIGOutputToClaferMoo(this.data.instancesData);
     this.data.instancesXML = new InstanceConverter(this.data.instancesXML).convertFromClaferMooOutputToXML(); 
 
-    if (this.instancesCounter < this.instancesToGet)
+    if (this.instancesCounter == this.instancesToGet)
     {
-        this.instancesCounter = this.instancesCounter + 1;
-        $("#" + this.host.storage.backendId + "-next_instance").click(); // resuming the generation process
+        this.onGenerationSuccess();
     } 
     else 
     {
-        this.onGenerationSuccess();
+        this.instancesCounter = this.instancesCounter + 1;
+        $("#" + this.host.storage.backendId + "-next_instance").click(); // resuming the generation process
     }        
 
 });
@@ -132,7 +132,7 @@ Worker.method("initializeGeneration", function(decrement){
     if ($("#instanceGenerationState").val() == "none")
     {
         $("#instanceGenerationState").val("running");
-        this.instancesToGet = $("#instancesToGet").val();        
+        this.instancesToGet = $("#instancesToGet").val();       
         this.instancesCounter = decrement; // the first instance is already present 
         this.host.print("Trying to generate " + this.instancesToGet + " instances...\n");        
     }
