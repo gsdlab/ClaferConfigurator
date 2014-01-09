@@ -4,8 +4,8 @@ function getConfiguration()
     modules.push({"name": "Input", "configuration": 
     	{
     		"layout": {
-    			"width": (window.parent.innerWidth-20) * 0.38,
-    			"height": 180,
+    			"width": (window.parent.innerWidth-40) * 0.38,
+    			"height": 125,
     			"posx": 0,
     			"posy": 0
     		},
@@ -134,7 +134,7 @@ function getConfiguration()
 
             "layout": {
                 "width": (window.parent.innerWidth+65) * 0.38,
-                "height": 180,
+                "height": 125,
                 "posx": (window.parent.innerWidth-40) * (1 - 0.38),
                 "posy": 0
             }
@@ -146,7 +146,7 @@ function getConfiguration()
     {
             "layout": {
                 "width": (window.parent.innerWidth-40) * (0.24),
-                "height": 180,
+                "height": 125,
                 "posx": (window.parent.innerWidth-40) * 0.38,
                 "posy": 0
             },
@@ -222,9 +222,9 @@ function getConfiguration()
 
             "layout": {
                 "width": window.parent.innerWidth - 20 - 230,
-                "height": window.parent.innerHeight - 60 - 220,
+                "height": window.parent.innerHeight - 60 - 165,
                 "posx": 0,
-                "posy": 220
+                "posy": 165
             },
 
             "buttonsForRemoval": true,
@@ -266,9 +266,9 @@ function getConfiguration()
 
             "layout": {
                 "width": 250,
-                "height": window.parent.innerHeight - 60 - 220,
+                "height": window.parent.innerHeight - 60 - 165,
                 "posx": window.parent.innerWidth - 20 - 230,
-                "posy": 220
+                "posy": 165
             }
         }});
 

@@ -146,3 +146,11 @@ fieldset{
 #input_bottom_container{
     background: white;
 }
+
+#defaultScopeSettings{
+    display: none;
+}
+
+#claferScopeSettings{
+    display: none;
+}
