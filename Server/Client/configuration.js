@@ -93,12 +93,14 @@ function getConfiguration()
                         {
                             var xml = responseObject.compiled_formats[i].result;
 
+                            xml = convertHtmlTags(xml);
+
                             xml = xml.replaceAll('<?xml version="1.0"?>', '');
+                            xml = xml.replaceAll(' xmlns="http://clafer.org/ir" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cl="http://clafer.org/ir" xsi:schemalocation="http://clafer.org/ir https://github.com/gsdlab/clafer/blob/master/src/ClaferIR.xsd"', '');
                             xml = xml.replaceAll('cl:', '');
                             xml = xml.replaceAll('xsi:', '');
-                            xml = xml.replaceAll(' xmlns="http://clafer.org/ir" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cl="http://clafer.org/ir" schemaLocation="http://clafer.org/ir https://github.com/gsdlab/clafer/blob/master/src/ClaferIR.xsd"', '');
 
-                            module.host.storage.worker.data.modelXML = xml;
+                            module.host.storage.worker.data.claferXML = xml;
                             break;
                         }                        
                     }
@@ -106,7 +108,7 @@ function getConfiguration()
 
                 if (responseObject.qualities)
                 {
-                    module.host.storage.worker.data.modelQualities = qualities;    
+                    module.host.storage.worker.data.qualities = qualities;    
                 }                
 
                 module.host.print("Compiler> " + responseObject.message + "\n");

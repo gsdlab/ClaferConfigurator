@@ -116,7 +116,13 @@ Worker.method("onGenerationComplete", function(){
         this.host.print("Generated " + this.instancesCounter + " out of " + this.instancesToGet + " instances\n");        
     }
 
-    alert(this.data.instancesData);    
+//    alert(this.data.instancesData);    
+    console.log(this.data);
+    var matrixModule = this.host.findModule("mdFeatureQualityMatrix");
+    matrixModule.onDataLoaded(this.data);
+    $.updateWindowContent(matrixModule.id, matrixModule.getContent());
+    matrixModule.onRendered();
+
 });
 
 Worker.method("initializeGeneration", function(){
