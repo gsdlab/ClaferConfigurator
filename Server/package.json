@@ -2,7 +2,7 @@
   "name": "ClaferConfigurator",
   "description": "A web-based GUI for configuring Clafer models",
   "version": "0.3.5",
-  "release_date": "??-??-????",
+  "release_date": "15-01-2014",
   "private": true,
   "dependencies": {
     "express": "3.0.4",
