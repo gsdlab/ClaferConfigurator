@@ -233,7 +233,12 @@ function getConfiguration()
             },
             "onControlButtonClick": function(module, id)
             {
-            }    
+            },
+            "onCustomEvent": function(module, response)
+            {
+//                module.host.print("ClaferConfigurator> Generating instances...\n");            
+                module.host.storage.worker.initializeGeneration(0); 
+            },               
 
         }});
 

@@ -69,7 +69,7 @@ Worker.method("updateInstanceData", function()
     else 
     {
         this.instancesCounter = this.instancesCounter + 1;
-        $("#" + this.host.storage.backendId + "-next_instance").click(); // resuming the generation process
+//        $("#" + this.host.storage.backendId + "-next_instance").click(); // resuming the generation process
     }        
 
 });
