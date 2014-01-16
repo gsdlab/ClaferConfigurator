@@ -146,7 +146,23 @@ server.get('/saveformat', /*fileMiddleware,*/ function(req, res) {
 /* Controlling Instance Generators */
 server.post('/control', /*commandMiddleware, */function(req, res)
 {
-    lib.handleControlRequest(req, res);
+
+    var process = core.getProcess(req.body.windowKey);
+    if (process == null)
+    {
+        res.writeHead(400, { "Content-Type": "text/html"});
+        res.end("process_not_found");               
+        return;
+    }
+
+    if (req.body.operation == "getInstances") // "Run" operation
+    {
+        core.logSpecific("Control: GetInstances", req.body.windowKey);
+    }
+    else
+    {
+        lib.handleControlRequest(req, res);
+    }
 });
 
 /*

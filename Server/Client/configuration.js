@@ -215,8 +215,17 @@ function getConfiguration()
             {
                 module.host.storage.backendId = newBackendId;
                 $("#instancesToGet").remove();
+                $("#getInstances").remove();
+                $("#" + newBackendId + "-next_instance").hide();
+                $("#" + newBackendId + "_buttons").prepend('<button id="getInstances">Get Instances</button>');
                 $("#" + newBackendId + "_buttons").prepend('<input class="scopeInput" type="text" value="10" name="instancesToGet" id="instancesToGet"/>');
-                
+     
+                $("#getInstances").click(function()
+                {
+                    $("#ControlOp").val("getInstances");
+                    $("#ControlOpArg1").val($ ("#instancesToGet").val());
+                });
+
                 if (module.host.storage.worker)
                 {
                     module.host.storage.worker.selectedBackendId = newBackendId;
@@ -224,10 +233,6 @@ function getConfiguration()
             },
             "onControlButtonClick": function(module, id)
             {
-                if (id.indexOf("next_instance") != -1) // it's a next instance button
-                {
-                    module.host.storage.worker.initializeGeneration(0);   
-                }
             }    
 
         }});
