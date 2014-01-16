@@ -70,13 +70,13 @@ function getConfiguration()
             },
 
             "onFileSent": function(module){
-                module.host.print("ClaferIDE> Processing the submitted model. Compiling...\n");
+                module.host.print("ClaferConfigurator> Processing the submitted model. Compiling...\n");
             },
 
             "onPoll" : function(module, responseObject){
                 if (responseObject.args)
                 {
-                    module.host.print("ClaferIDE> clafer " + responseObject.args + "\n");
+                    module.host.print("ClaferConfigurator> clafer " + responseObject.args + "\n");
                 }
             },
             "onCompleted" : function(module, responseObject){               
@@ -174,42 +174,42 @@ function getConfiguration()
             },            
             "onStarted": function (module)
             {
-                module.host.print("ClaferIDE> Running the chosen instance generator...\n");            
+                module.host.print("ClaferConfigurator> Running the chosen instance generator...\n");            
                 module.host.storage.worker.initializeGeneration(1); 
             },
             "onStopped": function (module)
             {
-                module.host.print("ClaferIDE> Forcing the instance generator to close...\n");               
+                module.host.print("ClaferConfigurator> Forcing the instance generator to close...\n");               
             },
             "onDefaultScopeSet": function (module)
             {
-                module.host.print("ClaferIDE> Setting the default scope...\n");
+                module.host.print("ClaferConfigurator> Setting the default scope...\n");
             },
             "onAllScopesIncreased": function (module)
             {
-                module.host.print("ClaferIDE> Increasing all the scopes...\n");
+                module.host.print("ClaferConfigurator> Increasing all the scopes...\n");
             },
             "onIndividualScopeSet": function (module)
             {
-                module.host.print("ClaferIDE> Setting the individual scope...\n");
+                module.host.print("ClaferConfigurator> Setting the individual scope...\n");
             },
             "onIndividualScopeIncreased": function (module)
             {
-                module.host.print("ClaferIDE> Increasing the individual scope...\n");
+                module.host.print("ClaferConfigurator> Increasing the individual scope...\n");
             },
             "onIntScopeSet": function (module)
             {
-                module.host.print("ClaferIDE> Setting integer bounds...\n");
+                module.host.print("ClaferConfigurator> Setting integer bounds...\n");
             },          
             "onBitwidthSet": function (module)
             {
-                module.host.print("ClaferIDE> Setting the bitwidth...\n");
+                module.host.print("ClaferConfigurator> Setting the bitwidth...\n");
             },            
             "onPoll" : function(module, responseObject){
                 module.host.storage.worker.processIGOutput(responseObject);
             },
             "onCompleted": function (module, responseObject){
-                module.host.print("ClaferIDE> The instance generator is exited.\n");
+                module.host.print("ClaferConfigurator> The instance generator is exited.\n");
             },
             "onBackendChange": function (module, newBackendId)
             {
