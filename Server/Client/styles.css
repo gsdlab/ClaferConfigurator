@@ -147,10 +147,6 @@ fieldset{
     background: white;
 }
 
-#defaultScopeSettings{
-    display: none;
-}
-
-#claferScopeSettings{
+#scopeControl{
     display: none;
 }
