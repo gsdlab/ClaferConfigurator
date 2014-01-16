@@ -164,6 +164,14 @@ function getConfiguration()
 
                 return caption;     
             },
+            "onStart": function (module)
+            {
+                return true;                
+            },
+            "onStop": function (module)
+            {
+                return true;                
+            },            
             "onStarted": function (module)
             {
                 module.host.print("ClaferIDE> Running the chosen instance generator...\n");            
