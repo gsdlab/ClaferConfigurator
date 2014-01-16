@@ -7,14 +7,12 @@
             "accepted_format": "clafer_source",               
             "tool": "claferIG", 
             "tool_args": ["$filepath$"],
-            "tool_args_forward_from_compiler" : ["--ss"],
             "tool_version_args": ["-V"],
             "scope_options": {
                 "set_default_scope" : {"command": "s $value$\n"}, 
                 "set_individual_scope": {"command": "s $clafer$ $value$\n"},
                 "inc_all_scopes" : {"command": "i $value$\n"},
                 "inc_individual_scope": {"command": "i $clafer$ $value$\n"},
-                "produce_scope_file" : {"command": "saveScopes\n"},
                 "set_bitwidth" : {"command": "b $value$\n"}                 
             },
             "control_buttons": [
