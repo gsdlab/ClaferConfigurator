@@ -1,9 +1,9 @@
 {
     "examples": [
         {"url": "", "label": "Or Choose Example..."}, 
-        {"url": "AndroidSample1.cfr", "label": "Sample Mobile Phone Example 1"}, 
-        {"url": "AndroidSample2.cfr", "label": "Sample Mobile Phone Example 2"},    
-        {"url": "AndroidSample3.cfr", "label": "Sample Mobile Phone Example 3"}    
+        {"url": "ACC.cfr", "label": "Adaptive Cruise Control example"},    
+        {"url": "BumbleBee.cfr", "label": "BumbleBee, a transformer example"},
+        {"url": "Phone(SPLC).cfr", "label": "The mobile phone example from an SPLC paper"}, 
+        {"url": "Phone(minimize-cost).cfr", "label": "A mobile phone with a quality attribute example"}    
     ]
-        
 }

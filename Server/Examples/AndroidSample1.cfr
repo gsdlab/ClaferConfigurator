@@ -1,6 +1,0 @@
-abstract androidPhone
-	hardware
-		cpu ?
-
-aPhone : androidPhone
-
