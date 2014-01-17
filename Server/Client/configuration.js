@@ -255,6 +255,7 @@ function getConfiguration()
 
             "buttonsForRemoval": true,
             "instancesSelectable": false,
+            "useInstanceName": true,
 
             "onReset": function(module)
             {
