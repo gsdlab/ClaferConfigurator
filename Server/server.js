@@ -185,6 +185,8 @@ function requestInstances(process, req)
     {
         process.tool.stdin.write(operation.command);
     }    
+
+    return true;
 }
 
 /* Controlling Instance Generators */
@@ -224,9 +226,16 @@ server.post('/control', /*commandMiddleware, */function(req, res)
     if (req.body.operation == "getInstances") // "getInstances" operation
     {
         core.logSpecific("Control: GetInstances", req.body.windowKey);
-        requestInstances(process, req);
-        res.writeHead(200, { "Content-Type": "text/html"});
-        res.end("instances_got");
+        if (requestInstances(process, req))
+        {
+            res.writeHead(200, { "Content-Type": "text/html"});
+            res.end("instances_got");
+        }
+        else
+        {
+            res.writeHead(400, { "Content-Type": "text/html"});
+            res.end("failed_generating_instances");                           
+        }
     }
     else
     {

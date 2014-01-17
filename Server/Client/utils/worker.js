@@ -1,13 +1,7 @@
 function Worker(host){
     this.host = host;
-
-    this.igData = "";
-    this.igError = "";
-    this.data = new Object();
-    this.data.instancesData = "";
-
-    this.instancesToGet = 0;
-    this.instancesCounter = 0;
+    this.data = new Object();    
+    this.resetGeneration();
 }
 
 Worker.method("processIGOutput", function(output)
@@ -19,11 +13,6 @@ Worker.method("processIGOutput", function(output)
     }
 
     var data = output.data;
-
-//    if (($("#ControlOp").val() != "GetInstances") && ($("#ControlOp").val() != "run")){
-//        this.overwrite = true;
-//        return;
-//    }
 
     if ($("#instanceGenerationState").val() != "none")
     {
@@ -54,12 +43,6 @@ Worker.method("processIGOutput", function(output)
 
 Worker.method("updateInstanceData", function()
 {
-    if (this.overwrite)
-    {
-        this.data.instancesData = "";
-        this.overwrite = false;        
-    }
-
     this.data.instancesData += this.igData;
     this.igData = "";
     this.data.instancesXML = new InstanceConverter(this.data.instancesData).convertFromClaferIGOutputToClaferMoo(this.data.instancesData);
@@ -72,7 +55,7 @@ Worker.method("updateInstanceData", function()
     console.log(instanceProcessor.getInstanceCount());
     this.instancesCounter = instanceProcessor.getInstanceCount();
 
-    if (this.instancesCounter == this.instancesToGet)
+    if (this.instancesCounter == this.requiredNumberOfInstances)
     {
         this.onGenerationSuccess();
     } 
@@ -107,7 +90,7 @@ Worker.method("onGenerationSuccess", function(){
 Worker.method("onGenerationComplete", function(){
     $("#instanceGenerationState").val("none");    
 
-    if (this.instancesCounter == this.instancesToGet)
+    if (this.instancesCounter == this.requiredNumberOfInstances)
     {
         this.host.print("All requested instances were generated\n");
     }
@@ -117,11 +100,18 @@ Worker.method("onGenerationComplete", function(){
     }
     else
     {
-        this.host.print("Generated " + this.instancesCounter + " out of " + this.instancesToGet + " instances\n");        
+        this.host.print("Generated " + (this.instancesCounter - this.initialNumberOfInstances) + " out of " + (this.requiredNumberOfInstances - this.initialNumberOfInstances) + " instances\n");        
     }
 
 //    alert(this.data.instancesData);    
     console.log(this.data);
+
+    this.refreshViews();
+});
+
+Worker.method("refreshViews", function(){
+
+    alert("refresh views");
     var matrixModule = this.host.findModule("mdFeatureQualityMatrix");
     var constraintModule = this.host.findModule("mdConstraints");
 
@@ -129,14 +119,27 @@ Worker.method("onGenerationComplete", function(){
     constraintModule.onDataLoaded(this.data);
     $.updateWindowContent(matrixModule.id, matrixModule.getContent());
     matrixModule.onRendered();
-
 });
 
 Worker.method("initializeGeneration", function(){
     if ($("#instanceGenerationState").val() == "none")
     {
         $("#instanceGenerationState").val("running");
-        this.instancesToGet = $("#instancesToGet").val();       
-        this.host.print("Trying to generate " + this.instancesToGet + " instances...\n");        
+        this.initialNumberOfInstances = this.instancesCounter;
+        this.requiredNumberOfInstances = parseInt($("#instancesToGet").val()) + this.initialNumberOfInstances;       
+        this.host.print("Trying to generate " + (this.requiredNumberOfInstances - this.initialNumberOfInstances) + " instances...\n");        
     }
 });
+
+Worker.method("resetGeneration", function(){
+    this.igData = "";
+    this.igError = "";
+    this.data.instancesData = "";
+    this.data.instancesXML = new InstanceConverter(this.data.instancesData).convertFromClaferIGOutputToClaferMoo(this.data.instancesData);
+    this.data.instancesXML = new InstanceConverter(this.data.instancesXML).convertFromClaferMooOutputToXML(); 
+
+    this.requiredNumberOfInstances = 0;
+    this.initialNumberOfInstances = 0;
+    this.instancesCounter = 0;
+});
+

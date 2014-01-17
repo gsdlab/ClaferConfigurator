@@ -234,6 +234,14 @@ function getConfiguration()
             },
             "onControlButtonClick": function(module, id)
             {
+                var backendId = $("#BackendId").val();
+                var parts = id.split("-");
+                if (parts[1] == "reload") // reload
+                {
+                    module.host.storage.worker.resetGeneration(); 
+                    module.host.storage.worker.refreshViews();
+                    module.host.print("Instances are reset.\n");        
+                }
             },
             "onCustomEvent": function(module, response)
             {
