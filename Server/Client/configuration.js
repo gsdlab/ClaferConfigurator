@@ -17,13 +17,13 @@ function getConfiguration()
             "file_extensions": [
                 {
                     "ext": ".cfr", 
-                    "button_file_caption": "Configure",
-                    "button_example_caption": "Configure",
-                    "button_editor_caption": "Configure",
+                    "button_file_caption": "Compile",
+                    "button_example_caption": "Compile",
+                    "button_editor_caption": "Compile",
 
-                    "button_file_tooltip": "Configure tooltip",
-                    "button_example_tooltip": "Configure tooltip",
-                    "button_editor_tooltip": "Configure tooltip"
+                    "button_file_tooltip": "Compile the Clafer file selected on your machine",
+                    "button_example_tooltip": "Compile the example chosen from the example list",
+                    "button_editor_tooltip": "Compile the code in the editor below"
                 }
             ],
 

@@ -111,7 +111,7 @@ Worker.method("onGenerationComplete", function(){
 
 Worker.method("refreshViews", function(){
 
-    alert("refresh views");
+//    alert("refresh views");
     var matrixModule = this.host.findModule("mdFeatureQualityMatrix");
     var constraintModule = this.host.findModule("mdConstraints");
 
