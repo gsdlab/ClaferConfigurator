@@ -85,6 +85,10 @@ Running the following commands should produce the following results or later ver
 
 > `Clafer v0.3.5.17-01-2014`
 
+`claferIG -V` 
+
+> `Clafer v0.3.5.17-01-2014`
+
 `python -V`
 
 > `Python 2.7.5`
