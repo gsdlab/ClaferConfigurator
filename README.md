@@ -1,7 +1,7 @@
 ClaferConfigurator
 ==================
 
-v0.3.5.15-01-2013
+v0.3.5.17-01-2014
 
 An interactive, web-based, configurator for attributed feature models with inheritance subset of [Clafer](http://clafer.org).
 The configurator provides a novel approach to feature configuration, whereby the configurer works with multiple correct configurations at the same time instead of working with a single configuration, making configuration steps, and resolving configuration conflicts. 
@@ -83,7 +83,7 @@ Running the following commands should produce the following results or later ver
 
 `clafer -V` 
 
-> `Clafer v0.3.5.15-01-2014`
+> `Clafer v0.3.5.17-01-2014`
 
 `python -V`
 
