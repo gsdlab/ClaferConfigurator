@@ -108,7 +108,7 @@ function getConfiguration()
 
                 if (responseObject.qualities)
                 {
-                    module.host.storage.worker.data.qualities = qualities;    
+                    module.host.storage.worker.data.qualities = responseObject.qualities;    
                 }                
 
                 module.host.print("Compiler> " + responseObject.message + "\n");
