@@ -166,6 +166,8 @@ function getConfiguration()
             },
             "onStart": function (module)
             {
+                $("#ControlOpArg1").val($ ("#instancesToGet").val() - 1); // request (instancesToGet - 1) instances
+                module.host.storage.worker.initializeGeneration(); 
                 return true;                
             },
             "onStop": function (module)
@@ -175,7 +177,6 @@ function getConfiguration()
             "onStarted": function (module)
             {
                 module.host.print("ClaferConfigurator> Running the chosen instance generator...\n");            
-                module.host.storage.worker.initializeGeneration(1); 
             },
             "onStopped": function (module)
             {
@@ -236,8 +237,11 @@ function getConfiguration()
             },
             "onCustomEvent": function(module, response)
             {
-//                module.host.print("ClaferConfigurator> Generating instances...\n");            
-                module.host.storage.worker.initializeGeneration(0); 
+                if (response == "instances_got")
+                {
+                    module.host.print("ClaferConfigurator> Generating instances...\n");            
+                    module.host.storage.worker.initializeGeneration(); 
+                }
             },               
 
         }});

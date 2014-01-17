@@ -6,7 +6,7 @@
             "tooltip": "The original ClaferIG based on Alloy4.1 solver",
             "accepted_format": "clafer_source",               
             "tool": "claferIG", 
-            "tool_args": ["$filepath$"],
+            "tool_args": ["$filepath$", "--useuids", "--addtypes"],
             "tool_args_forward_from_compiler" : ["--ss"],            
             "tool_version_args": ["-V"],
             "scope_options": {

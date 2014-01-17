@@ -20,11 +20,10 @@ Worker.method("processIGOutput", function(output)
 
     var data = output.data;
 
-    if ($("#ControlOp").val() == "scope"){
-        this.overwrite = true;
-        host.print(data);
-        return;
-    }
+//    if (($("#ControlOp").val() != "GetInstances") && ($("#ControlOp").val() != "run")){
+//        this.overwrite = true;
+//        return;
+//    }
 
     if ($("#instanceGenerationState").val() != "none")
     {
@@ -38,14 +37,18 @@ Worker.method("processIGOutput", function(output)
         {
             if (data && (data != ""))
             {
-//                console.log(data);
                 this.igData += data;
                 this.igData = this.igData.replaceAll("claferIG> ", "");  
+//                console.log(this.igData);
                 this.updateInstanceData();
             }
 //            else
 //                console.log("no data");
         }
+    }
+    else
+    {
+        host.print(data);        
     }
 });
 
@@ -62,16 +65,17 @@ Worker.method("updateInstanceData", function()
     this.data.instancesXML = new InstanceConverter(this.data.instancesData).convertFromClaferIGOutputToClaferMoo(this.data.instancesData);
     this.data.instancesXML = new InstanceConverter(this.data.instancesXML).convertFromClaferMooOutputToXML(); 
 
+    console.log(this.data.instancesXML);
+
+    var instanceProcessor = new InstanceProcessor(this.data.instancesXML);
+
+    console.log(instanceProcessor.getInstanceCount());
+    this.instancesCounter = instanceProcessor.getInstanceCount();
+
     if (this.instancesCounter == this.instancesToGet)
     {
         this.onGenerationSuccess();
     } 
-    else 
-    {
-        this.instancesCounter = this.instancesCounter + 1;
-//        $("#" + this.host.storage.backendId + "-next_instance").click(); // resuming the generation process
-    }        
-
 });
 
 Worker.method("checkForCommonErrors", function(instanceOutput){
@@ -128,12 +132,11 @@ Worker.method("onGenerationComplete", function(){
 
 });
 
-Worker.method("initializeGeneration", function(decrement){
+Worker.method("initializeGeneration", function(){
     if ($("#instanceGenerationState").val() == "none")
     {
         $("#instanceGenerationState").val("running");
         this.instancesToGet = $("#instancesToGet").val();       
-        this.instancesCounter = decrement; // the first instance is already present 
         this.host.print("Trying to generate " + this.instancesToGet + " instances...\n");        
     }
 });
