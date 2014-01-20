@@ -212,9 +212,9 @@ function getConfiguration()
             "onCompleted": function (module, responseObject){
                 module.host.print("ClaferConfigurator> The instance generator is exited.\n");
             },
-            "onBackendChange": function (module, newBackendId)
+            "onBackendChange": function (module, newBackend)
             {
-                module.host.storage.backendId = newBackendId;
+                module.host.storage.backendId = newBackend.id;
                 $("#instancesToGet").remove();
                 $("#getInstances").remove();
                 $("#" + newBackendId + "-next_instance").hide();
@@ -229,7 +229,7 @@ function getConfiguration()
 
                 if (module.host.storage.worker)
                 {
-                    module.host.storage.worker.selectedBackendId = newBackendId;
+                    module.host.storage.worker.selectedBackendId = newBackend.id;
                 }
             },
             "onControlButtonClick": function(module, id)
