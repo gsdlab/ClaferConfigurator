@@ -14,7 +14,7 @@
                 "set_individual_scope": {"command": "s $clafer$ $value$\n"},
                 "inc_all_scopes" : {"command": "i $value$\n"},
                 "inc_individual_scope": {"command": "i $clafer$ $value$\n"},
-                "set_bitwidth" : {"command": "b $value$\n"}                 
+                "set_int_scope" : {"command": "maxint $value$\n", "argument": "--maxint=$value$", "default_value": 31}            
             },
             "control_buttons": [
                 {"id": "next_instance", "command": "\n", "label" : "Next", "tooltip": "Next Instance"}, 

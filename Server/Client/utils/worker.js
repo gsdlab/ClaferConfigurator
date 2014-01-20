@@ -7,6 +7,11 @@ function Worker(host){
 
 Worker.method("processIGOutput", function(output)
 {
+    if (output.ig_args != "")
+    {
+        this.host.print("ClaferConfigurator> " + output.ig_args + "\n");
+    }       
+
     if (output.message) // means completed
     {
         this.host.print(output.message);                

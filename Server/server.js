@@ -421,6 +421,8 @@ server.post('/poll', /*pollingMiddleware,*/ function(req, res, next)
                 var jsonObj = new Object();              
                 jsonObj.message = currentResult;
                 jsonObj.scopes = "";
+                jsonObj.ig_args = process.ig_args;
+                process.ig_args = "";                
                 jsonObj.completed = true;
                 res.end(JSON.stringify(jsonObj));
             }
@@ -490,6 +492,9 @@ server.post('/poll', /*pollingMiddleware,*/ function(req, res, next)
 
                 jsonObj.scopes = process.scopes;
                 process.scopes = "";
+
+                jsonObj.ig_args = process.ig_args;
+                process.ig_args = "";                
 
                 jsonObj.completed = false;
                 res.end(JSON.stringify(jsonObj));
