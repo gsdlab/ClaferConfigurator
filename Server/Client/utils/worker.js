@@ -20,6 +20,11 @@ Worker.method("processIGOutput", function(output)
         data = data.replaceAll(host.storage.backend.presentation_specifics.prompt_title, "");
     }
 
+    if (data)
+    {
+        data = data.replace(/^=== Instance [0-9]* ===/g, ""); // removing instances labels
+    }
+
     if ($("#instanceGenerationState").val() != "none")
     {
 //        console.log(output.error);
