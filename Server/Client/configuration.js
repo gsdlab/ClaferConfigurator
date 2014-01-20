@@ -167,6 +167,8 @@ function getConfiguration()
             "onStart": function (module)
             {
                 $("#ControlOpArg1").val($ ("#instancesToGet").val() - 1); // request (instancesToGet - 1) instances
+                module.host.storage.worker.resetGeneration(); 
+                module.host.storage.worker.refreshViews();
                 module.host.storage.worker.initializeGeneration(); 
                 return true;                
             },
@@ -214,7 +216,7 @@ function getConfiguration()
             },
             "onBackendChange": function (module, newBackend)
             {
-                module.host.storage.backendId = newBackend.id;
+                module.host.storage.backend = newBackend;
                 $("#instancesToGet").remove();
                 $("#getInstances").remove();
                 $("#" + newBackend.id + "-next_instance").hide();
@@ -226,15 +228,9 @@ function getConfiguration()
                     $("#ControlOp").val("getInstances");
                     $("#ControlOpArg1").val($ ("#instancesToGet").val());
                 });
-
-                if (module.host.storage.worker)
-                {
-                    module.host.storage.worker.selectedBackendId = newBackend.id;
-                }
             },
             "onControlButtonClick": function(module, id)
             {
-                var backendId = $("#BackendId").val();
                 var parts = id.split("-");
                 if (parts[1] == "reload") // reload
                 {

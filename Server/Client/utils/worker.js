@@ -2,42 +2,62 @@ function Worker(host){
     this.host = host;
     this.data = new Object();    
     this.resetGeneration();
+    this.selectedBackend = null;
 }
 
 Worker.method("processIGOutput", function(output)
 {
     if (output.message) // means completed
     {
-        host.print(output.message);                
+        this.host.print(output.message);                
         return;
     }
 
     var data = output.data;
 
+    if (data && host.storage.backend.presentation_specifics.prompt_title != "")
+    {
+        data = data.replaceAll(host.storage.backend.presentation_specifics.prompt_title, "");
+    }
+
     if ($("#instanceGenerationState").val() != "none")
     {
-        var error = this.checkForCommonErrors(output.error);
+//        console.log(output.error);
+        var obj = this.checkForCommonErrorsAndFilter(output.error);
+        var error = obj.error;
 
         if (error != ""){
-            this.onGenerationError(error);     
-//            console.log(error);   
+            this.onGenerationError(error);    
+            return; 
         }
-        else 
+
+        var obj = this.checkForCommonErrorsAndFilter(data);
+        var error = obj.error;
+        data = obj.filteredInput;
+
+        if (data && (data != ""))
         {
-            if (data && (data != ""))
-            {
-                this.igData += data;
-                this.igData = this.igData.replaceAll("claferIG> ", "");  
+            this.igData += data;
 //                console.log(this.igData);
-                this.updateInstanceData();
+            if (this.updateInstanceData())
+            {
+                this.onGenerationSuccess();
+                return;
             }
+        }
 //            else
 //                console.log("no data");
+
+        if (error != "")
+        {
+            this.onGenerationError(error);    
         }
+
     }
     else
     {
-        host.print(data);        
+        if (data && (data != "")) 
+            this.host.print(data);        
     }
 });
 
@@ -48,34 +68,34 @@ Worker.method("updateInstanceData", function()
     this.data.instancesXML = new InstanceConverter(this.data.instancesData).convertFromClaferIGOutputToClaferMoo(this.data.instancesData);
     this.data.instancesXML = new InstanceConverter(this.data.instancesXML).convertFromClaferMooOutputToXML(); 
 
-    console.log(this.data.instancesXML);
+//    console.log(this.data.instancesXML);
 
     var instanceProcessor = new InstanceProcessor(this.data.instancesXML);
 
-    console.log(instanceProcessor.getInstanceCount());
+//    console.log(instanceProcessor.getInstanceCount());
     this.instancesCounter = instanceProcessor.getInstanceCount();
 
     if (this.instancesCounter == this.requiredNumberOfInstances)
     {
-        this.onGenerationSuccess();
+        return true;
     } 
+
+    return false;
 });
 
-Worker.method("checkForCommonErrors", function(instanceOutput){
-    //ClaferIG couldn't parse the file or the bitwidth was too low
-    if (instanceOutput.indexOf('Exception in thread "main"') != -1){
-        var ret = "An error occured in Processing. Make sure your .cfr does not contain goals and try increasing the bitwidth. <br>";
-        return ret;
+Worker.method("checkForCommonErrorsAndFilter", function(instanceOutput)
+{
+    var result = new Object();
+    result.filteredInput = instanceOutput;
+    result.error = "";
+
+    if (instanceOutput.indexOf(this.host.storage.backend.presentation_specifics.no_more_instances) >= 0)
+    {
+        result.error = this.host.storage.backend.presentation_specifics.no_more_instances + "\n";
+        result.filteredInput = instanceOutput.replaceAll(this.host.storage.backend.presentation_specifics.no_more_instances, "").trim();
     }
-    //Unsat model
-    else if (instanceOutput.indexOf("No more instances found.") != -1 || instanceOutput == "N"){
-//        $("#getUnsat").submit();
-        return instanceOutput;
-    }
-    //No common errors
-    else {
-        return "";
-    }
+
+    return result;
 });
 
 Worker.method("onGenerationError", function(error){
@@ -94,7 +114,7 @@ Worker.method("onGenerationComplete", function(){
     {
         this.host.print("All requested instances were generated\n");
     }
-    else if (this.instancesCounter == 0)
+    else if (this.instancesCounter == this.initialNumberOfInstances)
     {
         this.host.print("Could not generate any instance\n");        
     }
@@ -104,7 +124,7 @@ Worker.method("onGenerationComplete", function(){
     }
 
 //    alert(this.data.instancesData);    
-    console.log(this.data);
+//    console.log(this.data);
 
     this.refreshViews();
 });

@@ -96,7 +96,7 @@ ConstraintManipulator.method("getClaferConstraints", function(){
 		ret += constraints[i];
 		ret += " ]";
 	}
-	console.log(ret)
+
 	return ret;
 });
 
