@@ -1,9 +1,9 @@
 ClaferConfigurator
 ==================
 
-v0.3.4.20-9-2013
+v0.3.5.17-01-2014
 
-An interactive, web-based, configurator for attributed feature models with inheritance subset of Clafer.
+An interactive, web-based, configurator for attributed feature models with inheritance subset of [Clafer](http://clafer.org).
 The configurator provides a novel approach to feature configuration, whereby the configurer works with multiple correct configurations at the same time instead of working with a single configuration, making configuration steps, and resolving configuration conflicts. 
 When working with a single configuration, the configurer is often not aware of the impact of their configuration actions, and when conflicts arise, they have great difficulty resolving the conflicts.
 In contrast, in ClaferConfigurator, the configurers always see only correct configurations and can explore them using filtering, ordering, highlighting of the differences, and creating more configurations on demand.
@@ -39,27 +39,21 @@ Contributors
 Getting Clafer Tools
 --------------------
 
-Binary distributions of release 0.3.4 of 
-Clafer, 
-ClaferIG, 
-ClaferWiki, 
-ClaferMoo, 
-ClaferMooVisualizer, 
-and ClaferConfigurator 
-for Windows, Mac, and Linux, 
-can be downloaded from [Clafer Tools - Binary Distributions](http://gsd.uwaterloo.ca/node/516). 
+Binary distributions of the release 0.3.5 of Clafer Tools for Windows, Mac, and Linux, 
+can be downloaded from [Clafer Tools - Binary Distributions](http://http://gsd.uwaterloo.ca/clafer-tools-binary-distributions). 
 Clafer Wiki requires Haskell Platform and MinGW to run on Windows. 
 
-In case these binaries do not work on your particular machine configuration, the tools can be easily built from source code, as described below.
+In case these binaries do not work on your particular machine configuration, the tools can be built from source code, as described below.
+
 
 ### Dependencies for running
 
 * [Java Platform (JDK)](http://www.oracle.com/technetwork/java/javase/downloads/index.html) v6+, 32bit
-* [Clafer](https://github.com/gsdlab/clafer) v0.3.4
+* [Clafer](https://github.com/gsdlab/clafer) v0.3.5
   * can be from the binary distribution
-* [ClaferIG](https://github.com/gsdlab/claferIG) v0.3.4
+* [ClaferIG](https://github.com/gsdlab/claferIG) v0.3.5
   * can be from the binary distribution
-* [Node.JS Framework](http://nodejs.org/download/) v0.10.18
+* [Node.JS Framework](http://nodejs.org/download/) v0.10.20
 
 ### Installation
 
@@ -68,16 +62,16 @@ In case these binaries do not work on your particular machine configuration, the
 2. Ensure that both clafer and claferIG are on your system path
 3. Download the [ClaferConfigurator](https://github.com/gsdlab/ClaferConfigurator) to some directory `<target directory>`
 4. Go to `<target directory>/ClaferConfigurator/Server/` and exectue the command:
-	
+  
  `npm install`
 
 ### Important: Branches must correspond
 
-Clafer, ClaferIG, ClaferWiki, ClaferMoo,  ClaferMooVisualizer, and ClaferConfigurator are following the *simultaneous release model*. 
+All related projects are following the *simultaneous release model*. 
 The branch `master` contains releases, whereas the branch `develop` contains code under development. 
-When building the tools, the branches should match:
-Releases `clafer/master` and `claferIG/master` are guaranteed to work well together.
-Development versions `clafer/develop` and `claferIG/develop` should work well together but this might not always be the case.
+When building the tools, the branches should match.
+Releases from branches 'master` are guaranteed to work well together.
+Development versions from branches `develop` should work well together but this might not always be the case.
 
 ### Settings
 
@@ -89,7 +83,11 @@ Running the following commands should produce the following results or later ver
 
 `clafer -V` 
 
-> `Clafer v0.3.4.20-9-2013`
+> `Clafer v0.3.5.17-01-2014`
+
+`claferIG -V` 
+
+> `Clafer v0.3.5.17-01-2014`
 
 `python -V`
 
@@ -101,14 +99,14 @@ Running the following commands should produce the following results or later ver
 
 `node -v`
 
->v0.10.18
+>v0.10.20
 
 3. Make sure `uploads` folder is accessible for writing, since temporary files will be stored there.
 
 ### Running
 
 To run the server execute
-	
+  
 `node server.js`
  
 from `<target directory>/ClaferConfigurator/Server/`
@@ -117,10 +115,12 @@ Then you can go to any browser and type `http://localhost:[port]/` and open Claf
 
 Need help?
 ==========
-* See [Project's website](http://gsd.uwaterloo.ca/clafer) for news, technical reports and more
-  * Check out a [Clafer tutorial](http://gsd.uwaterloo.ca/node/310)
-  * Try live instance of [ClaferWiki](http://t3-necsis.cs.uwaterloo.ca:8091)
-  * Try [Online translator](http://gsd.uwaterloo.ca/clafer/translator)
-* Take a look at incomplete [Clafer wiki](https://github.com/gsdlab/clafer/wiki)
+* See [language's website](http://clafer.org) for news, technical reports and more
+  * Check out a [Clafer tutorial](http://t3-necsis.cs.uwaterloo.ca:8091/Tutorial/Intro)
+  * Try a live instance of [ClaferWiki](http://t3-necsis.cs.uwaterloo.ca:8091)
+  * Try a live instance of [ClaferIDE](http://t3-necsis.cs.uwaterloo.ca:8094)
+  * Try a live instance of [ClaferConfigurator](http://t3-necsis.cs.uwaterloo.ca:8093)
+  * Try a live instance of [ClaferMooVisualizer](http://t3-necsis.cs.uwaterloo.ca:8092)
+* Take a look at (incomplete) [Clafer wiki](https://github.com/gsdlab/clafer/wiki)
 * Browse example models in the [test suite](https://github.com/gsdlab/clafer/tree/master/test/positive) and [MOO examples](https://github.com/gsdlab/clafer/tree/master/spl_configurator/dataset)
 * Post questions, report bugs, suggest improvements [GSD Lab Bug Tracker](http://gsd.uwaterloo.ca:8888/questions/). Tag your entries with `claferconfigurator` (so that we know what they are related to) and with `michal` (so that Michał gets a notification).
