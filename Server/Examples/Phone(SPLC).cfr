@@ -1,0 +1,27 @@
+// Example from an SPLC paper <a href="http://gsd.uwaterloo.ca/node/519">Clafer Tools for Product Line Engineering</a>
+
+abstract xor Bluetooth
+    Bluetooth20 ?
+    Bluetooth21 ?
+    Bluetooth40 ?
+
+abstract MobilePhone
+    `Bluetooth
+    Connectivity
+        GSM
+        LTE ?
+            [LiBattery1450]
+        WiFi ?
+        USB ?
+    xor Battery
+        LiBattery1150 ?
+        LiBattery1450 ?
+
+abstract LowEndPhone : MobilePhone
+    [no WiFi]
+
+abstract HighEndPhone : MobilePhone
+    [USB && WiFi]
+    QuadCPU ? 
+
+Phone1 : MobilePhone
