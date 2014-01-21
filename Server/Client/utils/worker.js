@@ -27,7 +27,10 @@ Worker.method("processIGOutput", function(output)
 
     if (data)
     {
-        data = data.replace(/^=== Instance [0-9]* ===/g, ""); // removing instances labels
+//        alert(data);
+        data = data.replace(/^=== Instance \d* ===/gm, ""); // removing instances labels
+        data = data.replace(/^\s*\n/gm, "");
+//        alert(data);
     }
 
     if ($("#instanceGenerationState").val() != "none")
@@ -48,15 +51,15 @@ Worker.method("processIGOutput", function(output)
         if (data && (data != ""))
         {
             this.igData += data;
-//                console.log(this.igData);
+//            console.log(this.igData);
             if (this.updateInstanceData())
             {
                 this.onGenerationSuccess();
                 return;
             }
         }
-//            else
-//                console.log("no data");
+//        else
+//            console.log("no data");
 
         if (error != "")
         {
