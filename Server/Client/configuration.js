@@ -74,10 +74,10 @@ function getConfiguration()
             },
 
             "onPoll" : function(module, responseObject){
-                if (responseObject.args)
-                {
-                    module.host.print("ClaferConfigurator> clafer " + responseObject.args + "\n");
-                }
+//                if (responseObject.args)
+//                {
+//                    module.host.print("ClaferConfigurator> clafer " + responseObject.args + "\n");
+//                }
             },
             "onCompleted" : function(module, responseObject){               
                 if (responseObject.model != "")
