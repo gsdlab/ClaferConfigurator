@@ -4,6 +4,7 @@
         {"url": "ACC.cfr", "label": "Adaptive Cruise Control example"},    
         {"url": "BumbleBee.cfr", "label": "BumbleBee, a transformer example"},
         {"url": "Phone(SPLC).cfr", "label": "The mobile phone example from an SPLC paper"}, 
-        {"url": "Phone(minimize-cost).cfr", "label": "A mobile phone with a quality attribute example"}    
+        {"url": "Phone(minimize-cost).cfr", "label": "A mobile phone with a quality attribute example"},    
+        {"url": "online-B2C-solution.cfr", "label": "Online B2C Solution from GPCE'05 paper"}    
     ]
 }

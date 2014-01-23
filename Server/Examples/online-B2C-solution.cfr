@@ -1,0 +1,41 @@
+// Example from <a href="http://gsd.uwaterloo.ca/node/78">Mapping Features to Models: A Template Approach Based on Superimposed Variants</a>
+
+abstract OnlineB2CSolution
+	Storefront
+		BuyPath
+			ShoppingCart
+			or Checkout
+				Registered
+					[ Registration ]
+					QuickCheckoutProfile ?
+				Guest
+		Catalog
+			CatalogStructure
+				Categories ?
+					Multilevel ?
+					MultipleClassification ?
+				ProductInformation
+					BasicInformation
+					DetailedDescription ?
+					WarrantyInformation ?
+					CustomerReviews ?
+					AssociatedAssets ?
+					xor ProductType
+						ElectronicGoods
+						Services
+			Search ?
+			Browsing
+		Registration ?
+		WishLists ?
+	BusinessManagement
+		OrderManagement
+		InventoryTracking ?
+
+abstract OnlineB2CSolutionConfig1 : OnlineB2CSolution
+	[ Registered ]
+	[ MultipleClassification ]
+	[ no CustomerReviews ]
+	[ ElectronicGoods ]
+	[ WishLists ]
+
+myStore : OnlineB2CSolutionConfig1
