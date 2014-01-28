@@ -2,7 +2,7 @@
     "backends": [
         {
             "id": "alloyIG", 
-            "label": "Alloy-based Instance Generator", 
+            "label": "Alloy-based IG", 
             "tooltip": "The original ClaferIG based on Alloy4.1 solver",
             "accepted_format": "clafer_source",               
             "tool": "claferIG", 

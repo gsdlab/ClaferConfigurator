@@ -212,7 +212,7 @@ function getConfiguration()
                 module.host.storage.worker.processIGOutput(responseObject);
             },
             "onCompleted": function (module, responseObject){
-                module.host.print("ClaferConfigurator> The instance generator is exited.\n");
+                module.host.print("ClaferConfigurator> Instance generator stopped.\n");
             },
             "onBackendChange": function (module, newBackend)
             {
