@@ -5,7 +5,7 @@ function getConfiguration()
     	{
     		"layout": {
     			"width": (window.parent.innerWidth-40) * 0.38,
-    			"height": 125,
+    			"height": 210,
     			"posx": 0,
     			"posy": 0
     		},
@@ -134,7 +134,7 @@ function getConfiguration()
 
             "layout": {
                 "width": (window.parent.innerWidth+65) * 0.38,
-                "height": 125,
+                "height": 210,
                 "posx": (window.parent.innerWidth-40) * (1 - 0.38),
                 "posy": 0
             }
@@ -146,7 +146,7 @@ function getConfiguration()
     {
             "layout": {
                 "width": (window.parent.innerWidth-40) * (0.24),
-                "height": 125,
+                "height": 210,
                 "posx": (window.parent.innerWidth-40) * 0.38,
                 "posy": 0
             },
@@ -258,7 +258,7 @@ function getConfiguration()
                 "width": window.parent.innerWidth - 20 - 230,
                 "height": window.parent.innerHeight - 60 - 165,
                 "posx": 0,
-                "posy": 165
+                "posy": 250
             },
 
             "buttonsForRemoval": true,
@@ -303,7 +303,7 @@ function getConfiguration()
                 "width": 250,
                 "height": window.parent.innerHeight - 60 - 165,
                 "posx": window.parent.innerWidth - 20 - 230,
-                "posy": 165
+                "posy": 250
             }
         }});
 

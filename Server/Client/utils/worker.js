@@ -7,10 +7,10 @@ function Worker(host){
 
 Worker.method("processIGOutput", function(output)
 {
-//    if (output.ig_args != "")
-//    {
-//        this.host.print("ClaferConfigurator> " + output.ig_args + "\n");
-//    }       
+    if (output.ig_args != "")
+    {
+        this.host.print("ClaferConfigurator> " + output.ig_args + "\n");
+    }       
 
     if (output.message) // means completed
     {
@@ -28,8 +28,6 @@ Worker.method("processIGOutput", function(output)
     if (data)
     {
 //        alert(data);
-        data = data.replace(/^=== Instance \d* ===/gm, ""); // removing instances labels
-        data = data.replace(/^\s*\n/gm, "");
 //        alert(data);
     }
 
@@ -78,8 +76,7 @@ Worker.method("updateInstanceData", function()
 {
     this.data.instancesData += this.igData;
     this.igData = "";
-    this.data.instancesXML = new InstanceConverter(this.data.instancesData).convertFromClaferIGOutputToClaferMoo(this.data.instancesData);
-    this.data.instancesXML = new InstanceConverter(this.data.instancesXML).convertFromClaferMooOutputToXML(); 
+    this.data.instancesXML = new InstanceConverter(this.data.instancesData).convertFromClaferMooOutputToXML(); 
 
 //    console.log(this.data.instancesXML);
 
@@ -168,8 +165,7 @@ Worker.method("resetGeneration", function(){
     this.igData = "";
     this.igError = "";
     this.data.instancesData = "";
-    this.data.instancesXML = new InstanceConverter(this.data.instancesData).convertFromClaferIGOutputToClaferMoo(this.data.instancesData);
-    this.data.instancesXML = new InstanceConverter(this.data.instancesXML).convertFromClaferMooOutputToXML(); 
+    this.data.instancesXML = new InstanceConverter(this.data.instancesData).convertFromClaferMooOutputToXML(); 
 
     this.requiredNumberOfInstances = 0;
     this.initialNumberOfInstances = 0;
