@@ -319,13 +319,14 @@ server.post('/upload', /*commandMiddleware,*/ function(req, res, next)
             }
 
             var specifiedArgs = [];
-            var genericArgs = [ss, uploadedFilePath + ".cfr", "--skip-goals", "--check-afm"];
+            var genericArgs = [ss, uploadedFilePath + ".cfr", "--skip-goals"];
 
             var process = core.getProcess(req.body.windowKey);
 
             process.ss = ss; // saving the scope strategy
 
             /* getting quality attributes */ 
+            /*
 
             var content = file_contents.split("\n");
 
@@ -337,6 +338,7 @@ server.post('/upload', /*commandMiddleware,*/ function(req, res, next)
 
             process.qualities = qualities;
             /////
+            */
 
             if (loadExampleInEditor)
                 process.model = file_contents;
