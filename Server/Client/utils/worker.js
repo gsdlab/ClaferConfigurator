@@ -76,13 +76,15 @@ Worker.method("updateInstanceData", function()
 {
     this.data.instancesData += this.igData;
     this.igData = "";
-    this.data.instancesXML = new InstanceConverter(this.data.instancesData).convertFromClaferMooOutputToXML(); 
+    var converter = new InstanceConverter(this.data.instancesData);
+    this.data.instancesXML = converter.convertFromClaferMooOutputToXML(); 
+    this.host.print(converter.residualExtraText);
 
-//    console.log(this.data.instancesXML);
+    console.log(this.data.instancesXML);
 
     var instanceProcessor = new InstanceProcessor(this.data.instancesXML);
 
-//    console.log(instanceProcessor.getInstanceCount());
+    console.log(instanceProcessor.getInstanceCount());
     this.instancesCounter = instanceProcessor.getInstanceCount();
 
     if (this.instancesCounter == this.requiredNumberOfInstances)
