@@ -319,7 +319,7 @@ server.post('/upload', /*commandMiddleware,*/ function(req, res, next)
             }
 
             var specifiedArgs = [];
-            var genericArgs = [ss, uploadedFilePath + ".cfr", "--skip-goals"];
+            var genericArgs = [ss, uploadedFilePath + ".cfr"];
 
             var process = core.getProcess(req.body.windowKey);
 

@@ -2,7 +2,7 @@
     "backends": [
         {
             "id": "chocoIG", 
-            "label": "Choco-based IG",
+            "label": "Choco-based (IG + MOO)",
             "tooltip": "The new instance generator based on Choco3 solver library",
             "accepted_format": "choco",             
             "tool": "java",
@@ -27,7 +27,7 @@
         },
         {
             "id": "pythonZ3", 
-            "label": "Z3-based IG",
+            "label": "Z3-based (IG + MOO)",
             "tooltip": "A new instance generator based on Z3 solver library",
             "accepted_format": "python",             
             "tool": "sh",
@@ -49,7 +49,7 @@
         },
         {
             "id": "alloyIG", 
-            "label": "Alloy-based IG", 
+            "label": "Alloy-based (IG only)", 
             "tooltip": "The original ClaferIG based on Alloy4.1 solver",
             "accepted_format": "clafer_source",               
             "tool": "claferIG", 
