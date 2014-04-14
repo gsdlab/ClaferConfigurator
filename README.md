@@ -10,8 +10,8 @@ In contrast, in ClaferConfigurator, the configurers always see only correct conf
 
 ### Live demo
 
-* Master branch (stable and released): [Try me!](http://t3-necsis.cs.uwaterloo.ca:8092/)
-* Develop branch (with newest features, but not guaranteed to be stable): [Try me!](http://t3-necsis.cs.uwaterloo.ca:8192/)
+* Master branch (stable and released): [Try me!](http://t3-necsis.cs.uwaterloo.ca:8093/)
+* Develop branch (with newest features, but not guaranteed to be stable): [Try me!](http://t3-necsis.cs.uwaterloo.ca:8193/)
 
 If the demo is down or you encounter a bug, please email [Michal Antkiewicz](mailto:mantkiew@gsd.uwaterloo.ca).
 
@@ -77,7 +77,7 @@ can be downloaded from [Clafer Tools - Binary Distributions](http://http://gsd.u
 
 This assumes you use the default configuration `<target directory>/ClaferConfigurator/Server/Backends/backends.json` file.
 
-
+1. Install [ClaferIG](https://github.com/gsdlab/claferIG) following the installation instructions.
 
 **Backend: ClaferChocoIG**
 
