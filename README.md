@@ -138,7 +138,7 @@ Then you can go to any browser and type `http://localhost:[port]/` and open any 
 
 ### Trying an Example
 
-* Choose `Adaptive Cruise Control Example` example in the dropdown box in the upper-left corner of the tool window
+* Choose `Adaptive Cruise Control Example` example in the dropdown box in the upper-left corner of the tool window.
 * Press `Compile` button right in the front of the drop down list.
 * Once you see the compilation is complete, go to `Instance Generator` view and press `Run` there (the default backend is `Choco-based IG (IG + MOO)`).
 * The `Feature and Quality Matrix` view should show the first 10 generated instances.
@@ -161,4 +161,4 @@ Need help?
   * Try a live instance of [ClaferMooVisualizer](http://t3-necsis.cs.uwaterloo.ca:8092)
 * Take a look at (incomplete) [Clafer wiki](https://github.com/gsdlab/clafer/wiki)
 * Browse example models in the [test suite](https://github.com/gsdlab/clafer/tree/master/test/positive) and [MOO examples](https://github.com/gsdlab/clafer/tree/master/spl_configurator/dataset)
-* Post questions, report bugs, suggest improvements [GSD Lab Bug Tracker](http://gsd.uwaterloo.ca:8888/questions/). Tag your entries with `clafermooviz` (so that we know what they are related to) and with `alexander-murashkin` or `michal` (so that Alex or Michał gets a notification).
+* Post questions, report bugs, suggest improvements [GSD Lab Bug Tracker](http://gsd.uwaterloo.ca:8888/questions/). Tag your entries with `claferconfigurator` (so that we know what they are related to) and with `alexander-murashkin` or `michal` (so that Alex or Michał gets a notification).
