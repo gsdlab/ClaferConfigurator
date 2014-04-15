@@ -74,12 +74,17 @@ function getConfiguration()
             },
 
             "onPoll" : function(module, responseObject){
-//                if (responseObject.args)
-//                {
-//                    module.host.print("ClaferConfigurator> clafer " + responseObject.args + "\n");
-//                }
+                if (responseObject.args)
+                {
+                    module.host.print("ClaferConfigurator> clafer " + responseObject.args + "\n");
+                }
             },
             "onCompleted" : function(module, responseObject){               
+                if (responseObject.args)
+                {
+                    module.host.print("ClaferConfigurator> clafer " + responseObject.args + "\n");
+                }
+
                 if (responseObject.model != "")
                 {
                     module.editor.getSession().setValue(responseObject.model);
@@ -104,11 +109,6 @@ function getConfiguration()
                             break;
                         }                        
                     }
-                }                
-
-                if (responseObject.qualities)
-                {
-                    module.host.storage.worker.data.qualities = responseObject.qualities;    
                 }                
 
                 module.host.print("Compiler> " + responseObject.message + "\n");
