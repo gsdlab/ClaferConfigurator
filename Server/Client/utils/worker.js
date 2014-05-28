@@ -20,9 +20,9 @@ Worker.method("processIGOutput", function(output)
 
     var data = output.data;
 
-    if (data && host.storage.backend.presentation_specifics.prompt_title != "")
+    if (data && this.host.storage.backend.presentation_specifics.prompt_title != "")
     {
-        data = data.replaceAll(host.storage.backend.presentation_specifics.prompt_title, "");
+        data = data.replaceAll(this.host.storage.backend.presentation_specifics.prompt_title, "");
     }
 
     if (data)
