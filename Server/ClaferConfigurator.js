@@ -244,8 +244,7 @@ server.post('/upload', /*commandMiddleware,*/ function(req, res, next)
             else
             {
                 res.writeHead(500, { "Content-Type": "text/html"});
-                res.end("No data has been read");
-                lib.cleanupOldFiles(dlDir);
+                res.end("Could not read the target file contents");
                 return;
             }
             
