@@ -93,52 +93,6 @@ server.get('/htmlwrapper', /*fileMiddleware,*/ function(req, res) {
     res.sendfile("commons/Client/compiler_html_wrapper.html");
 });
 
-//------------------- save format request --------------------------
-server.get('/saveformat', /*fileMiddleware,*/ function(req, res) {
-    
-    if (!req.query.windowKey)
-        return;
-
-    core.logSpecific("Save format request", req.query.windowKey);
-
-    var process = core.getProcess(req.query.windowKey);
-    if (process == null)
-    {
-        res.writeHead(400, { "Content-Type": "text/html"});    
-        res.end("process_not_found");        
-        return;
-    }
-
-    var formatId = req.query.fileid;
-    var found = false;
-    var result = null;
-    var suffix = "";
-            // looking for a backend
-
-    for (var j = 0; j < process.compiled_formats.length; j++)
-    {
-        if (process.compiled_formats[j].id == formatId)
-        {
-            found = true;
-            result = process.compiled_formats[j].result;
-            suffix = process.compiled_formats[j].fileSuffix;
-            break;
-        }
-    }
-
-    if (!found)
-    {
-        core.logSpecific("Error: Format was not found within the process", req.query.windowKey);
-        res.writeHead(400, { "Content-Type": "text/html"});    
-        res.end("Error: Could not find the format within a process data by its submitted id: " + formatId);
-        return;
-    }
-        
-    res.writeHead(200, { "Content-Type": "text/html",
-                                 "Content-Disposition": "attachment; filename=compiled" + suffix});
-    res.end(result);
-});
-
 //-------------------------------------------------
 //  Command Requests
 //-------------------------------------------------
@@ -265,19 +219,24 @@ server.post('/upload', /*commandMiddleware,*/ function(req, res, next)
 {
     lib.handleUploads(req, res, next, fileReady);
 
-    function fileReady(uploadedFilePath, dlDir, loadedViaURL)
+    function fileReady(process)
     {        
 
         var loadExampleInEditor = req.body.loadExampleInEditor;
-        if (loadedViaURL)
+        if (process.loadedViaURL)
         {
             loadExampleInEditor = true;
         }
 
-        var key = req.body.windowKey;
-
         // read the contents of the uploaded file
-        fs.readFile(uploadedFilePath + ".cfr", function (err, data) {
+        fs.readFile(process.file + ".cfr", function (err, data) {
+
+            if (err)
+            {
+                res.writeHead(500, { "Content-Type": "text/html"});
+                res.end("Error while reading the file: " + err);
+                return;
+            }
 
             var file_contents;
             if(data)
@@ -291,19 +250,6 @@ server.post('/upload', /*commandMiddleware,*/ function(req, res, next)
             }
             
             core.logSpecific("Compiling...", req.body.windowKey);
-
-            core.addProcess({ 
-                windowKey: req.body.windowKey, 
-                toRemoveCompletely: false, 
-                tool: null, 
-                freshData: "", 
-                scopes: "",
-                folder: dlDir, 
-                clafer_compiler: null,
-                file: uploadedFilePath, 
-                mode : "compiler", 
-                freshError: ""});    
-
 
             var ss = "--ss=none";
 
@@ -319,26 +265,9 @@ server.post('/upload', /*commandMiddleware,*/ function(req, res, next)
             }
 
             var specifiedArgs = [];
-            var genericArgs = [ss, uploadedFilePath + ".cfr"];
-
-            var process = core.getProcess(req.body.windowKey);
+            var genericArgs = [ss, process.file + ".cfr"];
 
             process.ss = ss; // saving the scope strategy
-
-            /* getting quality attributes */ 
-            /*
-
-            var content = file_contents.split("\n");
-
-            var qualities = "";
-            for (i=0; i<content.length; i++){
-                if (content[i].indexOf("//# QUALITY_ATTRIBUTE") != -1)
-                    qualities += content[i].replace(/[ ]{1,}/, "").replace("//# QUALITY_ATTRIBUTE", "") + "\n";
-            }            
-
-            process.qualities = qualities;
-            /////
-            */
 
             if (loadExampleInEditor)
                 process.model = file_contents;

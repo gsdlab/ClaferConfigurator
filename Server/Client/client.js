@@ -50,42 +50,17 @@ function getConfiguration()
             ],
 
             "onError": function(module, statusText, response, xhr){
-                var caption = "";
-                if (statusText == "compile_error")
-                    caption = "<b>Compile Error.</b><br>Please check whether Clafer Compiler is available, and the model is correct.";
-                else if (statusText == "timeout")
-                    caption = "<b>Request Timeout.</b><br>Please check whether the server is available.";
-            //    else if (statusText == "malformed_output")
-            //        caption = "<b>Malformed output received from ClaferMoo.</b><br>Please check whether you are using the correct version of ClaferMoo. Also, an unhandled exception is possible.  Please verify your input file: check syntax and integer ranges.";        
-            //    else if (statusText == "malformed_instance")
-            //        caption = "<b>Malformed instance data received from ClaferMoo.</b><br>An unhandled exception may have occured during ClaferMoo execution. Please verify your input file: check syntax and integer ranges.";        
-            //    else if (statusText == "empty_instances")
-            //        caption = "<b>No instances returned.</b>Possible reasons:<br><ul><li>No optimal instances, all variants are non-optimal.</li><li>An unhandled exception occured during ClaferMoo execution. Please verify your input file: check syntax and integer ranges.</li></ul>.";        
-            //    else if (statusText == "empty_argument")
-            //        caption = "<b>Empty argument given to processToolResult.</b><br>Please report this error.";        
-            //    else if (statusText == "empty_instance_file")
-            //        caption = "<b>No instances found in the specified file.";        
-            //    else if (statusText == "optimize_first")
-            //        caption = "<b>You have to run optimization first, and only then add instances.";        
-                else if (statusText == "error" && response.responseText == "")
-                    caption = "<b>Request Error.</b><br>Please check whether the server is available.";        
-                else
-                    caption = '<b>' + xhr + '</b><br>' + response.responseText.replace("\n", "<br>");
-
-                return caption;
-
+                return onError(module, statusText, response, xhr);
             },
 
             "onBeginQuery": function(module)
             {
-                if (module.host.findModule("mdControl").sessionActive) // if there is an active IG session
+                module.host.storage.toReload = module.host.findModule("mdControl").sessionActive; // if there is an active IG session
+                if (module.host.storage.toReload)
                 {
-                    alert("Please stop the instance generator and save your results first");
-                    return false;
+                    module.host.findModule("mdControl").pausePolling();
                 }
 
-                module.host.findModule("mdControl").disableAll();
-    
                 module.host.storage.worker = new Worker(module.host); // creating a class for working with instances             
 
                 return true;
@@ -109,7 +84,10 @@ function getConfiguration()
 
                 if (responseObject.model != "")
                 {
-                    module.editor.getSession().setValue(responseObject.model);
+                    module.editor.selectAll();
+                    module.editor.getSession().replace(module.editor.selection.getRange(), responseObject.model);
+                    module.editor.selection.moveCursorTo(0, 0, false);
+                    module.editor.selection.clearSelection();
                 }
 
                 if (responseObject.compiled_formats)
@@ -133,17 +111,43 @@ function getConfiguration()
                     }
                 }                
 
-                module.host.print("Compiler> " + responseObject.message + "\n");
-                module.host.print(responseObject.compiler_message + "\n");    
+//                module.host.print("Compiler> " + responseObject.message + "\n");
+//                module.host.print(responseObject.compiler_message + "\n");    
 
                 if (responseObject.message == "Success")
                 {
-                    module.host.findModule("mdControl").resetControls();
+                    module.host.print("Compiler> " + responseObject.message + "\n");
+                    module.host.print(responseObject.compiler_message + "\n");    
+
+                    if (module.host.storage.toReload)
+                    {
+                        module.host.storage.toReload = false;
+                        if (!module.host.findModule("mdControl").reload())
+                        {
+                            module.host.print("ClaferConfigurator> No reload command specified for the given backend.\nClaferConfigurator> Please re-run the backend to work with the changed model.\n");
+                        }
+                    }
+                    else
+                    {
+                        module.host.findModule("mdControl").resetControls();
+                    }
                 }
                 else
                 {
-                    module.host.findModule("mdControl").disableAll(); // if exited IG, then disable controls
+                    module.host.print("Compiler> Error response:\n" + responseObject.compiler_message + "\n");
+                    console.log(responseObject);
+                    if (module.host.storage.toReload)
+                    {
+                        module.host.print("ClaferConfigurator> The instance generator is still running with the last version of the model.\n");
+                        module.host.print("ClaferConfigurator> After you fix the compilation problem, the instance generator will reload.\n");
+                        module.host.findModule("mdControl").resumePolling();
+                    }
+                    else
+                    {
+                        module.host.findModule("mdControl").disableAll(); // if exited IG, then disable controls
+                    }
                 }                 
+             
 
                 return true;   
     		}    		
@@ -173,18 +177,8 @@ function getConfiguration()
                 "posy": 0
             },
             "title": "Instance Generator",
-            "onError": function(module, statusText, response, xhr)
-            {
-                if (statusText == "timeout")
-                    caption = "<b>Request Timeout.</b><br>Please check whether the server is available.";
-                else if (response && response.responseText == "process_not_found")
-                    caption = "<b>Session not found.</b><br>Looks like your session has been closed due to inactivity. Please recompile your model to start a new session";
-                else if (statusText == "error" && response.responseText == "")
-                    caption = "<b>Request Error.</b><br>Please check whether the server is available.";        
-                else
-                    caption = '<b>' + xhr + '</b><br>' + response.responseText.replace("\n", "<br>");   
-
-                return caption;     
+            "onError": function(module, statusText, response, xhr){
+                return onError(module, statusText, response, xhr);
             },
             "onStart": function (module)
             {
@@ -258,7 +252,7 @@ function getConfiguration()
                 {
                     module.host.storage.worker.resetGeneration(); 
                     module.host.storage.worker.refreshViews();
-                    module.host.print("Instances are reset.\n");        
+                    module.host.print("ClaferConfigurator> Generation has been successfully reset.\n");        
                 }
             },
             "onCustomEvent": function(module, response)
@@ -268,8 +262,11 @@ function getConfiguration()
                     module.host.print("ClaferConfigurator> Generating instances...\n");            
                     module.host.storage.worker.initializeGeneration(); 
                 }
-            },               
-
+                else
+                {
+                    module.host.print("ClaferConfigurator> '" + response + "' command sent.\n");
+                }
+            }
         }});
 
     modules.push({"name": "FeatureQualityMatrix", "configuration": 
@@ -341,4 +338,44 @@ function getConfiguration()
 	};
 
     return {"modules": modules, "settings": settings};
+}
+
+function onError(module, statusText, response, xhr) 
+{
+    var currentDate = new Date();
+    var errorRecord = {};
+
+    if (statusText == "compile_error")
+        errorRecord = {
+            "caption": "Compilation Error", 
+            "body": "Please check whether Clafer Compiler is available, and the model is syntactically correct."
+        };
+    else if (statusText == "timeout")
+        errorRecord = {
+            "caption": "Request Timeout", 
+            "body": "Please check whether the server is available. You may want to reload the browser page."
+        };
+    else if (response && response.responseText == "process_not_found")
+        errorRecord = {
+            "caption": "Session not found", 
+            "body": "Looks like your session has been closed due to inactivity. Just recompile your model to start a new session."
+        };
+    else if (statusText == "error" && response.responseText == "")
+        errorRecord = {
+            "caption": "Request Error", 
+            "body": "Please check whether the server is available. Try to recompile the model or to reload the browser page."
+        };
+    else
+        errorRecord = {
+            "caption": xhr, 
+            "body": response.responseText
+        };
+
+    errorRecord.datetime = currentDate.today() + " @ " + currentDate.timeNow();
+    errorRecord.contact = "If the error persists, please contact Alexandr Murashkin (http://gsd.uwaterloo.ca/amurashk) or Michal Antkiewicz (http://gsd.uwaterloo.ca/mantkiew)";
+
+    module.host.print("ClaferConfigurator> " + errorRecord.caption + ": " + errorRecord.datetime + "\n" + errorRecord.body + "\n");
+    module.host.errorWindow(errorRecord);
+
+    return true;
 }
