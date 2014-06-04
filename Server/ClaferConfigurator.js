@@ -93,6 +93,23 @@ server.get('/htmlwrapper', /*fileMiddleware,*/ function(req, res) {
     res.sendfile("commons/Client/compiler_html_wrapper.html");
 });
 
+//------------------- save instances request --------------------------
+server.post('/saveinstances', /*commandMiddleware,*/ function(req, res, next) {
+    var process = core.getProcess(req.body.windowKey);
+    if (process != null)
+    {
+        core.logSpecific("Returning instances file", req.body.windowKey);
+        res.writeHead(200, { "Content-Type": "text/html",
+                         "Content-Disposition": "attachment; filename=instances.cfr.data"});
+        res.end(req.body.data);
+    }
+    else
+    {
+        res.send(404, "Sorry can't find your session. Please re-compile your file to start a new one");        
+    }
+});
+
+
 //-------------------------------------------------
 //  Command Requests
 //-------------------------------------------------
