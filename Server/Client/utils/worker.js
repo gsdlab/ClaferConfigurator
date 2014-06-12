@@ -96,6 +96,9 @@ Worker.method("processIGOutput", function(output)
 Worker.method("updateInstanceData", function()
 {
     this.data.instancesData += this.igData;
+
+    this.data.unparsedInstances = this.data.instancesData; // for Feature and Quality Matrix
+
     this.igData = "";
     var converter = new InstanceConverter(this.data.instancesData);
     this.data.instancesXML = converter.convertFromClaferMooOutputToXML(); 
