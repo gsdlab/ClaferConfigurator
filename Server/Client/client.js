@@ -105,7 +105,7 @@ function getConfiguration()
                             xml = xml.replaceAll('cl:', '');
                             xml = xml.replaceAll('xsi:', '');
 
-                            module.host.storage.worker.data.claferXML = xml;
+                            module.host.storage.worker.claferXML = xml;
                             break;
                         }                        
                     }
@@ -310,6 +310,12 @@ function getConfiguration()
                 }
             },
             "onInstanceRemove" : function(module, num)
+            {
+            },
+            "onMouseOver" : function(module, num)
+            {
+            },
+            "onMouseOut" : function(module, num)
             {
             }
         }});

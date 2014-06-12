@@ -21,7 +21,7 @@ SOFTWARE.
 */
 function Worker(host){
     this.host = host;
-    this.data = new Object();    
+    this.data = new DataTable();    
     this.resetGeneration();
     this.selectedBackend = null;
 }
@@ -33,83 +33,76 @@ Worker.method("processIGOutput", function(output)
         this.host.print("ClaferConfigurator> " + output.ig_args + "\n");
     }       
 
-    if (output.message) // means completed
+    if (output.message)
     {
-        this.host.print(output.message);                
+        this.host.print(output.message);             
         return;
     }
 
-    var data = output.data;
+    var textOutputFromIG = output.data;
 
-    if (data && this.host.storage.backend.presentation_specifics.prompt_title != "")
+    if (textOutputFromIG && this.host.storage.backend.presentation_specifics.prompt_title != "")
     {
-        data = data.replaceAll(this.host.storage.backend.presentation_specifics.prompt_title, "");
+        textOutputFromIG = textOutputFromIG.replaceAll(this.host.storage.backend.presentation_specifics.prompt_title, "");
     }
 
-    if (data)
+    if ($("#instanceGenerationState").val() != "none") // if we are generating instances currently
     {
-//        alert(data);
-//        alert(data);
-    }
-
-    if ($("#instanceGenerationState").val() != "none")
-    {
-//        console.log(output.error);
         var obj = this.checkForCommonErrorsAndFilter(output.error);
-        var error = obj.error;
 
-        if (error != ""){
+        if (obj.error != ""){
             this.onGenerationError(error);    
             return; 
         }
 
-        var obj = this.checkForCommonErrorsAndFilter(data);
+        var obj = this.checkForCommonErrorsAndFilter(textOutputFromIG);
         var error = obj.error;
-        data = obj.filteredInput;
+        var filteredTextOutputFromIG = obj.filteredInput;
 
-        if (data && (data != ""))
+        if (filteredTextOutputFromIG && (filteredTextOutputFromIG != ""))
         {
-            this.igData += data;
-//            console.log(this.igData);
+            this.freshUnparsedInstances = filteredTextOutputFromIG;
             if (this.updateInstanceData())
             {
                 this.onGenerationSuccess();
                 return;
-            }
+            } // else we continue generating
         }
-//        else
-//            console.log("no data");
 
-        if (error != "")
-        {
+        if (obj.error != ""){
             this.onGenerationError(error);    
+            return; 
         }
 
     }
     else
     {
-        if (data && (data != "")) 
-            this.host.print(data);        
+        if (textOutputFromIG && (textOutputFromIG != "")) 
+            this.host.print(textOutputFromIG);        
     }
 });
 
 Worker.method("updateInstanceData", function()
 {
-    this.data.instancesData += this.igData;
+    var dataSource = new Object(); // creating a datasource to load a DataTable from
+    this.unparsedInstances += this.freshUnparsedInstances;
+    this.freshUnparsedInstances = "";
 
-    this.data.unparsedInstances = this.data.instancesData; // for Feature and Quality Matrix
+    dataSource.unparsedInstances = this.unparsedInstances;
 
-    this.igData = "";
-    var converter = new InstanceConverter(this.data.instancesData);
-    this.data.instancesXML = converter.convertFromClaferMooOutputToXML(); 
+    dataSource.error = false;
+    dataSource.output = "";
+
+    /* getting XML from unparsed data */
+    var converter = new InstanceConverter(this.unparsedInstances);
+    dataSource.instancesXML = converter.convertFromClaferMooOutputToXML(); 
     this.host.print(converter.residualExtraText);
 
-    console.log(this.data.instancesXML);
+    dataSource.claferXML = this.claferXML;
+    dataSource.unparsedInstances = this.unparsedInstances;   
 
-    var instanceProcessor = new InstanceProcessor(this.data.instancesXML);
-
-    console.log(instanceProcessor.getInstanceCount());
-    this.instancesCounter = instanceProcessor.getInstanceCount();
+    this.data.loadFromDataSource(dataSource); // now we are creating a unified data source that has all the data processed
+    this.instancesCounter = this.data.instanceCount;
 
     if (this.instancesCounter == this.requiredNumberOfInstances)
     {
@@ -159,9 +152,6 @@ Worker.method("onGenerationComplete", function(){
         this.host.print("Generated " + (this.instancesCounter - this.initialNumberOfInstances) + " out of " + (this.requiredNumberOfInstances - this.initialNumberOfInstances) + " instances\n");        
     }
 
-//    alert(this.data.instancesData);    
-//    console.log(this.data);
-
     this.refreshViews();
 });
 
@@ -188,11 +178,10 @@ Worker.method("initializeGeneration", function(){
 });
 
 Worker.method("resetGeneration", function(){
-    this.igData = "";
+    this.unparsedInstances = "";
+    this.freshUnparsedInstances = "";
     this.igError = "";
-    this.data.instancesData = "";
-    this.data.instancesXML = new InstanceConverter(this.data.instancesData).convertFromClaferMooOutputToXML(); 
-
+    this.data.clear();
     this.requiredNumberOfInstances = 0;
     this.initialNumberOfInstances = 0;
     this.instancesCounter = 0;
