@@ -308,6 +308,8 @@ function getConfiguration()
                 } else {
                     alert("an error occured while adding a constraint");
                 }
+
+                module.host.storage.instanceFilter.filterByFeature(module, feature, require);                
             },
             "onInstanceRemove" : function(module, num)
             {
@@ -335,6 +337,7 @@ function getConfiguration()
     var settings = {
     	"onInitialize": function(host)
 	    {
+            host.storage.instanceFilter = new InstanceFilter(host);
 	    },
     	"onLoaded": function(host)
 	    {

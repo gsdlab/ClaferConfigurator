@@ -102,6 +102,9 @@ Worker.method("updateInstanceData", function()
     dataSource.unparsedInstances = this.unparsedInstances;   
 
     this.data.loadFromDataSource(dataSource); // now we are creating a unified data source that has all the data processed
+
+    this.host.storage.instanceFilter.onDataLoaded(this.data);
+
     this.instancesCounter = this.data.instanceCount;
 
     if (this.instancesCounter == this.requiredNumberOfInstances)
