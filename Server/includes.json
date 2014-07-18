@@ -3,7 +3,8 @@
         "utils/utils.js",
         "utils/worker.js",
         "modules/md_constraints.js",
-        "configuration.js"
+        "controllers/filtering_controller.js",
+        "client.js"
     ],
 
     "styles": [

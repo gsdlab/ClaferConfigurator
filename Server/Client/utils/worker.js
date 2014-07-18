@@ -1,92 +1,111 @@
+/*
+Copyright (C) 2012 - 2014 Alexander Murashkin, Neil Redman <http://gsd.uwaterloo.ca>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
 function Worker(host){
     this.host = host;
-    this.data = new Object();    
+    this.data = new DataTable();    
     this.resetGeneration();
     this.selectedBackend = null;
 }
 
 Worker.method("processIGOutput", function(output)
 {
-//    if (output.ig_args != "")
-//    {
-//        this.host.print("ClaferConfigurator> " + output.ig_args + "\n");
-//    }       
-
-    if (output.message) // means completed
+    if (output.ig_args != "")
     {
-        this.host.print(output.message);                
+        this.host.print("ClaferConfigurator> " + output.ig_args + "\n");
+    }       
+
+    if (output.message)
+    {
+        this.host.print(output.message);             
         return;
     }
 
-    var data = output.data;
+    var textOutputFromIG = output.data;
 
-    if (data && host.storage.backend.presentation_specifics.prompt_title != "")
+    if (textOutputFromIG && this.host.storage.backend.presentation_specifics.prompt_title != "")
     {
-        data = data.replaceAll(host.storage.backend.presentation_specifics.prompt_title, "");
+        textOutputFromIG = textOutputFromIG.replaceAll(this.host.storage.backend.presentation_specifics.prompt_title, "");
     }
 
-    if (data)
+    if ($("#instanceGenerationState").val() != "none") // if we are generating instances currently
     {
-//        alert(data);
-        data = data.replace(/^=== Instance \d* ===/gm, ""); // removing instances labels
-        data = data.replace(/^\s*\n/gm, "");
-//        alert(data);
-    }
-
-    if ($("#instanceGenerationState").val() != "none")
-    {
-//        console.log(output.error);
         var obj = this.checkForCommonErrorsAndFilter(output.error);
-        var error = obj.error;
 
-        if (error != ""){
+        if (obj.error != ""){
             this.onGenerationError(error);    
             return; 
         }
 
-        var obj = this.checkForCommonErrorsAndFilter(data);
+        var obj = this.checkForCommonErrorsAndFilter(textOutputFromIG);
         var error = obj.error;
-        data = obj.filteredInput;
+        var filteredTextOutputFromIG = obj.filteredInput;
 
-        if (data && (data != ""))
+        if (filteredTextOutputFromIG && (filteredTextOutputFromIG != ""))
         {
-            this.igData += data;
-//            console.log(this.igData);
+            this.freshUnparsedInstances = filteredTextOutputFromIG;
             if (this.updateInstanceData())
             {
                 this.onGenerationSuccess();
                 return;
-            }
+            } // else we continue generating
         }
-//        else
-//            console.log("no data");
 
-        if (error != "")
-        {
+        if (obj.error != ""){
             this.onGenerationError(error);    
+            return; 
         }
 
     }
     else
     {
-        if (data && (data != "")) 
-            this.host.print(data);        
+        if (textOutputFromIG && (textOutputFromIG != "")) 
+            this.host.print(textOutputFromIG);        
     }
 });
 
 Worker.method("updateInstanceData", function()
 {
-    this.data.instancesData += this.igData;
-    this.igData = "";
-    this.data.instancesXML = new InstanceConverter(this.data.instancesData).convertFromClaferIGOutputToClaferMoo(this.data.instancesData);
-    this.data.instancesXML = new InstanceConverter(this.data.instancesXML).convertFromClaferMooOutputToXML(); 
+    var dataSource = new Object(); // creating a datasource to load a DataTable from
+    this.unparsedInstances += this.freshUnparsedInstances;
+    this.freshUnparsedInstances = "";
 
-//    console.log(this.data.instancesXML);
+    dataSource.unparsedInstances = this.unparsedInstances;
 
-    var instanceProcessor = new InstanceProcessor(this.data.instancesXML);
+    dataSource.error = false;
+    dataSource.output = "";
 
-//    console.log(instanceProcessor.getInstanceCount());
-    this.instancesCounter = instanceProcessor.getInstanceCount();
+    /* getting XML from unparsed data */
+    var converter = new InstanceConverter(this.unparsedInstances);
+    dataSource.instancesXML = converter.convertFromClaferMooOutputToXML(); 
+    this.host.print(converter.residualExtraText);
+
+    dataSource.claferXML = this.claferXML;
+    dataSource.unparsedInstances = this.unparsedInstances;   
+
+    this.data.loadFromDataSource(dataSource); // now we are creating a unified data source that has all the data processed
+
+    this.host.storage.instanceFilter.onDataLoaded(this.data);
+
+    this.instancesCounter = this.data.instanceCount;
 
     if (this.instancesCounter == this.requiredNumberOfInstances)
     {
@@ -136,9 +155,6 @@ Worker.method("onGenerationComplete", function(){
         this.host.print("Generated " + (this.instancesCounter - this.initialNumberOfInstances) + " out of " + (this.requiredNumberOfInstances - this.initialNumberOfInstances) + " instances\n");        
     }
 
-//    alert(this.data.instancesData);    
-//    console.log(this.data);
-
     this.refreshViews();
 });
 
@@ -165,12 +181,10 @@ Worker.method("initializeGeneration", function(){
 });
 
 Worker.method("resetGeneration", function(){
-    this.igData = "";
+    this.unparsedInstances = "";
+    this.freshUnparsedInstances = "";
     this.igError = "";
-    this.data.instancesData = "";
-    this.data.instancesXML = new InstanceConverter(this.data.instancesData).convertFromClaferIGOutputToClaferMoo(this.data.instancesData);
-    this.data.instancesXML = new InstanceConverter(this.data.instancesXML).convertFromClaferMooOutputToXML(); 
-
+    this.data.clear();
     this.requiredNumberOfInstances = 0;
     this.initialNumberOfInstances = 0;
     this.instancesCounter = 0;

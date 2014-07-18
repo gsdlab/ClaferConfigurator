@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2012 Neil Redman <http://gsd.uwaterloo.ca>
+Copyright (C) 2012 - 2014 Alexander Murashkin, Neil Redman <http://gsd.uwaterloo.ca>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -82,7 +82,12 @@ ConstraintManipulator.method("getConstraints", function(){
 		array.push(constraint);
 	}
 	return array;
-})
+});
+
+ConstraintManipulator.method("claferFilter", function(s)
+{
+	return s.replace(/c[^_]*_/g, "")
+});
 
 ConstraintManipulator.method("getClaferConstraints", function(){
 	var ret = "";
@@ -93,7 +98,14 @@ ConstraintManipulator.method("getClaferConstraints", function(){
 		if (!this.constraints[constraints[i]]){
 			ret += "no ";
 		}
-		ret += constraints[i];
+		var elems = constraints[i].split("-");
+		var line = "";
+		for (var j = 0; j < elems.length; j++)
+		{
+			line += "." + this.claferFilter(elems[j]);
+		}
+
+		ret += line.substring(".root.".length);
 		ret += " ]";
 	}
 
