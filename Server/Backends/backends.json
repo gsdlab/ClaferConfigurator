@@ -5,9 +5,9 @@
             "label": "Choco-based (IG + MOO)",
             "tooltip": "The new instance generator based on Choco3 solver library",
             "accepted_format": "choco",             
-            "tool": "java",
-            "tool_args": ["-jar", "$dirname$/../../../ClaferChocoIG/target/claferchocoig-0.3.6-jar-with-dependencies.jar", "--file=$filepath$", "--repl"],            
-            "tool_version_args": ["-jar", "$dirname$/../../../ClaferChocoIG/target/claferchocoig-0.3.6-jar-with-dependencies.jar", "--version"],
+            "tool": "bash",
+            "tool_args": ["claferChocoIG.sh", "--file=$filepath$", "--repl"],            
+            "tool_version_args": ["claferChocoIG.sh", "--version"],
             "scope_options": {
                 "set_default_scope" : {"command": "globalScope $value$\n", "label": "Default:", "argument": "--scope=$value$", "default_value": 1}, 
                 "set_individual_scope": {"command": "scope $clafer$ $value$\n"}, 
@@ -22,7 +22,7 @@
                 {"id": "quit", "command": "q\n", "label" : "Quit", "tooltip": "Exit the IG safely"}
             ],
             "presentation_specifics": {
-                "prompt_title": "claferChocoIG>",
+                "prompt_title": "claferChocoIG> ",
                 "no_more_instances": "No more instances found. Consider increasing scopes."
             }            
         },
@@ -31,9 +31,9 @@
             "label": "Z3-based (IG + MOO)",
             "tooltip": "A new instance generator based on Z3 solver library",
             "accepted_format": "python",             
-            "tool": "sh",
-            "tool_args": ["$dirname$/../../../ClaferZ3/runClaferZ3", "$filepath$", "--mode=repl", "--showinheritance", "-u", "--indentation=tab"],            
-            "tool_version_args": ["$dirname$/../../../ClaferZ3/runClaferZ3", "-v"],
+            "tool": "bash",
+            "tool_args": ["claferSMT.sh", "$filepath$", "--mode=repl", "--showinheritance", "-u", "--indentation=tab"],            
+            "tool_version_args": ["claferSMT.sh", "-v"],
             "scope_options": {
                 "set_default_scope" : {"command": "s $value$\n", "argument": "-g=$value$\n", "label": "Global:", "default_value": 5}, 
                 "inc_all_scopes" : {"command": "i $value$\n", "label": "Global:"}
