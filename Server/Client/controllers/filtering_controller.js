@@ -32,8 +32,9 @@ InstanceFilter.method("clear", function(){
 });
 
 InstanceFilter.method("onDataLoaded", function(data){
-    this.clear();
+//    this.clear();
     this.data = data;
+    this.filterAllInstances();
 });
 
 InstanceFilter.method("computeQualityRanges", function(){

@@ -24,6 +24,7 @@ function Worker(host){
     this.data = new DataTable();    
     this.resetGeneration();
     this.selectedBackend = null;
+    this.firstTime = true;
 }
 
 Worker.method("processIGOutput", function(output)
@@ -166,8 +167,20 @@ Worker.method("refreshViews", function(){
 
     matrixModule.onDataLoaded(this.data);
     constraintModule.onDataLoaded(this.data);
-    $.updateWindowContent(matrixModule.id, matrixModule.getContent());
-    matrixModule.onRendered();
+
+    if (this.firstTime === true) 
+    {
+        this.firstTime = false;
+        console.log("firstTime");
+        $.updateWindowContent(matrixModule.id, matrixModule.getContent());
+        matrixModule.onRendered();
+    }
+    else
+    {
+        console.log("NOTfirstTime");
+        matrixModule.refresh();
+    }
+
 });
 
 Worker.method("initializeGeneration", function(){
