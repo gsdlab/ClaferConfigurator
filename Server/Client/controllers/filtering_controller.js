@@ -35,6 +35,7 @@ InstanceFilter.method("onDataLoaded", function(data){
 //    this.clear();
     this.data = data;
     this.filterAllInstances();
+    this.notify();
 });
 
 InstanceFilter.method("computeQualityRanges", function(){
@@ -54,7 +55,7 @@ InstanceFilter.method("isNegativeValue", function(v){
 
 InstanceFilter.method("filterAllInstances", function(){
 
-    this.instanceShown = this.data.instanceCount;
+    this.instanceMatch = this.data.instanceCount;
     for (var i = 0; i < this.data.instanceCount; i++)
     {
         var found = false;
@@ -67,7 +68,7 @@ InstanceFilter.method("filterAllInstances", function(){
                 {
                     found = true;
                     this.data.matrix[i]["_hidden"] = true;
-                    this.instanceShown--;
+                    this.instanceMatch = this.instanceMatch - 1;
                     break;
                 }
             }
@@ -81,7 +82,7 @@ InstanceFilter.method("filterAllInstances", function(){
                 {
                     found = true;
                     this.data.matrix[i]["_hidden"] = true;
-                    this.instanceShown--;
+                    this.instanceMatch = this.instanceMatch - 1;
                     break;
                 }
             }
@@ -109,7 +110,7 @@ InstanceFilter.method("notify", function()
 {
     this.data._qualityRanges = this.qualityRanges;
     this.data._triggeredDecisions = this.triggeredDecisions;
-    this.data._instanceShown = this.instanceShown;
+    this.data.instanceMatch = this.instanceMatch;
 
     this.host.findModule("mdFeatureQualityMatrix").onFiltered(this.data);
 });

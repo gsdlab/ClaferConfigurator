@@ -104,7 +104,7 @@ Worker.method("updateInstanceData", function()
 
     this.data.loadFromDataSource(dataSource); // now we are creating a unified data source that has all the data processed
 
-    this.host.storage.instanceFilter.onDataLoaded(this.data);
+//    this.host.storage.instanceFilter.onDataLoaded(this.data);
 
     this.instancesCounter = this.data.instanceCount;
 
@@ -165,6 +165,8 @@ Worker.method("refreshViews", function(){
     var matrixModule = this.host.findModule("mdFeatureQualityMatrix");
     var constraintModule = this.host.findModule("mdConstraints");
 
+    this.host.storage.instanceFilter.onDataLoaded(this.data);
+//    alert(this.host.storage.instanceFilter.data.instanceMatch);
     matrixModule.onDataLoaded(this.data);
     constraintModule.onDataLoaded(this.data);
 
