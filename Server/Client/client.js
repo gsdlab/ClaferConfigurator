@@ -236,7 +236,7 @@ function getConfiguration()
                 $("#instancesToGet").remove();
                 $("#getInstances").remove();
                 $("#" + newBackend.id + "-next_instance").hide();
-                $("#" + newBackend.id + "_buttons").prepend('<button id="getInstances">Get Instances</button>');
+                $("#" + newBackend.id + "_buttons").prepend('<button id="getInstances" disabled>Get Instances</button>');
                 $("#" + newBackend.id + "_buttons").prepend('<input class="scopeInput" type="text" value="10" name="instancesToGet" id="instancesToGet"/>');
      
                 $("#getInstances").click(function()

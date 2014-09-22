@@ -61,8 +61,10 @@ ConstraintManipulator.method("onInitRendered", function(){
 ConstraintManipulator.method("onDataLoaded", function(data){
 	this.Processor = new ClaferProcessor(data.claferXML);
 	this.instanceProcessor = new InstanceProcessor(data.instancesXML);
-
-	this.reset();
+	if($('#ControlOp').val()!='getInstances'){
+		this.reset();
+	}
+	
 });
 
 
