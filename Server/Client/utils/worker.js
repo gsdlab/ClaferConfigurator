@@ -97,8 +97,9 @@ Worker.method("updateInstanceData", function()
     /* getting XML from unparsed data */
     var converter = new InstanceConverter(this.unparsedInstances);
     dataSource.instancesXML = converter.convertFromClaferMooOutputToXML(); 
-    this.host.print(converter.residualExtraText);
 
+    this.host.print(converter.residualExtraText);
+    dataSource.claferJSON = this.claferJSON;
     dataSource.claferXML = this.claferXML;
     dataSource.unparsedInstances = this.unparsedInstances;   
 
@@ -173,13 +174,13 @@ Worker.method("refreshViews", function(){
     if (this.firstTime === true) 
     {
         this.firstTime = false;
-        console.log("firstTime");
+        //console.log("firstTime");
         $.updateWindowContent(matrixModule.id, matrixModule.getContent());
         matrixModule.onRendered();
     }
     else
     {
-        console.log("NOTfirstTime");
+        //console.log("NOTfirstTime");
         matrixModule.refresh();
     }
 

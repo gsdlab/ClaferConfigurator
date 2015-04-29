@@ -94,6 +94,13 @@ function getConfiguration()
                 {
                     for (var i = 0; i < responseObject.compiled_formats.length; i++)
                     {
+                        
+                        if (responseObject.compiled_formats[i].id == "json")
+                        {
+                            module.host.storage.worker.claferJSON = JSON.parse(responseObject.compiled_formats[i].result);
+                            
+                        }  
+
                         if (responseObject.compiled_formats[i].id == "xml")
                         {
                             var xml = responseObject.compiled_formats[i].result;
@@ -106,8 +113,10 @@ function getConfiguration()
                             xml = xml.replaceAll('xsi:', '');
 
                             module.host.storage.worker.claferXML = xml;
-                            break;
-                        }                        
+                           
+                        }   
+
+
                     }
                 }                
 
@@ -135,7 +144,7 @@ function getConfiguration()
                 else
                 {
                     module.host.print("Compiler> Error response:\n" + responseObject.compiler_message + "\n");
-                    console.log(responseObject);
+                    
                     if (module.host.storage.toReload)
                     {
                         module.host.print("ClaferConfigurator> The instance generator is still running with the last version of the model.\n");
