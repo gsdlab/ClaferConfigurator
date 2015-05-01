@@ -98,7 +98,7 @@ Worker.method("updateInstanceData", function()
     var converter = new InstanceConverter(this.unparsedInstances);
     dataSource.instancesXML = converter.convertFromClaferMooOutputToXML(); 
 
-    this.host.print(converter.residualExtraText);
+  
     dataSource.claferJSON = this.claferJSON;
     dataSource.claferXML = this.claferXML;
     dataSource.unparsedInstances = this.unparsedInstances;   
