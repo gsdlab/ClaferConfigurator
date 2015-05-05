@@ -36,6 +36,7 @@ InstanceFilter.method("onDataLoaded", function(data){
     this.data = data;
     this.filterAllInstances();
     this.notify();
+    this.filteredValues = {};
 });
 
 InstanceFilter.method("computeQualityRanges", function(){
@@ -85,7 +86,29 @@ InstanceFilter.method("filterAllInstances", function(){
                     this.instanceMatch = this.instanceMatch - 1;
                     break;
                 }
+            } else if (this.filteredValues[f.path] !== null && this.filteredValues[f.path] !== undefined && this.filteredValues[f.path] !== ""){
+
+                var query = this.filteredValues[f.path].split(';'), 
+                    isFound = false; // if any concurrence is found;
+
+                for (var qid = 0; qid < query.length; qid++) {
+                   isFound = isFound || (this.data.matrix[i][f.path].search(query[qid].trim()) !== -1);                   
+                 };
+            
+
+                if(!isFound){
+                   found = true;
+                   this.data.matrix[i]["_hidden"] = true;
+                   this.instanceMatch = this.instanceMatch - 1; 
+                }
+
+                
+                
+
+                break;
             }
+
+
         }
         if (!found)
         {
@@ -94,13 +117,20 @@ InstanceFilter.method("filterAllInstances", function(){
     }
 
 });
-
 InstanceFilter.method("filterByFeature", function(caller, f, value)
 {
     if (value == 0)
         this.triggeredDecisions[f] = null;
     else
         this.triggeredDecisions[f] = (value > 0) ? true : false;
+
+    this.filterAllInstances();
+    this.notify();
+});
+
+InstanceFilter.method("filterByValue", function(caller, field, value)
+{
+    this.filteredValues[field] = value;
 
     this.filterAllInstances();
     this.notify();

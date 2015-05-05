@@ -328,6 +328,10 @@ function getConfiguration()
             },
             "onMouseOut" : function(module, num)
             {
+            },
+            "onFilterChanged": function(module, path, value)
+            {
+                module.host.storage.instanceFilter.filterByValue(module, path, value);                
             }
         }});
 
