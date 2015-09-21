@@ -4,17 +4,17 @@ ClaferConfigurator
 v0.4.1
 
 An interactive, web-based, configurator for models expressed in [Clafer](http://clafer.org).
-The configurator provides a novel approach to feature configuration, whereby the configurer works with multiple correct configurations at the same time instead of working with a single configuration, making configuration steps, and resolving configuration conflicts.
+The configurator provides a novel approach to configuration (model instantiation), whereby the configurer works with multiple correct configurations at the same time instead of working with a single configuration, making configuration steps, and resolving configuration conflicts.
 When working with a single configuration, the configurer is often not aware of the impact of their configuration actions, and when conflicts arise, they have great difficulty resolving the conflicts.
 In contrast, in ClaferConfigurator, the configurers always see only correct configurations and can explore them using filtering, ordering, highlighting of the differences, and creating more configurations on demand.
 Read more in the paper [Clafer Tools for Product Line Engineering](http://gsd.uwaterloo.ca/publications/view/519).
 
 ### Live demo
 
-* Master branch (stable and released): [ClaferConfigurator release](http://t3-necsis.cs.uwaterloo.ca:8093/)
-* Develop branch (with newest features, but not guaranteed to be stable): [ClaferConfigurator testing ](http://t3-necsis.cs.uwaterloo.ca:8193/)
+* Master branch (stable and released): [ClaferConfigurator 0.4.1](http://t3-necsis.cs.uwaterloo.ca:8093/)
+* Develop branch (with newest features, but not guaranteed to be stable): [ClaferConfigurator Development ](http://t3-necsis.cs.uwaterloo.ca:8193/)
 
-If the demo is down or you encounter a bug, please email [Michal Antkiewicz](mailto:mantkiew@gsd.uwaterloo.ca).
+If the demo is down or you encounter a bug, please email [Michał Antkiewicz](mailto:mantkiew@gsd.uwaterloo.ca).
 
 ### Background
 
@@ -29,7 +29,7 @@ See [clafer.org](http://clafer.org).
 ### Nature
 
 The ClaferConfigurator is a web-based application. Its server side (implemented with `Node.js`) only runs the chosen backend passes back its output.
-The client-side is implemented using `Javascript/HTML` and provides configuration functionality.
+The client-side is implemented using `JavaScript/HTML` and provides configuration functionality.
 
 Contributors
 ------------
@@ -63,13 +63,19 @@ git submodule update
 
 This will install the platform.
 
+When working with a branch other then `master`, you need to additionally checkout that branch (e.g., `develop`):
+
+```
+git submodule foreach git checkout develop
+```
+
 3. Go to `<target directory>/ClaferConfigurator/Server` and execute
 
  `npm install`
 
 This will download all the required `Node.js` modules.
 
-4. Install the necessary backends into some location `<bin>` found on `PATH`. The default configuration in `<target directory>/ClaferIDE/Server/Backends/backends.json` assumes `~/bin`.
+4. Install the necessary backends into some location `<bin>` found on `PATH`. The default configuration in `<target directory>/ClaferIDE/Server/Backends/backends.json` assumes `/home/clafertools040/bin`.
 
 The fastest way is to unzip a binary distribution into the folder `<bin>`.
 
@@ -77,20 +83,20 @@ See [Installing Backends](https://github.com/gsdlab/ClaferToolsUICommonPlatform#
 
 ### Settings
 
-1. Make sure the port `8193` is free, or change the value of the key `port` in `Server/config.json`:
-`"port" = "8193"` to any free one.
+1. Make sure the port `8093` is free, or change the value of the key `port` in `Server/config.json`:
+`"port" = "8093"` to any free one.
 
-2. Make sure `clafer`, `node`, `python`, and `java` are in `PATH` environment variables, so they can be executed without any path prefixes.
+2. Make sure `clafer`, `node`, and `java` are in `PATH` environment variables, so they can be executed without any path prefixes.
 
 3. Running the following commands should produce the following results or later version:
 
-`clafer -V`
+`clafer --version`
 
 > `Clafer v0.4.1`
 
 `java -version`
 
-> `java version 1.8.0_45`
+> `java version 1.8.0_60`
 
 `node -v`
 
@@ -110,9 +116,11 @@ See [Installing Backends](https://github.com/gsdlab/ClaferToolsUICommonPlatform#
 
 * If you use `Node Supervisor` under Linux, you can execute
 
-`cd <target directory>/ClaferConfigurator/Server/commons`
-
-`sh start.sh`
+```sh
+cd <target directory>/ClaferConfigurator/Server/commons
+chmod +x start.sh
+sh start.sh
+```
 
 Then you can go to any browser and type `http://localhost:[port]/` and open any Clafer file with objectives in it.
 
@@ -121,7 +129,7 @@ Then you can go to any browser and type `http://localhost:[port]/` and open any 
 * Choose `Adaptive Cruise Control Example` example in the dropdown box in the upper-left corner of the tool window.
 * Press `Compile` button right in the front of the drop down list.
 * Once you see the compilation is complete, go to `Instance Generator` view and press `Run` there (the default backend is `Choco-based IG (IG + MOO)`).
-* The `Feature and Quality Matrix` view should show the first 10 generated instances.
+* The `Feature and Quality Matrix` view should show the first 10 generated configurations (instances).
 
 ### Important: Branches must correspond
 

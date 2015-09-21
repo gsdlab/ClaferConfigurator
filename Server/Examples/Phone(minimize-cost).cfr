@@ -1,8 +1,8 @@
 // Example of a Mobile Phone with a single quality attribute (cost) and a single optimization objective
 
-abstract Feature 
-    cost -> integer  //# QUALITY_ATTRIBUTE
-    [ cost >= 0 ]
+abstract Feature
+    cost -> integer
+        [ this >= 0 ]
 
 abstract MobilePhone
     hardware
@@ -16,7 +16,7 @@ abstract MobilePhone
                     [ cost = 8 ]
         keyboard  : Feature ?
             [ cost = 5 ]
-            keyboardLight : Feature ? 
+            keyboardLight : Feature ?
                 [ cost = 2 ]
         cpu : Feature
             [ cost = 12 ]
