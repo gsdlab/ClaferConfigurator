@@ -48,7 +48,7 @@
             "compiler_mode": "json",
             "compiler_args": [],
             "shows_compilation_errors" : "false",
-            "display_element": "json"
+            "display_element": "iframe"
         },
         {
             "id": "graph",
