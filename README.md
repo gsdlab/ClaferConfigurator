@@ -11,8 +11,8 @@ Read more in the paper [Clafer Tools for Product Line Engineering](http://gsd.uw
 
 ### Live demo
 
-* Master branch (stable and released): [ClaferConfigurator 0.4.1](http://t3-necsis.cs.uwaterloo.ca:8093/)
-* Develop branch (with newest features, but not guaranteed to be stable): [ClaferConfigurator Development ](http://t3-necsis.cs.uwaterloo.ca:8193/)
+* Master branch (stable and released): [ClaferConfigurator](http://t3-necsis.cs.uwaterloo.ca:8093/)
+* Develop branch (with newest features, but not guaranteed to be stable): [ClaferConfigurator (evelopment)](http://t3-necsis.cs.uwaterloo.ca:8193/)
 
 If the demo is down or you encounter a bug, please email [Michał Antkiewicz](mailto:mantkiew@gsd.uwaterloo.ca).
 
@@ -119,7 +119,7 @@ See [Installing Backends](https://github.com/gsdlab/ClaferToolsUICommonPlatform#
 ```sh
 cd <target directory>/ClaferConfigurator/Server/commons
 chmod +x start.sh
-sh start.sh
+./start.sh
 ```
 
 Then you can go to any browser and type `http://localhost:[port]/` and open any Clafer file with objectives in it.
