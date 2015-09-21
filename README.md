@@ -1,9 +1,9 @@
 ClaferConfigurator
 ==================
 
-v0.3.10
+v0.4.1
 
-An interactive, web-based, configurator for attributed feature models with inheritance subset of [Clafer](http://clafer.org).
+An interactive, web-based, configurator for models expressed in [Clafer](http://clafer.org).
 The configurator provides a novel approach to feature configuration, whereby the configurer works with multiple correct configurations at the same time instead of working with a single configuration, making configuration steps, and resolving configuration conflicts.
 When working with a single configuration, the configurer is often not aware of the impact of their configuration actions, and when conflicts arise, they have great difficulty resolving the conflicts.
 In contrast, in ClaferConfigurator, the configurers always see only correct configurations and can explore them using filtering, ordering, highlighting of the differences, and creating more configurations on demand.
@@ -11,8 +11,8 @@ Read more in the paper [Clafer Tools for Product Line Engineering](http://gsd.uw
 
 ### Live demo
 
-* Master branch (stable and released): [Try me!](http://t3-necsis.cs.uwaterloo.ca:8093/)
-* Develop branch (with newest features, but not guaranteed to be stable): [Try me!](http://t3-necsis.cs.uwaterloo.ca:8193/)
+* Master branch (stable and released): [ClaferConfigurator release](http://t3-necsis.cs.uwaterloo.ca:8093/)
+* Develop branch (with newest features, but not guaranteed to be stable): [ClaferConfigurator testing ](http://t3-necsis.cs.uwaterloo.ca:8193/)
 
 If the demo is down or you encounter a bug, please email [Michal Antkiewicz](mailto:mantkiew@gsd.uwaterloo.ca).
 
@@ -37,12 +37,12 @@ Contributors
 * Neil Vincent Redman, co-op student Jan-Apr 2013. Main developer.
 * [Michał Antkiewicz](http://gsd.uwaterloo.ca/mantkiew). Research Engineer. Requirements, development, architecture, testing, technology transfer.
 * [Alexandr Murashkin](http://gsd.uwaterloo.ca/amurashk). Developer. Transition to the platform, improvements, multiple backends.
-* [Eldar Khalilov](http://gsd.uwaterloo.ca/ekhalilov). Developer. Upgrade to 0.3.10 (replace XML with JSON, test suites).
+* [Eldar Khalilov](http://gsd.uwaterloo.ca/ekhalilov). Developer. Upgrade to 0.4.1 (replace XML with JSON, test suites).
 
 ### Dependencies for running
 
 * [Java Platform (JDK)](http://www.oracle.com/technetwork/java/javase/downloads/index.html) v8+
-* [Clafer](https://github.com/gsdlab/clafer) v0.3.10
+* [Clafer](https://github.com/gsdlab/clafer) v0.4.1
   * can be from the binary distribution
 * [Node.js Framework](http://nodejs.org/download/), v0.12.0
 * [Redis Server](https://launchpad.net/~chris-lea/+archive/ubuntu/redis-server), v2:2.*
@@ -86,7 +86,7 @@ See [Installing Backends](https://github.com/gsdlab/ClaferToolsUICommonPlatform#
 
 `clafer -V`
 
-> `Clafer v0.3.10`
+> `Clafer v0.4.1`
 
 `java -version`
 
