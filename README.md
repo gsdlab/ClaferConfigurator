@@ -22,8 +22,8 @@ See [clafer.org](http://clafer.org).
 
 ### Functions
 
-1. Provides a web based GUI for interaction with claferIG.
-2. Allows to compare and analyze product configurations.
+1. Provides a web based GUI for interaction with instance generators.
+2. Allows for comparing and analyzing multiple product configurations simultaneously.
 3. Facilitates configuration of clafer models.
 
 ### Nature
@@ -90,7 +90,7 @@ See [Installing Backends](https://github.com/gsdlab/ClaferToolsUICommonPlatform#
 
 `java -version`
 
-> `java version 1.8.0_40`
+> `java version 1.8.0_45`
 
 `node -v`
 

@@ -3,7 +3,7 @@
         {
             "id": "chocoIG",
             "label": "Choco-based (IG + MOO)",
-            "tooltip": "An generator based on Choco3 CSP solver library",
+            "tooltip": "An instance generator and optimizer based on Choco3 CSP solver library",
             "accepted_format": "choco",
             "tool": "java",
             "tool_args": ["-jar", "~/bin/claferchocoig.jar", "--file=$filepath$", "--repl"],
@@ -29,7 +29,7 @@
         {
             "id": "alloyIG",
             "label": "Alloy-based (IG only)",
-            "tooltip": "An generator based on Alloy4.2 Analyzer",
+            "tooltip": "An instance generator based on Alloy4.2 Analyzer",
             "accepted_format": "clafer_source",
             "tool": "claferIG",
             "tool_args": ["$filepath$", "--useuids", "--addtypes"],
