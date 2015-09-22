@@ -24,6 +24,7 @@ function Worker(host){
     this.data = new DataTable();    
     this.resetGeneration();
     this.selectedBackend = null;
+    this.firstTime = true;
 }
 
 Worker.method("processIGOutput", function(output)
@@ -96,14 +97,15 @@ Worker.method("updateInstanceData", function()
     /* getting XML from unparsed data */
     var converter = new InstanceConverter(this.unparsedInstances);
     dataSource.instancesXML = converter.convertFromClaferMooOutputToXML(); 
-    this.host.print(converter.residualExtraText);
 
+  
+    dataSource.claferJSON = this.claferJSON;
     dataSource.claferXML = this.claferXML;
     dataSource.unparsedInstances = this.unparsedInstances;   
 
     this.data.loadFromDataSource(dataSource); // now we are creating a unified data source that has all the data processed
 
-    this.host.storage.instanceFilter.onDataLoaded(this.data);
+//    this.host.storage.instanceFilter.onDataLoaded(this.data);
 
     this.instancesCounter = this.data.instanceCount;
 
@@ -164,10 +166,24 @@ Worker.method("refreshViews", function(){
     var matrixModule = this.host.findModule("mdFeatureQualityMatrix");
     var constraintModule = this.host.findModule("mdConstraints");
 
+    this.host.storage.instanceFilter.onDataLoaded(this.data);
+//    alert(this.host.storage.instanceFilter.data.instanceMatch);
     matrixModule.onDataLoaded(this.data);
     constraintModule.onDataLoaded(this.data);
-    $.updateWindowContent(matrixModule.id, matrixModule.getContent());
-    matrixModule.onRendered();
+
+    if (this.firstTime === true) 
+    {
+        this.firstTime = false;
+        //console.log("firstTime");
+        $.updateWindowContent(matrixModule.id, matrixModule.getContent());
+        matrixModule.onRendered();
+    }
+    else
+    {
+        //console.log("NOTfirstTime");
+        matrixModule.refresh();
+    }
+
 });
 
 Worker.method("initializeGeneration", function(){

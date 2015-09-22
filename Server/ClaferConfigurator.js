@@ -180,6 +180,9 @@ server.post('/control', /*commandMiddleware, */function(req, res)
                 }
 
                 process.freshData += data;
+                // core.logSpecific(process.freshData, req.body.windowKey);
+
+
             }
         }
     };
