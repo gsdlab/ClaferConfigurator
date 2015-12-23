@@ -31,7 +31,7 @@ abstract MobilePhone
         browser ?
             [ extra_cpu ]
         mediaplayer ?
-    totalCost : integer = sum Feature.cost
+    totalCost -> integer = sum Feature.cost
 
 aPhone : MobilePhone
 
