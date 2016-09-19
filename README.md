@@ -1,7 +1,7 @@
 ClaferConfigurator
 ==================
 
-##### v0.4.3
+##### v0.4.4
 
 An interactive, web-based, configurator for models expressed in [Clafer](http://clafer.org).
 The configurator provides a novel approach to configuration (model instantiation), whereby the configurer works with multiple correct configurations at the same time instead of working with a single configuration, making configuration steps, and resolving configuration conflicts.
@@ -42,7 +42,7 @@ Contributors
 ### Dependencies for running
 
 * [Java Platform (JDK)](http://www.oracle.com/technetwork/java/javase/downloads/index.html) v8+
-* [Clafer](https://github.com/gsdlab/clafer) v0.4.3
+* [Clafer](https://github.com/gsdlab/clafer) v0.4.4
   * can be from the binary distribution
 * [Node.js Framework](http://nodejs.org/download/), v4.2.3 LTS
 * [Redis Server](https://launchpad.net/~chris-lea/+archive/ubuntu/redis-server), v2:2.*
@@ -92,11 +92,11 @@ See [Installing Backends](https://github.com/gsdlab/ClaferToolsUICommonPlatform#
 
 `clafer --version`
 
-> `Clafer v0.4.3`
+> `Clafer v0.4.4`
 
 `java -version`
 
-> `java version 1.8.0_66`
+> `java version 1.8.0_102`
 
 `node -v`
 
