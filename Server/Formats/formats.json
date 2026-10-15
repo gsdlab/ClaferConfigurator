@@ -33,7 +33,7 @@
         {
             "id": "alloy",
             "label": "Alloy Model",
-            "tooltip": "Alloy4.2 Analyzer file format (als)",
+            "tooltip": "Alloy 6 Analyzer file format (als)",
             "file_suffix": ".als",
             "compiler_mode": "alloy",
             "compiler_args": [],
