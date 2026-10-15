@@ -144,7 +144,12 @@ function getConfiguration()
                 else
                 {
                     module.host.print("Compiler> Error response:\n" + responseObject.compiler_message + "\n");
-                    
+
+                    if (responseObject.temporal)
+                    {
+                        onError(module, "temporal_model", null, null);
+                    }
+
                     if (module.host.storage.toReload)
                     {
                         module.host.print("ClaferConfigurator> The instance generator is still running with the last version of the model.\n");
@@ -374,8 +379,13 @@ function onError(module, statusText, response, xhr)
         };
     else if (statusText == "timeout")
         errorRecord = {
-            "caption": "Request Timeout", 
+            "caption": "Request Timeout",
             "body": "Please check whether the server is available. You may want to reload the browser page."
+        };
+    else if (statusText == "temporal_model")
+        errorRecord = {
+            "caption": "Temporal model not supported",
+            "body": "ClaferConfigurator works only with static Clafer models: instance generation does not support temporal constructs. You can edit temporal models in ClaferIDE."
         };
     else if (response && response.responseText == "process_not_found")
         errorRecord = {
