@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 var url = require("url");
-var sys = require("sys");
 var fs = require("fs");
 var path = require('path');
 var express = require('express');
@@ -49,11 +48,7 @@ var port = config.port;
 
 var server = express();
 
-server.use("/commons/Client", express.static(__dirname + '/commons/Client'));
-server.use("/Client", express.static(__dirname + '/Client'));
-//server.use(express.static(__dirname + '/commons/Client'));
-//server.use(express.static(__dirname + '/Client/'));
-server.use(express.bodyParser({ keepExtensions: true, uploadDir: __dirname + '/uploads' }));
+lib.configureServer(server);
 
 //-------------------------------------------------
 // Standard GET request
@@ -78,19 +73,19 @@ server.get('/', /*fileMiddleware, */function(req, res) {
 //-------------------------------------------------
 
 server.get('/Examples/:file', /*fileMiddleware,*/ function(req, res) {
-    res.sendfile('Examples/' + req.params.file);
+    res.sendFile('Examples/' + req.params.file, { root: __dirname });
 });
 
 server.get('/Backends/:file', /*fileMiddleware, */ function(req, res) {
-    res.sendfile('Backends/' + req.params.file);
+    res.sendFile('Backends/' + req.params.file, { root: __dirname });
 });
 
 server.get('/Formats/:file', /*fileMiddleware, */function(req, res) {
-    res.sendfile('Formats/' + req.params.file);
+    res.sendFile('Formats/' + req.params.file, { root: __dirname });
 });
 
 server.get('/htmlwrapper', /*fileMiddleware,*/ function(req, res) {
-    res.sendfile("commons/Client/compiler_html_wrapper.html");
+    res.sendFile("commons/Client/compiler_html_wrapper.html", { root: __dirname });
 });
 
 //------------------- save instances request --------------------------
@@ -99,13 +94,13 @@ server.post('/saveinstances', /*commandMiddleware,*/ function(req, res, next) {
     if (process != null)
     {
         core.logSpecific("Returning instances file", req.body.windowKey);
-        res.writeHead(200, { "Content-Type": "text/html",
+        res.writeHead(200, { "Content-Type": "text/plain",
                          "Content-Disposition": "attachment; filename=instances.cfr.data"});
         res.end(req.body.data);
     }
     else
     {
-        res.send(404, "Sorry can't find your session. Please re-compile your file to start a new one");        
+        res.status(404).send("Sorry can't find your session. Please re-compile your file to start a new one");        
     }
 });
 
@@ -341,6 +336,12 @@ server.post('/poll', /*pollingMiddleware,*/ function(req, res, next)
 
                 res.writeHead(200, { "Content-Type": "application/json"});
                 var jsonObj = JSON.parse(process.compiler_result);
+                if (lib.isTemporalModel(process))
+                {
+                    jsonObj.temporal = true;
+                    jsonObj.message = "Error: " + lib.temporalModelMessage;
+                    process.compiler_message += "\n" + lib.temporalModelMessage + "\n";
+                }
                 jsonObj.compiled_formats = process.compiled_formats;
                 jsonObj.args = process.compiler_args;
                 process.compiler_args = "";
@@ -505,8 +506,10 @@ server.get('/initdata', /*commandMiddleware,*/ function(req, res)
 server.use(function(req, res, next)
 {
     core.logSpecific(req.url, null);
-    res.send(404, "Sorry can't find that!");
+    res.status(404).send("Sorry can't find that!");
 });
+
+lib.addErrorHandler(server);
 
 //================================================================
 // Initialization Code
