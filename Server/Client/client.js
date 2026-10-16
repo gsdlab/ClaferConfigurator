@@ -20,10 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-function getConfiguration() 
+function getConfiguration()
 {
 	var modules = [];
-    modules.push({"name": "Input", "configuration": 
+    modules.push({"name": "Input", "configuration":
     	{
     		"layout": {
     			"width": (window.parent.innerWidth-40) * 0.38,
@@ -33,12 +33,12 @@ function getConfiguration()
     		},
 
     		"title": "Input Clafer Model and Options",
-    		"optimization_backend": false, 
+    		"optimization_backend": false,
             "input_default_cache": "checked",
             "input_default_flags": "",
             "file_extensions": [
                 {
-                    "ext": ".cfr", 
+                    "ext": ".cfr",
                     "button_file_caption": "Compile",
                     "button_example_caption": "Compile",
                     "button_editor_caption": "Compile",
@@ -61,7 +61,7 @@ function getConfiguration()
                     module.host.findModule("mdControl").pausePolling();
                 }
 
-                module.host.storage.worker = new Worker(module.host); // creating a class for working with instances             
+                module.host.storage.worker = new Worker(module.host); // creating a class for working with instances
 
                 return true;
             },
@@ -76,7 +76,7 @@ function getConfiguration()
                     module.host.print("ClaferConfigurator> clafer " + responseObject.args + "\n");
                 }
             },
-            "onCompleted" : function(module, responseObject){               
+            "onCompleted" : function(module, responseObject){
                 if (responseObject.args)
                 {
                     module.host.print("ClaferConfigurator> clafer " + responseObject.args + "\n");
@@ -94,12 +94,12 @@ function getConfiguration()
                 {
                     for (var i = 0; i < responseObject.compiled_formats.length; i++)
                     {
-                        
+
                         if (responseObject.compiled_formats[i].id == "json")
                         {
                             module.host.storage.worker.claferJSON = JSON.parse(responseObject.compiled_formats[i].result);
-                            
-                        }  
+
+                        }
 
                         if (responseObject.compiled_formats[i].id == "xml")
                         {
@@ -113,20 +113,20 @@ function getConfiguration()
                             xml = xml.replaceAll('xsi:', '');
 
                             module.host.storage.worker.claferXML = xml;
-                           
-                        }   
+
+                        }
 
 
                     }
-                }                
+                }
 
 //                module.host.print("Compiler> " + responseObject.message + "\n");
-//                module.host.print(responseObject.compiler_message + "\n");    
+//                module.host.print(responseObject.compiler_message + "\n");
 
                 if (responseObject.message == "Success")
                 {
                     module.host.print("Compiler> " + responseObject.message + "\n");
-                    module.host.print(responseObject.compiler_message + "\n");    
+                    module.host.print(responseObject.compiler_message + "\n");
 
                     if (module.host.storage.toReload)
                     {
@@ -160,15 +160,15 @@ function getConfiguration()
                     {
                         module.host.findModule("mdControl").disableAll(); // if exited IG, then disable controls
                     }
-                }                 
-             
+                }
 
-                return true;   
-    		}    		
+
+                return true;
+    		}
     	}
 	});
-    
-    modules.push({"name": "Output", "configuration": 
+
+    modules.push({"name": "Output", "configuration":
     	{
 	    	"title": "Output",
 
@@ -182,7 +182,7 @@ function getConfiguration()
     	}});
 
 
-    modules.push({"name": "Control", "configuration": 
+    modules.push({"name": "Control", "configuration":
     {
             "layout": {
                 "width": (window.parent.innerWidth-40) * (0.24),
@@ -197,22 +197,22 @@ function getConfiguration()
             "onStart": function (module)
             {
                 $("#ControlOpArg1").val($ ("#instancesToGet").val() - 1); // request (instancesToGet - 1) instances
-                module.host.storage.worker.resetGeneration(); 
+                module.host.storage.worker.resetGeneration();
                 module.host.storage.worker.refreshViews();
-                module.host.storage.worker.initializeGeneration(); 
-                return true;                
+                module.host.storage.worker.initializeGeneration();
+                return true;
             },
             "onStop": function (module)
             {
-                return true;                
-            },            
+                return true;
+            },
             "onStarted": function (module)
             {
-                module.host.print("ClaferConfigurator> Running the chosen instance generator...\n");            
+                module.host.print("ClaferConfigurator> Running the chosen instance generator...\n");
             },
             "onStopped": function (module)
             {
-                module.host.print("ClaferConfigurator> Forcing the instance generator to close...\n");               
+                module.host.print("ClaferConfigurator> Forcing the instance generator to close...\n");
             },
             "onDefaultScopeSet": function (module)
             {
@@ -233,11 +233,11 @@ function getConfiguration()
             "onIntScopeSet": function (module)
             {
                 module.host.print("ClaferConfigurator> Setting integer bounds...\n");
-            },          
+            },
             "onBitwidthSet": function (module)
             {
                 module.host.print("ClaferConfigurator> Setting the bitwidth...\n");
-            },            
+            },
             "onPoll" : function(module, responseObject){
                 module.host.storage.worker.processIGOutput(responseObject);
             },
@@ -252,7 +252,7 @@ function getConfiguration()
                 $("#" + newBackend.id + "-next_instance").hide();
                 $("#" + newBackend.id + "_buttons").prepend('<button id="getInstances" disabled>Get Instances</button>');
                 $("#" + newBackend.id + "_buttons").prepend('<input class="scopeInput" type="text" value="10" name="instancesToGet" id="instancesToGet"/>');
-     
+
                 $("#getInstances").click(function()
                 {
                     $("#ControlOp").val("getInstances");
@@ -264,17 +264,17 @@ function getConfiguration()
                 var parts = id.split("-");
                 if (parts[1] == "reload") // reload
                 {
-                    module.host.storage.worker.resetGeneration(); 
+                    module.host.storage.worker.resetGeneration();
                     module.host.storage.worker.refreshViews();
-                    module.host.print("ClaferConfigurator> Generation has been successfully reset.\n");        
+                    module.host.print("ClaferConfigurator> Generation has been successfully reset.\n");
                 }
             },
             "onCustomEvent": function(module, response)
             {
                 if (response == "instances_got")
                 {
-                    module.host.print("ClaferConfigurator> Generating instances...\n");            
-                    module.host.storage.worker.initializeGeneration(); 
+                    module.host.print("ClaferConfigurator> Generating instances...\n");
+                    module.host.storage.worker.initializeGeneration();
                 }
                 else
                 {
@@ -283,7 +283,7 @@ function getConfiguration()
             }
         }});
 
-    modules.push({"name": "FeatureQualityMatrix", "configuration": 
+    modules.push({"name": "FeatureQualityMatrix", "configuration":
         {
             "title": "Feature and Quality Matrix",
 
@@ -308,7 +308,7 @@ function getConfiguration()
             },
             "onFeatureCollapsed": function(module, feature)
             {
-            },          
+            },
             "onFeatureCheckedStateChange": function(module, feature, require)
             {
                 var constraintModule = module.host.findModule("mdConstraints");
@@ -323,7 +323,7 @@ function getConfiguration()
                     alert("an error occured while adding a constraint");
                 }
 
-                module.host.storage.instanceFilter.filterByFeature(module, feature, require);                
+                module.host.storage.instanceFilter.filterByFeature(module, feature, require);
             },
             "onInstanceRemove" : function(module, num)
             {
@@ -336,11 +336,11 @@ function getConfiguration()
             },
             "onFilterChanged": function(module, path, value)
             {
-                module.host.storage.instanceFilter.filterByValue(module, path, value);                
+                module.host.storage.instanceFilter.filterByValue(module, path, value);
             }
         }});
 
-    modules.push({"name": "ConstraintManipulator", "configuration": 
+    modules.push({"name": "ConstraintManipulator", "configuration":
         {
             "title": "Constraints",
 
@@ -361,20 +361,20 @@ function getConfiguration()
 	    {
             $('#ControlForm').prepend('<input type="hidden" name="instanceGenerationState" id="instanceGenerationState" value="none"/>');
  	    	$("#myform").submit();
-	    }	    
+	    }
 	};
 
     return {"modules": modules, "settings": settings};
 }
 
-function onError(module, statusText, response, xhr) 
+function onError(module, statusText, response, xhr)
 {
     var currentDate = new Date();
     var errorRecord = {};
 
     if (statusText == "compile_error")
         errorRecord = {
-            "caption": "Compilation Error", 
+            "caption": "Compilation Error",
             "body": "Please check whether Clafer Compiler is available, and the model is syntactically correct."
         };
     else if (statusText == "timeout")
@@ -389,22 +389,22 @@ function onError(module, statusText, response, xhr)
         };
     else if (response && response.responseText == "process_not_found")
         errorRecord = {
-            "caption": "Session not found", 
+            "caption": "Session not found",
             "body": "Looks like your session has been closed due to inactivity. Just recompile your model to start a new session."
         };
     else if (statusText == "error" && response.responseText == "")
         errorRecord = {
-            "caption": "Request Error", 
+            "caption": "Request Error",
             "body": "Please check whether the server is available. Try to recompile the model or to reload the browser page."
         };
     else
         errorRecord = {
-            "caption": xhr, 
+            "caption": xhr,
             "body": response.responseText
         };
 
     errorRecord.datetime = currentDate.today() + " @ " + currentDate.timeNow();
-    errorRecord.contact = "If the error persists, please contact Alexandr Murashkin (http://gsd.uwaterloo.ca/amurashk) or Michal Antkiewicz (http://gsd.uwaterloo.ca/mantkiew)";
+    errorRecord.contact = "If the error persists, please contact Alexandr Murashkin (http://gsd.uwaterloo.ca/amurashk) or Michal Antkiewicz (https://uwaterloo.ca/waterloo-intelligent-systems-engineering-lab/profiles/michal-antkiewicz)";
 
     module.host.print("ClaferConfigurator> " + errorRecord.caption + ": " + errorRecord.datetime + "\n" + errorRecord.body + "\n");
     module.host.errorWindow(errorRecord);
