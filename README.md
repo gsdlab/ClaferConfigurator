@@ -1,7 +1,7 @@
 ClaferConfigurator
 ==================
 
-##### v0.5.3
+##### v0.5.4
 
 An interactive, web-based, configurator for models expressed in [Clafer](http://clafer.org).
 The configurator provides a novel approach to configuration (model instantiation), whereby the configurer works with multiple correct configurations at the same time instead of working with a single configuration, making configuration steps, and resolving configuration conflicts.
@@ -11,10 +11,9 @@ Read more in the paper [Clafer Tools for Product Line Engineering](http://gsd.uw
 
 ### Live demo
 
-* Master branch (stable and released): [ClaferConfigurator](http://t3-necsis.cs.uwaterloo.ca:8093/)
-* Develop branch (with newest features, but not guaranteed to be stable): [ClaferConfigurator (evelopment)](http://t3-necsis.cs.uwaterloo.ca:8193/)
+* [ClaferConfigurator](https://wiselab.uwaterloo.ca:8093/), with the wikis [Clafer Model Wiki](https://wiselab.uwaterloo.ca/modelwiki/), [Railway Wiki](https://wiselab.uwaterloo.ca/railwaywiki/), and [Traffic Lights Wiki](https://wiselab.uwaterloo.ca/trafficlightswiki/), whose buttons open their models in the web tools
 
-If the demo is down or you encounter a bug, please email [Michał Antkiewicz](mailto:mantkiew@gsd.uwaterloo.ca).
+If the demo is down or you encounter a bug, please email [Michał Antkiewicz](mailto:michal.antkiewicz@uwaterloo.ca).
 
 ### Background
 
@@ -44,7 +43,7 @@ Contributors
 ### Dependencies for running
 
 * [Java Platform (JDK)](https://adoptium.net/) v17+
-* [Clafer](https://github.com/gsdlab/clafer) v0.5.3
+* [Clafer](https://github.com/gsdlab/clafer) v0.5.4
   * can be from the binary distribution
 * [Node.js](https://nodejs.org/), tested with v26
 * Backends' dependencies must be satisfied. See the backend installation steps below.
@@ -96,21 +95,23 @@ Optional limits and settings in `Server/config.json`:
 
 The environment variables `ALLOWED_MODEL_URLS` (URL prefixes separated by spaces) and `TRUST_PROXY` override `allowedModelURLs` and `trustProxy`, e.g., when running in a container.
 
+A model can import other models with `//# OPTIONS --import=...` (Clafer 0.5.4). Since a submitted model may come from anyone, the tool restricts its imports: only `.cfr` files: local files only from the tool's `Examples` folder (`--import=Examples/<file>.cfr`), and URLs only from public addresses and not served as web pages (e.g., `--import=https://example.org/models/design-space.cfr`). A model opened with `?claferFileURL=` imports relative to its URL, so a model next to it on the same server can be imported by its name; a server on a private address (e.g., a wiki on `localhost`) cannot serve imports.
+
 2. Make sure `clafer`, `claferIG`, `chocosolver`, `node`, and `java` are in `PATH` environment variables, so they can be executed without any path prefixes.
 
 3. Running the following commands should produce the following results or later version:
 
 `clafer --version`
 
-> `Clafer 0.5.3`
+> `Clafer 0.5.4`
 
 `claferIG --version`
 
-> `ClaferIG 0.5.3`
+> `ClaferIG 0.5.4`
 
 `chocosolver --version`
 
-> `chocosolver v0.5.3.2026-10-15`
+> `chocosolver v0.5.4.2026-10-25`
 
 `java -version`
 

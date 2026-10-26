@@ -1,4 +1,4 @@
-// Example from a demo <a href="http://t3-necsis.cs.uwaterloo.ca:8091/ACCDemo/featureModels">Adaptive Cruise Control</a>
+// Example from a demo <a href="https://wiselab.uwaterloo.ca/modelwiki/ACCDemo/featureModels">Adaptive Cruise Control</a>
 
 
 abstract Car
