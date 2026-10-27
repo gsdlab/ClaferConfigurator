@@ -1,3 +1,10 @@
+##### ClaferConfigurator Version 0.5.5, unreleased
+
+Minor release with Clafer 0.5.5.
+
+* Models can use decimals, a new primitive type `decimal` with a fixed number of fractional digits (Clafer 0.5.5), e.g., `cost -> decimal = 19.99`. The Feature and Quality Matrix shows a reference to a decimal as a number, like a reference to an integer; the editor highlights `decimal`.
+* The Choco-based backend is described as Choco 6 (chocosolver 0.5.5 uses choco-solver 6.0.2).
+
 ##### ClaferConfigurator Version 0.5.4, Oct 25, 2026
 
 Minor release with Clafer 0.5.4.
