@@ -1,4 +1,4 @@
-##### ClaferConfigurator Version 0.5.6, unreleased
+##### ClaferConfigurator Version 0.5.6, Nov 1, 2026
 
 Minor release with Clafer 0.5.6.
 
