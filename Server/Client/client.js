@@ -253,7 +253,7 @@ function getConfiguration()
                 $("#" + newBackend.id + "_buttons").prepend('<button id="getInstances" disabled>Get Instances</button>');
                 $("#" + newBackend.id + "_buttons").prepend('<input class="scopeInput" type="text" value="10" name="instancesToGet" id="instancesToGet"/>');
 
-                $("#getInstances").click(function()
+                $("#getInstances").on("click", function()
                 {
                     $("#ControlOp").val("getInstances");
                     $("#ControlOpArg1").val($ ("#instancesToGet").val());
@@ -360,7 +360,7 @@ function getConfiguration()
     	"onLoaded": function(host)
 	    {
             $('#ControlForm').prepend('<input type="hidden" name="instanceGenerationState" id="instanceGenerationState" value="none"/>');
- 	    	$("#myform").submit();
+ 	    	$("#myform").trigger("submit");
 	    }
 	};
 
