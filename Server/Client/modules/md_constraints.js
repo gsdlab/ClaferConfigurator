@@ -44,7 +44,7 @@ ConstraintManipulator.method("getInitContent", function(){
 ConstraintManipulator.method("onInitRendered", function(){ 
 	var that=this;
 
-    $("#constraintDisplay").click(function(){
+    $("#constraintDisplay").on("click", function(){
     	if (document.selection) {
             var range = document.body.createTextRange();
             range.moveToElementText(document.getElementById("constraintDisplay"));
