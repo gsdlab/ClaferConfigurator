@@ -12,6 +12,7 @@ Minor release with Clafer 0.5.7.
 * The editor highlights Clafer like the VS Code extension: the temporal keywords (`always`, `eventually`, `until`, `initially`, `never`, ...), `initial`, `final`, `assert`, `enum`, `if`/`then`/`else`, `parent`, `dref` and the transition arrows. Braces `{ }` were shown as comments and apostrophes in names (`x'`) as strings, and keywords were case-insensitive.
 * The client code uses the browser's own array functions and optional chaining instead of lodash, which is no longer a dependency.
 * Clicking the heading of a variant in the Feature and Quality Matrix no longer raises an error; the Configurator has no selection of variants.
+* `npm test` runs the tests of the commons, `commons/test`, in a page simulated by jsdom, a development dependency that the deployment (`npm ci --omit=dev`) leaves out: the Feature and Quality Matrix does not select a variant that is removed, and its headings are not selectable in a tool without selection, such as the Configurator, and the clafers are shown by their UIDs as they are.
 
 ##### ClaferConfigurator Version 0.5.6, Nov 1, 2026
 
