@@ -34,6 +34,7 @@
             "tool": "claferIG",
             "tool_args": ["$filepath$", "--useuids", "--addtypes"],
             "tool_args_forward_from_compiler" : ["--ss"],
+            "temporal_args": ["--tl=1"],
             "tool_version_args": ["-V"],
             "scope_options": {
                 "set_default_scope" : {"command": "s $value$\n"},
@@ -51,7 +52,8 @@
             ],
             "presentation_specifics": {
                 "prompt_title": "claferIG> ",
-                "no_more_instances": "No more instances found. Consider increasing scopes."
+                "no_more_instances": "No more instances found.",
+                "no_more_traces": "No more traces found."
             }
         }
     ]

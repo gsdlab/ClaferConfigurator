@@ -27,6 +27,15 @@ function Worker(host){
     this.firstTime = true;
 }
 
+// The variants of a temporal model are its traces of length 1 (the backend runs it with
+// "temporal_args"): each trace has a single state, so it is shown as an instance.
+function tracesAsInstances(text)
+{
+    return text.replace(/^=== Trace ([0-9]+) Begin ===$/gm, "=== Instance $1 Begin ===")
+               .replace(/^--- Trace ([0-9]+) End ---$/gm, "--- Instance $1 End ---")
+               .replace(/^--- (State|Loop back to state) [0-9]+ ---\n/gm, "");
+}
+
 Worker.method("processIGOutput", function(output)
 {
     if (output.ig_args != "")
@@ -86,7 +95,8 @@ Worker.method("processIGOutput", function(output)
 Worker.method("updateInstanceData", function()
 {
     var dataSource = new Object(); // creating a datasource to load a DataTable from
-    this.unparsedInstances += this.freshUnparsedInstances;
+    // the whole text, since a chunk of the output may end in the middle of a line
+    this.unparsedInstances = tracesAsInstances(this.unparsedInstances + this.freshUnparsedInstances);
     this.freshUnparsedInstances = "";
 
     dataSource.unparsedInstances = this.unparsedInstances;
@@ -123,10 +133,18 @@ Worker.method("checkForCommonErrorsAndFilter", function(instanceOutput)
     result.filteredInput = instanceOutput;
     result.error = "";
 
-    if (instanceOutput.indexOf(this.host.storage.backend.presentation_specifics.no_more_instances) >= 0)
+    var specifics = this.host.storage.backend.presentation_specifics;
+    // a temporal model yields traces instead of instances
+    var messages = [specifics.no_more_instances, specifics.no_more_traces];
+
+    for (var i = 0; i < messages.length; i++)
     {
-        result.error = this.host.storage.backend.presentation_specifics.no_more_instances + "\n";
-        result.filteredInput = instanceOutput.replaceAll(this.host.storage.backend.presentation_specifics.no_more_instances, "").trim();
+        if (messages[i] && instanceOutput.indexOf(messages[i]) >= 0)
+        {
+            result.error = messages[i] + "\n";
+            result.filteredInput = instanceOutput.replaceAll(messages[i], "").trim();
+            break;
+        }
     }
 
     return result;
