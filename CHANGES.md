@@ -2,6 +2,9 @@
 
 Minor release with Clafer 0.5.8.
 
+* Temporal models are accepted: their variants are their static configurations, which the Alloy-based backend generates as traces of length 1 (`claferIG --tl=1`) and the Feature and Quality Matrix shows as instances. The Choco-based backend supports only static models, so it is disabled for a temporal model. For example, a scenario model with `final` features and a constraint `[ immobile => (blocking <=> X blocking) ]` has the same 112 variants as its copy without `final` and without the constraint. Temporal models were rejected as not supported.
+* With the Alloy-based backend, getting more instances than the model has stops at the last one with "No more instances found."; the generation did not recognize the message of claferIG and kept waiting.
+
 ##### ClaferConfigurator Version 0.5.7, Nov 8, 2026
 
 Minor release with Clafer 0.5.7.

@@ -25,7 +25,7 @@ See [clafer.org](http://clafer.org).
 2. Allows for comparing and analyzing multiple product configurations simultaneously.
 3. Facilitates configuration of clafer models.
 
-Only static Clafer models are supported: instance generation reports temporal (behavioral) models as not supported. Use ClaferIDE to edit them.
+Temporal (behavioral) Clafer models are configured by their static configurations: the Alloy-based backend generates their traces of length 1 (`claferIG --tl=1`), each shown as one variant. The Choco-based backend supports only static models. Use ClaferIDE to explore the traces of temporal models.
 
 ### Nature
 
