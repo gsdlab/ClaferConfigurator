@@ -216,6 +216,17 @@ server.post('/control', /*commandMiddleware, */function(req, res)
     }
     else
     {
+        if (req.body.operation == "run" && process.temporal)
+        {
+            var backend = core.getBackend(req.body.backend);
+            if (backend && !backend.temporal_args)
+            {
+                res.writeHead(400, { "Content-Type": "text/plain"});
+                res.end("Error: " + backend.label + " supports only static models. Use the Alloy-based backend for temporal models.");
+                return;
+            }
+        }
+
         if (lib.handleControlRequest(req, res, settings))
         {
             if (req.body.operation == "run") // just running
@@ -336,12 +347,10 @@ server.post('/poll', /*pollingMiddleware,*/ function(req, res, next)
 
                 res.writeHead(200, { "Content-Type": "application/json"});
                 var jsonObj = JSON.parse(process.compiler_result);
-                if (lib.isTemporalModel(process))
-                {
-                    jsonObj.temporal = true;
-                    jsonObj.message = "Error: " + lib.temporalModelMessage;
-                    process.compiler_message += "\n" + lib.temporalModelMessage + "\n";
-                }
+                // the variants of a temporal model are its traces of length 1 (its static configurations),
+                // which only the backends with "temporal_args" (the Alloy-based one) can generate
+                process.temporal = lib.isTemporalModel(process);
+                jsonObj.temporal = process.temporal;
                 jsonObj.compiled_formats = process.compiled_formats;
                 jsonObj.args = process.compiler_args;
                 process.compiler_args = "";
