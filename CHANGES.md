@@ -1,6 +1,6 @@
-##### ClaferConfigurator Version 0.5.9, unreleased
+##### ClaferConfigurator Version 0.6.0, unreleased
 
-Minor release with Clafer 0.5.9.
+Minor release with Clafer 0.6.0.
 
 * The JSON output is shown as text, as in the other tools, not in a frame.
 * A format with `"shows_compilation_errors": "false"` is empty after a failed compilation (ClaferToolsUICommonPlatform).
