@@ -2,6 +2,7 @@
 
 Minor release with Clafer 0.6.0.
 
+* The Choco backend runs `clafersg`, the new name of `chocosolver`, from `PATH`; Clafer Tools 0.6.0 no longer installs `chocosolver`.
 * The JSON output is shown as text, as in the other tools, not in a frame.
 * A format with `"shows_compilation_errors": "false"` is empty after a failed compilation (ClaferToolsUICommonPlatform).
 
