@@ -21,14 +21,14 @@
             "display_element": "iframe"
         },
         {
-            "id": "choco",
-            "label": "Choco JS",
-            "tooltip": "Chocosolver's file format (js)",
-            "file_suffix": ".js",
-            "compiler_mode": "choco",
+            "id": "rich_explicit_clafer",
+            "label": "Rich Explicit Clafer",
+            "tooltip": "The explicit model with the rich constructs; not shown, it tells whether the model is temporal",
+            "file_suffix": ".des.cfr",
+            "compiler_mode": "clafer",
             "compiler_args": [],
             "shows_compilation_errors" : "false",
-            "display_element": "textarea"
+            "display_element": "none"
         },
         {
             "id": "alloy",
@@ -48,7 +48,7 @@
             "compiler_mode": "json",
             "compiler_args": [],
             "shows_compilation_errors" : "false",
-            "display_element": "iframe"
+            "display_element": "textarea"
         },
         {
             "id": "graph",
